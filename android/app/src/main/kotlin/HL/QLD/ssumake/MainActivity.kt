@@ -1,0 +1,6 @@
+package HL.QLD.ssumake
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
