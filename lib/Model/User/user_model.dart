@@ -119,7 +119,7 @@ class UserModel {
       phoneNumber: map['phonenumber'] ?? '',
       gender: map['gender'] ? 1 : 0,
       address: map['address'] ?? '',
-      cwtId: map['cwtId'] ?? '',
+      cwtId: map['cwtId'] ?? 0,
       fullname: map['fullname'] ?? '',
       token: map['token'] ?? '',
     );

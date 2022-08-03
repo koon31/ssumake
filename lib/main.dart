@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssumake/Homepage/home_page.dart';
+import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
+import 'package:ssumake/Model/CartOrder/order_model.dart';
 import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Location/district_model.dart';
 import 'package:ssumake/Model/Product/product_model.dart';
@@ -10,6 +12,7 @@ import 'package:ssumake/Model/Product/unit_model.dart';
 import 'package:ssumake/Model/User/user_model.dart';
 import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
 import 'Model/Location/cwt_model.dart';
+import 'Model/Location/location_model.dart';
 import 'Model/Product/discount_model.dart';
 import 'Model/Product/sub_category_model.dart';
 
@@ -50,6 +53,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<User>(
           create: (context) => User(),
         ),
+        ChangeNotifierProvider<Location>(
+          create: (context) => Location(),
+        ),
         ChangeNotifierProvider<ProvinceList>(
           create: (context) => ProvinceList(),
         ),
@@ -58,6 +64,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<CWTList>(
           create: (context) => CWTList(),
+        ),
+        ChangeNotifierProvider<OrderDetailHistory>(
+          create: (context) => OrderDetailHistory(),
+        ),
+        ChangeNotifierProvider<OrderHistory>(
+          create: (context) => OrderHistory(),
         ),
       ],
       child: MaterialApp(

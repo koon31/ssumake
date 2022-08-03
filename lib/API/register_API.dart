@@ -15,7 +15,7 @@ class RegisterAPI {
           userRegister.password!.isNotEmpty &&
           userRegister.phoneNumber!.isNotEmpty &&
           userRegister.fullname!.isNotEmpty) {
-        String dob = DateFormat('yyyy-MM-dd').format(userRegister.dateofbirth!);
+        //String dob = DateFormat('yyyy-MM-dd').format(userRegister.dateofbirth!);
         final response = await http.post(
             Uri.parse(URI.BASE_URI + URI.USER_REGISTER + "?code=" + codeVerify),
             headers: <String, String>{
@@ -24,10 +24,12 @@ class RegisterAPI {
             body: jsonEncode({
               "phoneNumber": userRegister.phoneNumber,
               "password": userRegister.password,
-              "dayOfBirth": dob,
-              "gender": userRegister.gender,
+              "dayOfBirth": userRegister.dateofbirth!.toIso8601String(),
+              "gender": userRegister.gender==1?true:false,
               "fullname": userRegister.fullname,
             }));
+        print(response.statusCode);
+        print(response.body);
         return response.statusCode;
       }
     } catch (e) {
@@ -39,7 +41,7 @@ class RegisterAPI {
     try {
       if (phoneNumber.isNotEmpty) {
         print('lay ma xac thuc');
-        final response = await http.post(
+        final response = await http.get(
             Uri.parse(URI.BASE_URI + URI.GET_CODE_VERIFY_PHONE + phoneNumber),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
@@ -55,14 +57,15 @@ class RegisterAPI {
     try {
       if (email.isNotEmpty) {
         print('lay ma xac thuc');
-        email = email.replaceAll(RegExp(r'@'), '%40');
-        print(email);
-        final response = await http.post(
+        //email = email.replaceAll(RegExp(r'@'), '%40');
+        // print(email);
+        final response = await http.get(
             Uri.parse(URI.BASE_URI + URI.GET_CODE_VERIFY_EMAIL + email),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             });
         print(response.statusCode);
+        print(response.body);
         return response.statusCode;
       }
     } catch (e) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ssumake/CartOrder/order_history_page.dart';
 import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Login_Register/Welcome/welcome_page.dart';
+import 'package:ssumake/Model/CartOrder/order_model.dart';
 import 'package:ssumake/User/update_user_page.dart';
 import '../Model/Product/category_model.dart';
 import '../Model/Product/sub_category_model.dart';
@@ -158,6 +160,56 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
                                         child: Icon(Icons.person, color: Colors.black,),
                                       ),
                                       Text('Thông tin cá nhân',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                const Icon(Icons.arrow_forward_ios,
+                                    color: Colors.black),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      visible: user!=null,
+                    ),
+                    Visibility(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: kDefaultPadding,
+                            left: kDefaultPadding,
+                            right: kDefaultPadding),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.transparent, padding: EdgeInsets.zero),
+                          onPressed: () {
+                            if (user != null) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return const OrderHistoryPage();
+                                  }));
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: kPrimaryLightColor),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                  child: Row(
+                                    children: const [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            right: kDefaultPadding / 2),
+                                        child: Icon(Icons.history_edu, color: Colors.black,),
+                                      ),
+                                      Text('Lịch sử đơn hàng',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500)),

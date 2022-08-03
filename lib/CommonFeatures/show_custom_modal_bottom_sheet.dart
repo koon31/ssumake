@@ -11,11 +11,13 @@ import 'package:ssumake/Product/detail_product_page_body.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_email.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_phone.dart';
 import '../API/Order_API.dart';
-import '../Cart/custom_modal_bottom_sheet_order.dart';
+import '../CartOrder/custom_modal_bottom_sheet_cart.dart';
+import '../CartOrder/custom_modal_bottom_sheet_order.dart';
 import '../Model/CartOrder/order_model.dart';
 import '../Model/Product/product_model.dart';
-import '../Cart/custom_modal_bottom_sheet_cart.dart';
 import '../Model/User/user_model.dart';
+import '../User/modal_bottom_sheet_update_location.dart';
+import '../User/modal_bottom_sheet_verify_password.dart';
 import 'display_toast.dart';
 
 class ShowModalBottomSheet {
@@ -44,6 +46,7 @@ class ShowModalBottomSheet {
                     orderDetail.quantity = psInCart.getQuantityOfProducts(p);
                     orderDetail.price = p.price;
                     orderDetails.add(orderDetail);
+                    price += orderDetail.price!;
                   }
                   return CustomBottomAppBarCart(press: () async {
                     OrderModel order = OrderModel.empty();
@@ -57,7 +60,7 @@ class ShowModalBottomSheet {
                     order.orderDetails = orderDetails;
                     try {
                       final result =
-                          await OrderAPI.addOrder(order, user.user!.token);
+                          await OrderAPI.addOrder(order);
                       if (result == 200) {
                         Timer(const Duration(seconds: 2), () {
                           Navigator.pop(context);
@@ -104,6 +107,33 @@ class ShowModalBottomSheet {
             isPhone
                 ? const ModalBottomSheetUpdateUserPhone()
                 : const ModalBottomSheetUpdateUserEmail()
+          ]);
+        });
+  }
+  static showCheckPassword(BuildContext context, bool isPhone) async {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (BuildContext contextModal) {
+          return Wrap(children: [
+             ModalBottomSheetCheckPassword(isPhone: isPhone,)
+          ]);
+        });
+  }
+
+  static showChangeAddress(BuildContext context) async {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (BuildContext contextModal) {
+          return Wrap(children: const [
+            ModalBottomSheetChangeAddress(),
           ]);
         });
   }

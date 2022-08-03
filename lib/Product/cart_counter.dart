@@ -77,8 +77,10 @@ class _CartCounterState extends State<CartCounter> {
             icon: Icons.add,
             press: () {
               setState(() {
-                quantityOfProductsInCart++;
-                widget.onQuantityChange!(quantityOfProductsInCart);
+                if (product.quantity! > quantityOfProductsInCart){
+                  quantityOfProductsInCart++;
+                  widget.onQuantityChange!(quantityOfProductsInCart);
+                }
               });
             }),
       ],

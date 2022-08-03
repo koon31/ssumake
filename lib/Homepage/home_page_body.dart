@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ssumake/Homepage/home_page_background.dart';
 
 import 'package:ssumake/Model/Product/category_model.dart';
 import '../CommonFeatures/show_custom_modal_bottom_sheet.dart';
@@ -58,90 +59,90 @@ class HomePageBodyState extends State<HomePageBody> {
 
   @override
   Widget build(BuildContext context) {
-
-
  productsInEachSubCategories.forEach((key, value) {
        print(productsInEachSubCategories[key]);
   });
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Text(
-            cate.categoryName!,
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                ?.copyWith(fontWeight: FontWeight.bold),
+    return HomePageBackground(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: Text(
+              cate.categoryName!,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        HomePageSubCategoryTabs(
-          key: keyTab,
-          subCategoriesByCategoryId: scatesByCateId,
-          selectedCategory: selectedSCate,
-          onTabChanged: (int i) {
-            tabChange(i);
-          },
-        ),
-        Expanded(
-          child: PageView.builder(
-            controller: _productPageController,
-            itemCount: scatesByCateId.length,
-            onPageChanged: (pageIndex) {
-              setState(() {
-                keyTab.currentState?.onTabChange(pageIndex);
-                selectedSCate = scatesByCateId[pageIndex];
-              });
+          HomePageSubCategoryTabs(
+            key: keyTab,
+            subCategoriesByCategoryId: scatesByCateId,
+            selectedCategory: selectedSCate,
+            onTabChanged: (int i) {
+              tabChange(i);
             },
-            itemBuilder: (context, subCateIndex) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: GridView.builder(
-                itemCount: productsInEachSubCategories[scatesByCateId[subCateIndex % scatesByCateId.length]]!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: kDefaultPadding,
-                  crossAxisSpacing: kDefaultPadding,
-                  childAspectRatio: 0.75,
-                ),
-                itemBuilder: (context, proIndex) => ItemCard(
-                    product: productsInEachSubCategories[scatesByCateId[
-                        subCateIndex % scatesByCateId.length]]![proIndex],
-                    press: () {
-                      ShowModalBottomSheet.showEditProduct(
-                        context,
-                        productsInEachSubCategories[scatesByCateId[
-                            subCateIndex % scatesByCateId.length]]![proIndex],
-                        cate.categoryName! +
-                            // ignore: unnecessary_null_comparison
-                            (selectedSCate != null
-                                ? '/' + selectedSCate.subCategoryName!
-                                : ''),true
-                      );
-                    } /*async => await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailProductPage(
-                                product: productsInEachSubCategories[
-                                    scatesByCateId[subCateIndex %
-                                        scatesByCateId.length]]![proIndex],
-                                cate_SubCate_Title: cate.title! +
-                                    // ignore: unnecessary_null_comparison
-                                    (selectedSCate != null
-                                        ? '/' + selectedSCate.title!
-                                        : ''),
-                                quantityOfProductsInCart: _productsInCart[productsInEachSubCategories[scatesByCateId[
-                                subCateIndex % scatesByCateId.length]]![proIndex]]==null?0:_productsInCart[productsInEachSubCategories[scatesByCateId[
-                                subCateIndex % scatesByCateId.length]]![proIndex]]!,
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _productPageController,
+              itemCount: scatesByCateId.length,
+              onPageChanged: (pageIndex) {
+                setState(() {
+                  keyTab.currentState?.onTabChange(pageIndex);
+                  selectedSCate = scatesByCateId[pageIndex];
+                });
+              },
+              itemBuilder: (context, subCateIndex) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: GridView.builder(
+                  itemCount: productsInEachSubCategories[scatesByCateId[subCateIndex % scatesByCateId.length]]!.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: kDefaultPadding,
+                    crossAxisSpacing: kDefaultPadding,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemBuilder: (context, proIndex) => ItemCard(
+                      product: productsInEachSubCategories[scatesByCateId[
+                          subCateIndex % scatesByCateId.length]]![proIndex],
+                      press: () {
+                        ShowModalBottomSheet.showEditProduct(
+                          context,
+                          productsInEachSubCategories[scatesByCateId[
+                              subCateIndex % scatesByCateId.length]]![proIndex],
+                          cate.categoryName! +
+                              // ignore: unnecessary_null_comparison
+                              (selectedSCate != null
+                                  ? '/' + selectedSCate.subCategoryName!
+                                  : ''),true
+                        );
+                      } /*async => await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailProductPage(
+                                  product: productsInEachSubCategories[
+                                      scatesByCateId[subCateIndex %
+                                          scatesByCateId.length]]![proIndex],
+                                  cate_SubCate_Title: cate.title! +
+                                      // ignore: unnecessary_null_comparison
+                                      (selectedSCate != null
+                                          ? '/' + selectedSCate.title!
+                                          : ''),
+                                  quantityOfProductsInCart: _productsInCart[productsInEachSubCategories[scatesByCateId[
+                                  subCateIndex % scatesByCateId.length]]![proIndex]]==null?0:_productsInCart[productsInEachSubCategories[scatesByCateId[
+                                  subCateIndex % scatesByCateId.length]]![proIndex]]!,
+                                ),
                               ),
-                            ),
-                          ),*/
-                    ),
+                            ),*/
+                      ),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

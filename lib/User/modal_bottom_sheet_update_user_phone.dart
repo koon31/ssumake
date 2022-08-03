@@ -10,6 +10,7 @@ import '../CommonFeatures/display_toast.dart';
 import '../CommonFeatures/input_decoration.dart';
 import '../Model/User/change_phone_number.dart';
 import '../Model/User/user_model.dart';
+import 'update_user_page.dart';
 
 class ModalBottomSheetUpdateUserPhone extends StatefulWidget {
   const ModalBottomSheetUpdateUserPhone({Key? key}) : super(key: key);
@@ -219,19 +220,21 @@ class _ModalBottomSheetUpdateUserPhoneState
 
   Future<void> onClickChangeNumber() async {
     try {
-      UserModel? u = Provider.of<User>(context, listen: false).user;
-      String? token = u!.token;
-      print(token);
       ChangePhoneNumberUserModel user = ChangePhoneNumberUserModel(
           emailOrPhoneChange: _newPhoneController.text,
           phoneNumber: _oldPhoneController.text,
           codeVerify: _verifyController.text);
-      final result = await UpdateUserAPI.changePhoneNumber(user, token);
+      final result = await UpdateUserAPI.changePhoneNumber(user);
       print(result);
       if (result == 200) {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 3);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) {
+              return const UpdateUserPage();
+            }));
         DisplayToast.DisplaySuccessToast(
             context, 'Đổi số điện thoại thành công');
-        Navigator.pop(context);
       } else {
         DisplayToast.DisplayErrorToast(context, 'Đổi số điện thoại thất bại');
       }

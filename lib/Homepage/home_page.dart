@@ -18,6 +18,7 @@ import '../API/product_API.dart';
 import '../CommonFeatures/custom_bottom_app_bar.dart';
 import '../CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import '../Constants/color.dart';
+import '../Model/Location/location_model.dart';
 import '../Model/Product/category_model.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/Product/sub_category_model.dart';
@@ -219,12 +220,22 @@ class HomePageState extends State<HomePage> {
   }
 
   Future<void> getLoggedInUser() async {
-    var provider = Provider.of<User>(context, listen: false);
+    var userProvider = Provider.of<User>(context, listen: false);
+    var locationProvider = Provider.of<Location>(context, listen: false);
     final result = await LoginAPI.getLoggedInUser();
     final UserModel? loggedInUser = UserModel.fromMap(jsonDecode(result.body));
-    print(loggedInUser!.id);
-    provider.login(loggedInUser);
+    if(loggedInUser!=null) userProvider.login(loggedInUser);
+    print(userProvider.user!.token);
+    print(userProvider.user!.id);
     String? strLocation;
-    if (loggedInUser.cwtId != null && loggedInUser.cwtId != 0) strLocation = await LocationAPI.getLocationByCWTId(loggedInUser.cwtId.toString());
+    if (userProvider.user != null) {
+      if (userProvider.user!.cwtId != null && userProvider.user!.cwtId != 0) {
+        strLocation = await LocationAPI.getLocationByCWTId(
+            userProvider.user!.cwtId.toString());
+      }
+      if (strLocation != null && strLocation.isNotEmpty) {
+        locationProvider.getLocationFromAPI(strLocation);
+      }
+    }
   }
 }

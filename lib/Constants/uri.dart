@@ -5,7 +5,7 @@ class URI {
 
   //192.168.0.104
   //192.168.1.35
-  static const String BASE_URI = 'http://192.168.1.35:5000/';
+  static const String BASE_URI = 'http://localhost:5000/';
   //Account
   static const String USER_LOGIN = 'api/v1/Account/Login';
   static const String USER_REGISTER = 'api/v1/Account/RegisterCustomer';
@@ -15,6 +15,7 @@ class URI {
   static const String CHANGE_EMAIL = 'api/v1/Account/ChangeOrAddEmail';
   static const String GET_LOGGED_IN_USER =  'api/v1/Customer/GetCustomer?id=';
   static const String CHANGE_CUSTOMER_INFO = 'api/v1/Customer/CustomerChangeInfo';
+  static const String CHECK_CHANGE_INFO = 'api/v1/Account/CheckChangeInfo';
 
   //Product
   static const String GET_PRODUCT = 'api/v1/Product/GetAllProduct';
@@ -33,4 +34,5 @@ class URI {
 
   //order
   static const String ADD_ORDER = 'api/v1/Order/AddOrder';
+  static const String GET_ORDER = 'api/v1/Order/GetAllOrderIncludeOderDetailbyCustomerId?id=';
 }

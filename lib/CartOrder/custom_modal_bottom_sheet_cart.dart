@@ -9,6 +9,7 @@ import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/Product/sub_category_model.dart';
 import '../CommonFeatures/custom_title_style.dart';
+import '../Model/Location/location_model.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/User/user_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
@@ -154,7 +155,7 @@ class _CustomModalBottomSheetCartState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Giao Tận Nơi', style: CustomTextStyle.custom1(context)),
-              customButtonOfModalBottomSheet('Thay Đổi', () => null)
+              customButtonOfModalBottomSheet('Thay Đổi', () => ShowModalBottomSheet.showChangeAddress(context))
             ],
           ),
         ),
@@ -165,7 +166,7 @@ class _CustomModalBottomSheetCartState
   }
 
   addressInformation() {
-    return Consumer<User>(builder: (context, value, child) {
+    return Consumer2<User, Location>(builder: (context, user, location, child) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
         child: Row(
@@ -174,8 +175,8 @@ class _CustomModalBottomSheetCartState
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: value.user!.address != null ? value.user!.address!.isNotEmpty ? Text(
-                  value.user!.address!,
+                child: user.user!.address != null && location.location!= null ? user.user!.address!.isNotEmpty ? Text(
+                  user.user!.address! + ', ' + location.location!.cwt! + ', ' + location.location!.district! + ', ' + location.location!.province!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: const TextStyle(fontSize: 12),
