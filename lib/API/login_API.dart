@@ -49,14 +49,18 @@ class LoginAPI {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var user = preferences.getStringList('user');
-      if (user != null && user[1].isNotEmpty) {
+      String? token;
+      if(user!=null) token = user[0];
+      if (user != null && user[1].isNotEmpty && token!=null && token.isNotEmpty) {
+        print(user[0]);
         print(user[1]);
         var response = await http.get(
             Uri.parse(URI.BASE_URI + URI.GET_LOGGED_IN_USER + user[1]),
             headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8'
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
             },);
-        print(response.statusCode);
         print(response.body);
         return response;
       }

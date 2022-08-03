@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/API/cwt_API.dart';
 import 'package:ssumake/API/district_API.dart';
 import 'package:ssumake/API/update_user_API.dart';
+import 'package:ssumake/Model/Location/location_model.dart';
 import 'package:ssumake/Model/User/update_user_model.dart';
 
+import '../API/location_API.dart';
+import '../API/login_API.dart';
 import '../API/province_API.dart';
 import '../CommonFeatures/custom_button.dart';
 import '../CommonFeatures/display_toast.dart';
@@ -91,7 +95,8 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       size: 140,
                     )),
                 GestureDetector(
-                  onTap: () => ShowModalBottomSheet.showUpdatePhoneEmail(context, true),
+                  onTap: () =>
+                      ShowModalBottomSheet.showCheckPassword(context, true),
                   child: Consumer<User>(builder: (context, value, child) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -162,7 +167,8 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                   // ),
                 ),
                 GestureDetector(
-                  onTap: () => ShowModalBottomSheet.showUpdatePhoneEmail(context, false),
+                  onTap: () =>
+                      ShowModalBottomSheet.showCheckPassword(context, false),
                   child: Consumer<User>(builder: (context, value, child) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -429,13 +435,15 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       CustomButtonMedium(
                         text: "Cập nhật SĐT",
                         press: () {
-                          ShowModalBottomSheet.showUpdatePhoneEmail(context, true);
+                          ShowModalBottomSheet.showCheckPassword(
+                              context, true);
                         },
                       ),
                       CustomButtonMedium(
                         text: "Cập nhật Email",
                         press: () {
-                          ShowModalBottomSheet.showUpdatePhoneEmail(context, false);
+                          ShowModalBottomSheet.showCheckPassword(
+                              context, false);
                         },
                       ),
                     ],
@@ -451,20 +459,21 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
 
   Future<void> onClickUpdateCustomerInfo() async {
     try {
-      String? token = user.token;
       UpdateUserModel uU = UpdateUserModel(
           customerId: user.id,
           address: _addressController.text,
           gender: _gender == Gender.Male ? 1 : 0,
           fullname: _nameController.text,
           cwtId: _valueCWT.cwtId);
-      final result = await UpdateUserAPI.updateCustomerInfo(uU, token);
+      final result = await UpdateUserAPI.updateCustomerInfo(uU);
       print(result);
       if (result == 200) {
         DisplayToast.DisplaySuccessToast(
             context, 'Đổi thông tin cá nhân thành công');
-        Timer(const Duration(seconds: 3), () {
-          Navigator.pop(context);
+        Timer(const Duration(seconds: 2), () {
+          getLoggedInUser();
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
         });
       } else {
         DisplayToast.DisplayErrorToast(
@@ -580,7 +589,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
     await updateProvince();
     await updateDistrict();
     await updateCWT();
-    await getUserProvince();
+    await getUserLocation();
   }
 
   provinceChanged() async {
@@ -592,40 +601,72 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
     await updateCWT();
   }
 
-  getUserProvince() async {
+  getUserLocation() async {
     String? address = user.address;
-    if (address != null && address.isNotEmpty) {
-      String? province =
-          address.substring(address.lastIndexOf(RegExp(r'Thành phố|Tỉnh')));
-      address = address.replaceRange(
-          address.lastIndexOf(RegExp(r'Thành phố|Tỉnh')) - 2,
-          address.length,
-          '');
+    LocationModel? location =
+        Provider.of<Location>(context, listen: false).location;
+    if (location != null &&
+        user.address != null &&
+        user.address!.isNotEmpty &&
+        address != null &&
+        address.isNotEmpty) {
+      //if (location.cwt!=null && location.district!=null && location.province!=null) address += ', ' + location.cwt! + ', ' + location.district! + ', ' + location.province!;
       _valueProvince = _provinceList.firstWhereOrNull((element) {
-        return element.name! == province;
+        return element.name! == location.province;
       })!;
       await updateDistrict();
-      String? district = address.substring(
-          address.lastIndexOf(RegExp(r'Thành phố|Quận|Huyện|Thị xã')));
-      address = address.replaceRange(
-          address.lastIndexOf(RegExp(r'Thành phố|Quận|Huyện|Thị xã')) - 2,
-          address.length,
-          '');
       _valueDistrict = _districtList.firstWhereOrNull((element) {
-        return element.name! == district;
+        return element.name! == location.district;
       })!;
       await updateCWT();
-      String? cwt =
-          address.substring(address.lastIndexOf(RegExp(r'Phường|Xã|Thị trấn')));
-      address = address.replaceRange(
-          address.lastIndexOf(RegExp(r'Phường|Xã|Thị trấn')) - 1,
-          address.length,
-          '');
       _valueCWT = _cwtList.firstWhereOrNull((element) {
-        return element.name! == cwt;
+        return element.name! == location.cwt;
       })!;
       _addressController.text = address;
       if (mounted) setState(() {});
+    }
+    // if (address != null && address.isNotEmpty) {
+    //   String? province =
+    //       address.substring(address.lastIndexOf(RegExp(r'Thành phố|Tỉnh')));
+    //   address = address.replaceRange(
+    //       address.lastIndexOf(RegExp(r'Thành phố|Tỉnh')) - 2,
+    //       address.length,
+    //       '');
+
+    //   String? district = address.substring(
+    //       address.lastIndexOf(RegExp(r'Thành phố|Quận|Huyện|Thị xã')));
+    //   address = address.replaceRange(
+    //       address.lastIndexOf(RegExp(r'Thành phố|Quận|Huyện|Thị xã')) - 2,
+    //       address.length,
+    //       '');
+
+    //   String? cwt =
+    //       address.substring(address.lastIndexOf(RegExp(r'Phường|Xã|Thị trấn')));
+    //   address = address.replaceRange(
+    //       address.lastIndexOf(RegExp(r'Phường|Xã|Thị trấn')) - 1,
+    //       address.length,
+    //       '');
+
+    // }
+  }
+
+  Future<void> getLoggedInUser() async {
+    var userProvider = Provider.of<User>(context, listen: false);
+    var locationProvider = Provider.of<Location>(context, listen: false);
+    final result = await LoginAPI.getLoggedInUser();
+    final UserModel? loggedInUser = UserModel.fromMap(jsonDecode(result.body));
+    if (loggedInUser != null) userProvider.login(loggedInUser);
+    print(userProvider.user!.token);
+    print(userProvider.user!.id);
+    String? strLocation;
+    if (userProvider.user != null) {
+      if (userProvider.user!.cwtId != null && userProvider.user!.cwtId != 0) {
+        strLocation = await LocationAPI.getLocationByCWTId(
+            userProvider.user!.cwtId.toString());
+      }
+      if (strLocation != null && strLocation.isNotEmpty) {
+        locationProvider.getLocationFromAPI(strLocation);
+      }
     }
   }
 }

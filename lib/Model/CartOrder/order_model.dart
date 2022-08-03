@@ -1,5 +1,26 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
+
+class OrderHistory with ChangeNotifier{
+  List<OrderModel> orderHistory = List<OrderModel>.empty();
+
+  void getAllOrderHistoryFromAPI(String str) {
+    orderHistory = List<OrderModel>.from(
+        json.decode(str).map((x) => OrderModel.fromJson(x)));
+    notifyListeners();
+  }
+
+  void removeAllOrderHistory() {
+    if (orderHistory.isNotEmpty) {
+      orderHistory.clear();
+      notifyListeners();
+    }
+  }
+
+}
 
 class OrderModel {
   String? custormerId;
@@ -30,16 +51,21 @@ class OrderModel {
 
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
-    DateTime dc = DateFormat('dd/MM/yyyy').parse(json['dateCreate'].toString().substring(8, 10)+'/'+json['dateCreate'].toString().substring(5, 7)+'/'+json['dateCreate'].toString().substring(0, 4));
+    DateTime dc = DateTime.parse(json['dateCreate'].toString());
+    List<OrderDetailModel>? orderDetailHistory = List<OrderDetailModel>.from(json['orderdetails'].map((x) => OrderDetailModel.fromJson(x)));
+    for(int i = 0; i < orderDetailHistory.length; ++i) {
+      print(orderDetailHistory[i].productId);
+    }
+    print(dc.toString());
     return OrderModel(
-    custormerId: json["custormerId"],
+    custormerId: json["custormerId"]??'',
     dateCreate: dc,
-    address: json["address"],
-    paymentMethodId: json["paymentMethodId"],
-    totalPrice: json["totalPrice"],
-    discountId: json["discountId"],
-    status: json["status"],
-    orderDetails: json["status"],
+    address: json["address"]??'',
+    paymentMethodId: json["paymentMethodId"]??1,
+    totalPrice: json["totalPrice"].toDouble()??0,
+    discountId: json["discountId"]??null,
+    status: json["status"]??0,
+    orderDetails: orderDetailHistory,
   );}
 
   Map<String, dynamic> toJson() => {

@@ -16,8 +16,6 @@ import '../../CommonFeatures/input_decoration.dart';
 import '../../Constants/global_var.dart';
 import '../Login/already_have_an_account.dart';
 import '../Login/login_page.dart';
-import 'register_or_divider.dart';
-import 'social_icon.dart';
 
 class RegisterBody extends StatefulWidget {
   const RegisterBody({Key? key}) : super(key: key);
@@ -307,30 +305,6 @@ class _RegisterBodyState extends State<RegisterBody> {
                       );
                     },
                   ),
-                  const OrDivider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SocialIcon(
-                        iconSrc: "assets/icons/facebook.svg",
-                        press: () {},
-                      ),
-                      SizedBox(
-                        width: size.width * 0.025,
-                      ),
-                      SocialIcon(
-                        iconSrc: "assets/icons/twitter.svg",
-                        press: () {},
-                      ),
-                      SizedBox(
-                        width: size.width * 0.025,
-                      ),
-                      SocialIcon(
-                        iconSrc: "assets/icons/google-plus.svg",
-                        press: () {},
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),

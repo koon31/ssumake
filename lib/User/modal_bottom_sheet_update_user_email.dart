@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Model/User/change_email.dart';
+import 'package:ssumake/User/update_user_page.dart';
 import '../API/register_API.dart';
 import '../API/update_user_API.dart';
 import '../CommonFeatures/custom_button.dart';
 import '../CommonFeatures/display_toast.dart';
 import '../CommonFeatures/input_decoration.dart';
-import '../Model/User/change_phone_number.dart';
 import '../Model/User/user_model.dart';
 
 class ModalBottomSheetUpdateUserEmail extends StatefulWidget {
@@ -25,9 +25,8 @@ class _ModalBottomSheetUpdateUserEmailState
   final GlobalKey<FormState> _formKeyEmailUpdate = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyNewEmailUpdate = GlobalKey<FormState>();
 
-  final _oldEmailController = TextEditingController();
   final _newEmailController = TextEditingController();
-  final _confirmNewEmailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _verifyController = TextEditingController();
 
   bool _isEnableTextFormField = false;
@@ -50,23 +49,6 @@ class _ModalBottomSheetUpdateUserEmailState
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  RoundedInputField(
-                    controller: _oldEmailController,
-                    hintText: "Email cũ",
-                    icon: Icons.email,
-                    type: TextInputType.emailAddress,
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Vui lòng điền đầy đủ thông tin';
-                      } else if (!RegExp(r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$')
-                          .hasMatch(value)) {
-                        return 'Email không hợp lệ';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
                   Form(
                     key: _formKeyNewEmailUpdate,
                     child: RoundedInputField(
@@ -78,8 +60,6 @@ class _ModalBottomSheetUpdateUserEmailState
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Vui lòng điền đầy đủ thông tin';
-                        } else if(value == _oldEmailController.text){
-                          return 'Email mới phải khác Email cũ';
                         } else if (!RegExp(r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$')
                             .hasMatch(value)) {
                           return 'Email không hợp lệ';
@@ -144,16 +124,22 @@ class _ModalBottomSheetUpdateUserEmailState
                     ),
                   ),
                   RoundedInputField(
-                    controller: _confirmNewEmailController,
-                    hintText: "Xác nhận Email mới",
-                    icon: Icons.email,
-                    type: TextInputType.emailAddress,
+                    controller: _phoneController,
+                    hintText: "Số Điện Thoại mới",
+                    icon: Icons.phone,
+                    type: TextInputType.phone,
                     onChanged: (value) {},
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Vui lòng điền đầy đủ thông tin';
-                      } else if(value != _newEmailController.text){
-                        return 'Email xác nhận phải trùng Email mới';
+                      } else if (value != Provider.of<User>(context, listen: false).user!.phoneNumber!) {
+                        return 'Số Điện Thoại không khớp với Số Điện Thoại đã đăng kí';
+                      }else if (value.length > 11) {
+                        return 'Số Điện Thoại phải nhập bé hơn 12 ký tự';
+                      }
+                      else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
+                          .hasMatch(value)) {
+                        return 'Số điện thoại không đúng số điện thoại Việt Nam';
                       } else {
                         return null;
                       }
@@ -217,19 +203,22 @@ class _ModalBottomSheetUpdateUserEmailState
 
   Future<void> onClickChangeEmail() async {
     try {
-      UserModel? u = Provider.of<User>(context, listen: false).user;
-      String? token = u!.token;
-      print(token);
       ChangeEmailUserModel user = ChangeEmailUserModel(
           emailOrPhoneChange: _newEmailController.text,
-          phoneNumber: _oldEmailController.text,
+          phoneNumber: _phoneController.text,
           codeVerify: _verifyController.text);
-      final result = await UpdateUserAPI.changeEmail(user, token);
+      final result = await UpdateUserAPI.changeEmail(user);
       print(result);
       if (result == 200) {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 3);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) {
+              return const UpdateUserPage();
+            }));
         DisplayToast.DisplaySuccessToast(
             context, 'Đổi email thành công');
-        Navigator.pop(context);
+
       } else {
         DisplayToast.DisplayErrorToast(context, 'Đổi email thất bại');
       }
