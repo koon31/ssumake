@@ -4,7 +4,6 @@ import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
 import '../Constants/color.dart';
 import '../Model/Product/discount_model.dart';
 import '../Model/Product/product_model.dart';
-import 'detail_product_page.dart';
 import 'detail_product_page_body.dart';
 
 class AddToCart extends StatefulWidget {
@@ -24,17 +23,10 @@ class _AddToCartState extends State<AddToCart> {
 
   @override
   void initState() {
-    final DetailProductPage? detailProductPage =
-        context.findAncestorWidgetOfExactType<DetailProductPage>();
-    if (detailProductPage == null) {
-      final DetailProductPageBody? detailProductPageBody =
-          context.findAncestorWidgetOfExactType<DetailProductPageBody>();
-      product = detailProductPageBody!.product;
-      isAdd = detailProductPageBody.isAdd;
-    } else {
-      product = detailProductPage.product;
-      isAdd = true;
-    }
+    final DetailProductPageBody? detailProductPageBody =
+        context.findAncestorWidgetOfExactType<DetailProductPageBody>();
+    product = detailProductPageBody!.product;
+    isAdd = detailProductPageBody.isAdd;
     super.initState();
   }
 
@@ -99,7 +91,9 @@ class _AddToCartState extends State<AddToCart> {
           }
         },
         child: Consumer<DiscountList>(builder: (context, value, child) {
-          DiscountModel? d = product.discountId != null ? value.findDiscountById(product.discountId!):null;
+          DiscountModel? d = product.discountId != null
+              ? value.findDiscountById(product.discountId!)
+              : null;
           double priceAfterDiscount = product.discountId != null
               ? d != null
                   ? d.discountPercent == 0

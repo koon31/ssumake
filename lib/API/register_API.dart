@@ -16,15 +16,16 @@ class RegisterAPI {
           userRegister.phoneNumber!.isNotEmpty &&
           userRegister.fullname!.isNotEmpty) {
         //String dob = DateFormat('yyyy-MM-dd').format(userRegister.dateofbirth!);
+        print(userRegister.dateofbirth!.toIso8601String());
         final response = await http.post(
             Uri.parse(URI.BASE_URI + URI.USER_REGISTER + "?code=" + codeVerify),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             },
             body: jsonEncode({
-              "phoneNumber": userRegister.phoneNumber,
+              "phonenumber": userRegister.phoneNumber,
               "password": userRegister.password,
-              "dayOfBirth": userRegister.dateofbirth!.toIso8601String(),
+              "dateofbirth": userRegister.dateofbirth!.toIso8601String(),
               "gender": userRegister.gender==1?true:false,
               "fullname": userRegister.fullname,
             }));

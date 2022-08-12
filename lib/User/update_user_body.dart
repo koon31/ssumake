@@ -81,7 +81,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                 const EdgeInsets.symmetric(vertical: kDefaultPadding / 2 * 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 SizedBox(height: size.height * 0.03),
                 Container(
                     decoration: const BoxDecoration(
@@ -143,28 +143,6 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       ),
                     );
                   }),
-                  //Form(
-                  //   key: _formKeyPhoneUpdate,
-                  //   child: RoundedInputField(
-                  //     controller: _phoneController,
-                  //     hintText: "Số Điện Thoại",
-                  //     icon: Icons.phone,
-                  //     type: TextInputType.phone,
-                  //     onChanged: (value) {},
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return 'Vui lòng điền đầy đủ thông tin';
-                  //       } else if (value.length > 11) {
-                  //         return 'Số Điện Thoại phải nhập bé hơn 12 ký tự';
-                  //       } else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
-                  //           .hasMatch(value)) {
-                  //         return 'Số điện thoại không đúng số điện thoại Việt Nam';
-                  //       } else {
-                  //         return null;
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
                 ),
                 GestureDetector(
                   onTap: () =>
@@ -215,28 +193,6 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       ),
                     );
                   }),
-                  //Form(
-                  //   key: _formKeyPhoneUpdate,
-                  //   child: RoundedInputField(
-                  //     controller: _phoneController,
-                  //     hintText: "Số Điện Thoại",
-                  //     icon: Icons.phone,
-                  //     type: TextInputType.phone,
-                  //     onChanged: (value) {},
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return 'Vui lòng điền đầy đủ thông tin';
-                  //       } else if (value.length > 11) {
-                  //         return 'Số Điện Thoại phải nhập bé hơn 12 ký tự';
-                  //       } else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
-                  //           .hasMatch(value)) {
-                  //         return 'Số điện thoại không đúng số điện thoại Việt Nam';
-                  //       } else {
-                  //         return null;
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
                 ),
                 RoundedInputField(
                   controller: _nameController,
@@ -449,6 +405,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                     ],
                   ),
                 ),
+                Padding(padding: MediaQuery.of(context).viewInsets),
               ],
             ),
           ),
@@ -468,7 +425,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
       final result = await UpdateUserAPI.updateCustomerInfo(uU);
       print(result);
       if (result == 200) {
-        DisplayToast.DisplaySuccessToast(
+        DisplayToast.displaySuccessToast(
             context, 'Đổi thông tin cá nhân thành công');
         Timer(const Duration(seconds: 2), () {
           getLoggedInUser();
@@ -476,11 +433,11 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
           Navigator.of(context).popUntil((_) => count++ >= 2);
         });
       } else {
-        DisplayToast.DisplayErrorToast(
+        DisplayToast.displayErrorToast(
             context, 'Đổi thông tin cá nhân thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(
+      DisplayToast.displayErrorToast(
           context, 'Đổi thông tin cá nhân thất bại fail');
     }
   }

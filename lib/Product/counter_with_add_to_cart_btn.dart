@@ -7,7 +7,6 @@ import 'package:ssumake/Product/detail_product_page_body.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
 import 'cart_counter.dart';
-import 'detail_product_page.dart';
 
 class CounterWithFavBtn extends StatefulWidget {
   const CounterWithFavBtn({Key? key}) : super(key: key);
@@ -24,17 +23,10 @@ class _CounterWithFavBtnState extends State<CounterWithFavBtn> {
   @override
   void initState() {
     // TODO: implement initState
-    final DetailProductPage? detailProductPage =
-        context.findAncestorWidgetOfExactType<DetailProductPage>();
-    if (detailProductPage == null) {
       final DetailProductPageBody? detailProductPageBody =
           context.findAncestorWidgetOfExactType<DetailProductPageBody>();
       product = detailProductPageBody!.product;
       isAdd = detailProductPageBody.isAdd;
-    } else {
-      product = detailProductPage.product;
-      isAdd = true;
-    }
     quantityOfProducts = Provider.of<ProductsInCart>(context, listen: false)
         .getQuantityOfProducts(
             product)!; //widget.quantityOfProducts!=0||widget.quantityOfProducts!=null?0:widget.quantityOfProducts;

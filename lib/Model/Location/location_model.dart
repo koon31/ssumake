@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class Location extends ChangeNotifier {
-  late LocationModel? location;
+  LocationModel? location;
 
   void getLocationFromAPI(String str) {
     //List<CategoryModel> categoryModelFromJson(String str) =>
     location = LocationModel.fromJson(jsonDecode(str));
+    notifyListeners();
   }
 
   void removeLocations() {

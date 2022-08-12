@@ -104,7 +104,7 @@ class ItemCard extends StatelessWidget {
                       value.findDiscountById(product!.discountId!):null;
                   return product?.discountId == null
                       ? Text(
-                          "${product!.price}VND",
+                          "${product!.price?.toStringAsFixed(1)}VND",
                           style: const TextStyle(
                               fontWeight: FontWeight.w800, fontSize: 15),
                         )
@@ -113,7 +113,7 @@ class ItemCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${product!.price}VND",
+                                  "${product!.price?.toStringAsFixed(1)}VND",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 15,
@@ -121,13 +121,13 @@ class ItemCard extends StatelessWidget {
                                 ),
                                 d.discountPercent != 0
                                     ? Text(
-                                        "${product!.price! * (100 - (d.discountPercent as num)) / 100}VND",
+                                        "${(product!.price! * (100 - (d.discountPercent as num)) / 100).toStringAsFixed(1)}VND",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w800,
                                             fontSize: 14),
                                       )
                                     : Text(
-                                        "${product!.price! - (d.discountMoney as num)}VND",
+                                        "${(product!.price! - (d.discountMoney as num)).toStringAsFixed(1)}VND",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w800,
                                             fontSize: 15),
@@ -135,7 +135,7 @@ class ItemCard extends StatelessWidget {
                               ],
                             )
                           : Text(
-                              "${product!.price}VND",
+                              "${product!.price?.toStringAsFixed(1)}VND",
                               style: const TextStyle(
                                   fontWeight: FontWeight.w800, fontSize: 15),
                             );

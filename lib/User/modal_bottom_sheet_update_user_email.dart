@@ -160,6 +160,7 @@ class _ModalBottomSheetUpdateUserEmailState
             ),
           ),
         ),
+        Padding(padding: MediaQuery.of(context).viewInsets),
       ],
     );
   }
@@ -216,14 +217,14 @@ class _ModalBottomSheetUpdateUserEmailState
             MaterialPageRoute(builder: (context) {
               return const UpdateUserPage();
             }));
-        DisplayToast.DisplaySuccessToast(
+        DisplayToast.displaySuccessToast(
             context, 'Đổi email thành công');
 
       } else {
-        DisplayToast.DisplayErrorToast(context, 'Đổi email thất bại');
+        DisplayToast.displayErrorToast(context, 'Đổi email thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(
+      DisplayToast.displayErrorToast(
           context, 'Đổi email thất bại fail');
     }
   }
@@ -237,20 +238,20 @@ class _ModalBottomSheetUpdateUserEmailState
         final result =
         await RegisterAPI.getCodeVerifyEmail(_newEmailController.text);
         if (result == 200) {
-          DisplayToast.DisplaySuccessToast(
+          DisplayToast.displaySuccessToast(
               context, 'Lấy mã xác thực thành công');
           return true;
         } else {
-          DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại');
+          DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
           return false;
         }
       } else {
-        DisplayToast.DisplayErrorToast(
+        DisplayToast.displayErrorToast(
             context, 'Email mới không được trùng');
         return false;
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại fail');
       return false;
     }
   }

@@ -19,7 +19,7 @@ class CustomButtonLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: kDefaultPadding/2),
       width: size.width * 0.8,
       height: height ?? size.height * 0.055,
       child: ClipRRect(

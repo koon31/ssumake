@@ -53,7 +53,7 @@ class DetailProduct extends StatelessWidget {
                                   fontWeight: FontWeight.bold)),
                       product.discountId == null || d == null
                           ? TextSpan(
-                              text: product.price!.toString() + "VND",
+                              text: product.price!.toStringAsFixed(1) + "VND",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4
@@ -62,7 +62,7 @@ class DetailProduct extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                             )
                           : TextSpan(
-                              text: product.price!.toString() + "VND\n",
+                              text: product.price!.toStringAsFixed(1) + "VND\n",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4
@@ -76,7 +76,7 @@ class DetailProduct extends StatelessWidget {
                               ? TextSpan(
                                   text: (product.price! -
                                               (d.discountMoney as num))
-                                          .toString() +
+                                          .toStringAsFixed(1) +
                                       "VND",
                                   style: Theme.of(context)
                                       .textTheme
@@ -90,7 +90,7 @@ class DetailProduct extends StatelessWidget {
                                               (100 -
                                                   (d.discountPercent as num)) /
                                               100)
-                                          .toString() +
+                                      .toStringAsFixed(1) +
                                       "VND",
                                   style: Theme.of(context)
                                       .textTheme

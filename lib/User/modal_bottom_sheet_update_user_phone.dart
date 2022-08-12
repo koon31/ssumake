@@ -177,6 +177,7 @@ class _ModalBottomSheetUpdateUserPhoneState
             ),
           ),
         ),
+        Padding(padding: MediaQuery.of(context).viewInsets),
       ],
     );
   }
@@ -233,13 +234,13 @@ class _ModalBottomSheetUpdateUserPhoneState
             MaterialPageRoute(builder: (context) {
               return const UpdateUserPage();
             }));
-        DisplayToast.DisplaySuccessToast(
+        DisplayToast.displaySuccessToast(
             context, 'Đổi số điện thoại thành công');
       } else {
-        DisplayToast.DisplayErrorToast(context, 'Đổi số điện thoại thất bại');
+        DisplayToast.displayErrorToast(context, 'Đổi số điện thoại thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(
+      DisplayToast.displayErrorToast(
           context, 'Đổi số điện thoại thất bại fail');
     }
   }
@@ -253,20 +254,20 @@ class _ModalBottomSheetUpdateUserPhoneState
         final result =
             await RegisterAPI.getCodeVerifyPhone(_newPhoneController.text);
         if (result == 200) {
-          DisplayToast.DisplaySuccessToast(
+          DisplayToast.displaySuccessToast(
               context, 'Lấy mã xác thực thành công');
           return true;
         } else {
-          DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại');
+          DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
           return false;
         }
       } else {
-        DisplayToast.DisplayErrorToast(
+        DisplayToast.displayErrorToast(
             context, 'Số điện thoại mới không được trùng');
         return false;
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại fail');
       return false;
     }
   }

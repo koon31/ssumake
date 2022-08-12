@@ -71,6 +71,7 @@ class _ModalBottomSheetCheckPasswordState
             ),
           ),
         ),
+        Padding(padding: MediaQuery.of(context).viewInsets),
       ],
     );
   }
@@ -124,7 +125,7 @@ class _ModalBottomSheetCheckPasswordState
           Navigator.pop(context);
           return true;
         } else {
-          DisplayToast.DisplayErrorToast(context, 'Không thể đổi thông tin');
+          DisplayToast.displayErrorToast(context, 'Không thể đổi thông tin');
           return false;
         }
       }
@@ -132,7 +133,7 @@ class _ModalBottomSheetCheckPasswordState
         return false;
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Không thể đổi thông tin fail');
+      DisplayToast.displayErrorToast(context, 'Không thể đổi thông tin fail');
       return false;
     }
   }

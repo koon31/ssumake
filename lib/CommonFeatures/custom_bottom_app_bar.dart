@@ -113,7 +113,7 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
             ),
           ),
           Text(
-            widget.buttonLabel1.toString(),
+            widget.buttonLabel1.toStringAsFixed(1),
             style: const TextStyle(
               color: kPrimaryLightColor,
             ),
@@ -185,7 +185,7 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "${price}VND",
+                    "${price.toStringAsFixed(1)}VND",
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
