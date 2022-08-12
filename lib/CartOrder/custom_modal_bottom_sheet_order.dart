@@ -328,7 +328,7 @@ class _CustomModalBottomSheetOrderState
         leading: Text("${od.orderDetails![index].quantity}", style: CustomTextStyle.custom1(context)),
         title: Text("${product!.productName}"),
         subtitle: Text("${unit!.name}"),
-        trailing: Text("${product.price}VND"),
+        trailing: Text("${product.price?.toStringAsFixed(1)}VND"),
       );
     });
   }
@@ -352,7 +352,7 @@ class _CustomModalBottomSheetOrderState
                 vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text('Thành tiền'), Text("${order.totalPrice}VND")],
+              children: [const Text('Thành tiền'), Text("${order.totalPrice?.toStringAsFixed(1)}VND")],
             ),
           ),
           const Padding(
@@ -387,7 +387,7 @@ class _CustomModalBottomSheetOrderState
                   'Số tiền phải thanh toán',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(order.totalPrice! >= 50000 ? "${order.totalPrice!}VND" : "${order.totalPrice! + 10000}VND",
+                Text(order.totalPrice! >= 50000 ? "${order.totalPrice?.toStringAsFixed(1)}VND" : "${(order.totalPrice! + 10000).toStringAsFixed(1)}VND",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),

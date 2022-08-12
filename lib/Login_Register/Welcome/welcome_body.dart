@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../Constants/color.dart';
 import '../../CommonFeatures/custom_button.dart';
+import '../../Homepage/home_page.dart';
 import '../Login/login_page.dart';
 import '../Register/register_page.dart';
 import 'welcome_background.dart';
@@ -50,12 +50,10 @@ class WelcomeBody extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context)
-                              => const LoginPage()
-                          ),
+                              builder: (context) => const LoginPage()),
                         );
                       },
-                      height: size.height * 0.07,
+                      height: size.height * 0.06,
                     ),
                     CustomButtonLarge(
                       text: "REGISTER",
@@ -71,8 +69,27 @@ class WelcomeBody extends StatelessWidget {
                           ),
                         );
                       },
-                      height: size.height * 0.07,
+                      height: size.height * 0.06,
                     ),
+                    GestureDetector(
+                      onTap: () async => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage())),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                          child: Text(
+                            'Chuyển đến Trang chủ',
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )

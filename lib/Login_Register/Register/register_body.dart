@@ -14,6 +14,7 @@ import '../../CommonFeatures/display_toast.dart';
 import '../../Constants/color.dart';
 import '../../CommonFeatures/input_decoration.dart';
 import '../../Constants/global_var.dart';
+import '../../Homepage/home_page.dart';
 import '../Login/already_have_an_account.dart';
 import '../Login/login_page.dart';
 
@@ -30,8 +31,7 @@ class _RegisterBodyState extends State<RegisterBody> {
 
   late DateTime _selectedDate = DateTime.now();
   final DateTime _firstDate = DateTime(1900, 1);
-  final DateTime _lastDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  final DateTime _lastDate = DateTime.now();
   Gender _gender = Gender.Male;
 
   bool _isEnableTextFormField = false;
@@ -305,6 +305,26 @@ class _RegisterBodyState extends State<RegisterBody> {
                       );
                     },
                   ),
+                  GestureDetector(
+                    onTap: () async => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage())),
+                    child: const Padding(
+                      padding:
+                      EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                        child: Text(
+                          'Chuyển đến Trang chủ',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(padding: MediaQuery.of(context).viewInsets),
                 ],
               ),
             ),
@@ -325,16 +345,16 @@ class _RegisterBodyState extends State<RegisterBody> {
           fullname: fullname);
       final result = await RegisterAPI.register(user, codeVerify);
       if (result == 200) {
-        DisplayToast.DisplaySuccessToast(context, 'Đăng ký thành công');
+        DisplayToast.displaySuccessToast(context, 'Đăng ký thành công');
         Timer(const Duration(seconds: 3), () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const LoginPage()));
         });
       } else {
-        DisplayToast.DisplayErrorToast(context, 'Đăng ký thất bại');
+        DisplayToast.displayErrorToast(context, 'Đăng ký thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Đăng ký thất bại');
+      DisplayToast.displayErrorToast(context, 'Đăng ký thất bại');
     }
   }
 
@@ -343,12 +363,12 @@ class _RegisterBodyState extends State<RegisterBody> {
     try {
       final result = await RegisterAPI.getCodeVerifyPhone(phoneNumber);
       if (result == 200) {
-        DisplayToast.DisplaySuccessToast(context, 'Lấy mã xác thực thành công');
+        DisplayToast.displaySuccessToast(context, 'Lấy mã xác thực thành công');
       } else {
-        DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại');
+        DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Lấy mã xác thực thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại fail');
     }
   }
 }

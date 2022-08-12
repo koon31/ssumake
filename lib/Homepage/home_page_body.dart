@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/Homepage/home_page_background.dart';
@@ -23,35 +24,36 @@ class HomePageBody extends StatefulWidget {
   final List<SubCategoryModel>? subCategoriesByCategoryId;
   final SubCategoryModel? selectedSubCategory;
 
-
   @override
   State<HomePageBody> createState() => HomePageBodyState();
 }
 
 class HomePageBodyState extends State<HomePageBody> {
   GlobalKey<HomePageSubCategoryTabsState> keyTab = GlobalKey();
-  late CategoryModel cate;
-  late List<SubCategoryModel> scatesByCateId;
-  late SubCategoryModel selectedSCate;
-  late List<ProductModel> productsInSelectedSubCategory;
-  late Map<SubCategoryModel, List<ProductModel>> productsInEachSubCategories;
+  late CategoryModel? cate;
+  late List<SubCategoryModel>? scatesByCateId;
+  late SubCategoryModel? selectedSCate;
+  late List<ProductModel>? productsInSelectedSubCategory;
+  late Map<SubCategoryModel, List<ProductModel>>? productsInEachSubCategories;
   late int numberOfProducts;
   late int totalQuantityOfProducts;
   late double totalPrice;
 
-  late final PageController _productPageController;
+  late final PageController? _productPageController;
 
   @override
   void initState() {
-
     cate = getCategory();
     scatesByCateId = getSubCategoriesByCategoryId();
     selectedSCate = getSelectedSubCategory();
-    productsInSelectedSubCategory = getProductsInSubCategory(selectedSCate);
+    productsInSelectedSubCategory =
+        selectedSCate != null ? getProductsInSubCategory(selectedSCate!) : null;
     productsInEachSubCategories = getAllProductsByEachSubCategories();
-    _productPageController = PageController(
-        initialPage:
-            scatesByCateId.indexOf(selectedSCate) % scatesByCateId.length);
+    scatesByCateId != null && selectedSCate != null
+        ? _productPageController = PageController(
+            initialPage: scatesByCateId!.indexOf(selectedSCate!) %
+                scatesByCateId!.length)
+        : 1;
     updateProductsInCarts();
     Future.delayed(Duration.zero, () {});
     super.initState();
@@ -59,9 +61,6 @@ class HomePageBodyState extends State<HomePageBody> {
 
   @override
   Widget build(BuildContext context) {
- productsInEachSubCategories.forEach((key, value) {
-       print(productsInEachSubCategories[key]);
-  });
     return HomePageBackground(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +68,7 @@ class HomePageBodyState extends State<HomePageBody> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              cate.categoryName!,
+              cate != null ? cate!.categoryName! : 'Không thể tải thể loại',
               style: Theme.of(context)
                   .textTheme
                   .headline4
@@ -87,17 +86,23 @@ class HomePageBodyState extends State<HomePageBody> {
           Expanded(
             child: PageView.builder(
               controller: _productPageController,
-              itemCount: scatesByCateId.length,
+              itemCount: scatesByCateId != null ? scatesByCateId!.length : 0,
               onPageChanged: (pageIndex) {
                 setState(() {
                   keyTab.currentState?.onTabChange(pageIndex);
-                  selectedSCate = scatesByCateId[pageIndex];
+                  selectedSCate = scatesByCateId![pageIndex];
                 });
               },
               itemBuilder: (context, subCateIndex) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: GridView.builder(
-                  itemCount: productsInEachSubCategories[scatesByCateId[subCateIndex % scatesByCateId.length]]!.length,
+                  itemCount: (scatesByCateId != null &&
+                          productsInEachSubCategories != null)
+                      ? productsInEachSubCategories![scatesByCateId![
+                              subCateIndex % scatesByCateId!.length]]!
+                          .length
+                      : 0,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: kDefaultPadding,
@@ -105,19 +110,27 @@ class HomePageBodyState extends State<HomePageBody> {
                     childAspectRatio: 0.75,
                   ),
                   itemBuilder: (context, proIndex) => ItemCard(
-                      product: productsInEachSubCategories[scatesByCateId[
-                          subCateIndex % scatesByCateId.length]]![proIndex],
+                      product: (scatesByCateId != null &&
+                              productsInEachSubCategories != null)
+                          ? productsInEachSubCategories![scatesByCateId![
+                              subCateIndex % scatesByCateId!.length]]![proIndex]
+                          : null,
                       press: () {
-                        ShowModalBottomSheet.showEditProduct(
-                          context,
-                          productsInEachSubCategories[scatesByCateId[
-                              subCateIndex % scatesByCateId.length]]![proIndex],
-                          cate.categoryName! +
-                              // ignore: unnecessary_null_comparison
-                              (selectedSCate != null
-                                  ? '/' + selectedSCate.subCategoryName!
-                                  : ''),true
-                        );
+                        if (cate != null &&
+                            scatesByCateId != null &&
+                            productsInEachSubCategories != null) {
+                          ShowModalBottomSheet.showEditProduct(
+                              context,
+                              productsInEachSubCategories![scatesByCateId![
+                                  subCateIndex %
+                                      scatesByCateId!.length]]![proIndex],
+                              cate!.categoryName! +
+                                  // ignore: unnecessary_null_comparison
+                                  (selectedSCate != null
+                                      ? '/' + selectedSCate!.subCategoryName!
+                                      : ''),
+                              true);
+                        }
                       } /*async => await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -146,44 +159,63 @@ class HomePageBodyState extends State<HomePageBody> {
     );
   }
 
-  CategoryModel getCategory() {
-    return widget.category != null ? widget.category! : Provider.of<CategoryList>(context, listen: false).categories.first;
+  CategoryModel? getCategory() {
+    return widget.category != null
+        ? widget.category!
+        : Provider.of<CategoryList>(context, listen: false)
+            .categories
+            .firstOrNull;
   }
 
-  List<SubCategoryModel> getSubCategoriesByCategoryId() {
+  List<SubCategoryModel>? getSubCategoriesByCategoryId() {
     return widget.subCategoriesByCategoryId != null
         ? widget.subCategoriesByCategoryId!
-        : Provider.of<SubCategoryList>(context, listen: false).subCategories
-            .where((element) => element.categoryId == cate.categoryId)
-            .toList();
+        : cate != null
+            ? Provider.of<SubCategoryList>(context, listen: false)
+                .subCategories
+                .where((element) => element.categoryId == cate!.categoryId)
+                .toList()
+            : null;
   }
 
-  SubCategoryModel getSelectedSubCategory() {
+  SubCategoryModel? getSelectedSubCategory() {
     return widget.selectedSubCategory != null
         ? widget.selectedSubCategory!
-        : scatesByCateId.first;
+        : scatesByCateId != null
+            ? scatesByCateId!.firstOrNull
+            : null;
   }
 
   List<ProductModel> getProductsInSubCategory(SubCategoryModel scate) {
-    List<ProductModel> list = Provider.of<ProductList>(context, listen: false).products;
+    List<ProductModel> list =
+        Provider.of<ProductList>(context, listen: false).products;
 
     return list
         .where((element) => (element.subCategoryId == scate.subCategoryId))
         .toList();
   }
 
-  Map<SubCategoryModel, List<ProductModel>> getAllProductsByEachSubCategories() {
-    Map<SubCategoryModel, List<ProductModel>> psInEachSCates = {};
-    for (int i = 0; i < scatesByCateId.length; ++i) {
-      psInEachSCates[scatesByCateId[i]] =getProductsInSubCategory(scatesByCateId[i]);
+  Map<SubCategoryModel, List<ProductModel>>?
+      getAllProductsByEachSubCategories() {
+    Map<SubCategoryModel, List<ProductModel>>? psInEachSCates;
+    if (scatesByCateId != null) {
+      for (int i = 0; i < scatesByCateId!.length; ++i) {
+        psInEachSCates ??= {};
+        psInEachSCates[scatesByCateId![i]] =
+            getProductsInSubCategory(scatesByCateId![i]);
+      }
     }
     return psInEachSCates;
   }
 
   tabChange(int index) {
-    selectedSCate = scatesByCateId[index];
-    _productPageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    if (scatesByCateId != null) {
+      selectedSCate = scatesByCateId![index];
+      if(_productPageController!=null) {
+        _productPageController!.animateToPage(index,
+          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+      }
+    }
   }
 
   void updateProductsInCarts() {

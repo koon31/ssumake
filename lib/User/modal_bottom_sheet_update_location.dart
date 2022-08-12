@@ -227,9 +227,7 @@ class _ModalBottomSheetChangeAddressState
                     text: "Cập nhật địa chỉ",
                     press: () async {
                       if (_formKeyAddressUpdate.currentState!.validate()) {
-                        if(await onClickCheckChange()){
-                          //ShowModalBottomSheet.showUpdatePhoneEmail(context, widget.isPhone);
-                        }
+                        onClickUpdateCustomerInfo();
                       }
                     },
                   ),
@@ -238,6 +236,7 @@ class _ModalBottomSheetChangeAddressState
             ),
           ),
         ),
+        Padding(padding: MediaQuery.of(context).viewInsets),
       ],
     );
   }
@@ -279,30 +278,6 @@ class _ModalBottomSheetChangeAddressState
     );
   }
 
-  Future<bool> onClickCheckChange() async {
-    try {
-      UserModel? u = Provider.of<User>(context, listen: false).user;
-      var result;
-      if (u != null && u.phoneNumber != null) {
-        result = await UpdateUserAPI.checkChangeInfo(
-            u.phoneNumber, _addressController.text);
-        print(result);
-        if (result == 200) {
-          Navigator.pop(context);
-          return true;
-        } else {
-          DisplayToast.DisplayErrorToast(context, 'Không thể đổi thông tin');
-          return false;
-        }
-      }
-      else {
-        return false;
-      }
-    } catch (e) {
-      DisplayToast.DisplayErrorToast(context, 'Không thể đổi thông tin fail');
-      return false;
-    }
-  }
   Future<void> updateCWT() async {
     try {
       if (_valueDistrict != DistrictModel.empty()) {
@@ -457,6 +432,7 @@ class _ModalBottomSheetChangeAddressState
       }
     }
   }
+
   Future<void> onClickUpdateCustomerInfo() async {
     try {
       UpdateUserModel uU = UpdateUserModel(
@@ -468,19 +444,18 @@ class _ModalBottomSheetChangeAddressState
       final result = await UpdateUserAPI.updateCustomerInfo(uU);
       print(result);
       if (result == 200) {
-        DisplayToast.DisplaySuccessToast(
+        DisplayToast.displaySuccessToast(
             context, 'Đổi địa chỉ thành công');
         Timer(const Duration(seconds: 2), () {
           getLoggedInUser();
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
+          Navigator.pop(context);
         });
       } else {
-        DisplayToast.DisplayErrorToast(
+        DisplayToast.displayErrorToast(
             context, 'Đổi địa chỉ thất bại');
       }
     } catch (e) {
-      DisplayToast.DisplayErrorToast(
+      DisplayToast.displayErrorToast(
           context, 'Đổi địa chỉ thất bại fail');
     }
   }

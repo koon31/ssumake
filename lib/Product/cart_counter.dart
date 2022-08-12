@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ssumake/Product/detail_product_page.dart';
 import '../Constants/color.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
@@ -22,17 +21,10 @@ class _CartCounterState extends State<CartCounter> {
   @override
   void initState() {
     super.initState();
-    final DetailProductPage? detailProductPage =
-        context.findAncestorWidgetOfExactType<DetailProductPage>();
-    if (detailProductPage == null) {
       final DetailProductPageBody? detailProductPageBody =
           context.findAncestorWidgetOfExactType<DetailProductPageBody>();
       product = detailProductPageBody!.product;
       isAdd = detailProductPageBody.isAdd;
-    } else {
-      product = detailProductPage.product;
-      isAdd = true;
-    }
     quantityOfProductsInCart =
         Provider.of<ProductsInCart>(context, listen: false)
             .getQuantityOfProducts(product)!;

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssumake/CartOrder/order_history_page.dart';
 import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Login_Register/Welcome/welcome_page.dart';
-import 'package:ssumake/Model/CartOrder/order_model.dart';
 import 'package:ssumake/User/update_user_page.dart';
 import '../Model/Product/category_model.dart';
 import '../Model/Product/sub_category_model.dart';
+import '../Model/User/user_model.dart';
 import 'home_page.dart';
 
 class HomePageDrawer extends StatefulWidget {
@@ -46,6 +47,7 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
     user = null;
     preferences.remove('user');
     print(preferences.getStringList('user'));
+    Provider.of<User>(context, listen: false).logout();
   }
 
   @override

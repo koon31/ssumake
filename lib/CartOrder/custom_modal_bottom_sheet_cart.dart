@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import 'package:ssumake/Constants/color.dart';
+import 'package:ssumake/Login_Register/Login/login_dialog.dart';
 import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/Product/sub_category_model.dart';
@@ -24,8 +25,7 @@ class CustomModalBottomSheetCart extends StatefulWidget {
 
 class _CustomModalBottomSheetCartState
     extends State<CustomModalBottomSheetCart> {
-
-  late UserModel user;
+  late UserModel? user;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _CustomModalBottomSheetCartState
                       )),
                   Container(
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
                     padding: const EdgeInsets.symmetric(
                         horizontal: kDefaultPadding,
                         vertical: kDefaultPadding / 5),
@@ -155,12 +155,19 @@ class _CustomModalBottomSheetCartState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Giao Tận Nơi', style: CustomTextStyle.custom1(context)),
-              customButtonOfModalBottomSheet('Thay Đổi', () => ShowModalBottomSheet.showChangeAddress(context))
+              customButtonOfModalBottomSheet('Thay Đổi', () {
+                if (user != null) {
+                  ShowModalBottomSheet.showChangeAddress(context);
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) => const LoginDialog());
+                }
+              })
             ],
           ),
         ),
         addressInformation(),
-        guildDelivery(),
       ],
     );
   }
@@ -169,65 +176,76 @@ class _CustomModalBottomSheetCartState
     return Consumer2<User, Location>(builder: (context, user, location, child) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: user.user!.address != null && location.location!= null ? user.user!.address!.isNotEmpty ? Text(
-                  user.user!.address! + ', ' + location.location!.cwt! + ', ' + location.location!.district! + ', ' + location.location!.province!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: const TextStyle(fontSize: 12),
-                ) : const Text(
-                  "Xin cập nhật địa chỉ giao hàng",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 12, color: Colors.red),
-                ) : const Text(
-                  "Xin cập nhật địa chỉ giao hàng",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 12, color: Colors.red),
+        child: GestureDetector(
+          onTap: () {
+            if (user.user != null) {
+              ShowModalBottomSheet.showChangeAddress(context);
+            } else {
+              showDialog(
+                  context: context, builder: (context) => const LoginDialog());
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: user.user != null
+                      ? user.user!.address != null && location.location != null
+                          ? user.user!.address != null &&
+                                  user.user!.address!.isNotEmpty
+                              ? Text(
+                                  user.user!.address! +
+                                      ', ' +
+                                      location.location!.cwt! +
+                                      ', ' +
+                                      location.location!.district! +
+                                      ', ' +
+                                      location.location!.province!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(fontSize: 12),
+                                )
+                              : const Text(
+                                  "Xin cập nhật địa chỉ giao hàng",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.red),
+                                )
+                          : const Text(
+                              "Xin cập nhật địa chỉ giao hàng",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 12, color: Colors.red),
+                            )
+                      : const Text(
+                          "Xin cập nhật địa chỉ giao hàng",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 12, color: Colors.red),
+                        ),
                 ),
               ),
-            ),
-            const Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.black,
-              size: 20,
-            ),
-          ],
+              const Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.black,
+                size: 20,
+              ),
+            ],
+          ),
         ),
       );
     });
   }
 
-  guildDelivery() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-      child: TextField(
-        decoration: InputDecoration(
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(
-                  color: Colors.black45,
-                )),
-            hintText: 'Ghi chú cho người giao hàng',
-            hintStyle: const TextStyle(color: Colors.black45)),
-      ),
-    );
-  }
-
   userInformation() {
-    return Consumer<User>(builder: (context, value, child) {
-      return Padding(
-        padding: const EdgeInsets.only(
-            bottom: kDefaultPadding / 4 * 3, top: kDefaultPadding / 4),
-        child: IntrinsicHeight(
+    return Padding(
+      padding: const EdgeInsets.only(
+          bottom: kDefaultPadding / 4 * 3, top: kDefaultPadding / 4),
+      child: Consumer<User>(builder: (context, value, child) {
+        return IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -241,17 +259,27 @@ class _CustomModalBottomSheetCartState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                          child: Text(value.user!.fullname!),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: kDefaultPadding / 4),
+                          child: value.user != null
+                              ? Text(value.user!.fullname!)
+                              : const Text(
+                                  'Vui lòng đăng nhập',
+                                  style: TextStyle(color: Colors.red),
+                                ),
                         ),
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                          child: Text(
-                            value.user!.phoneNumber!,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: kDefaultPadding / 4),
+                          child: value.user != null
+                              ? Text(
+                                  value.user!.phoneNumber!,
+                                  style: const TextStyle(color: Colors.grey),
+                                )
+                              : const Text(
+                                  'để nhận thông tin giao hàng',
+                                  style: TextStyle(color: Colors.red),
+                                ),
                         ),
                       ]),
                 ),
@@ -267,8 +295,8 @@ class _CustomModalBottomSheetCartState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Padding(
-                          padding:
-                          EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                          padding: EdgeInsets.symmetric(
+                              vertical: kDefaultPadding / 4),
                           child: Text('Hôm nay'),
                         ),
                         Padding(
@@ -285,16 +313,19 @@ class _CustomModalBottomSheetCartState
               ),
             ],
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
   productListTitle() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Các sản phẩm đã chọn', style: CustomTextStyle.custom1(context),),
+        Text(
+          'Các sản phẩm đã chọn',
+          style: CustomTextStyle.custom1(context),
+        ),
         customButtonOfModalBottomSheet('+ Thêm', () => Navigator.pop(context)),
       ],
     );
@@ -314,245 +345,235 @@ class _CustomModalBottomSheetCartState
   }
 
   productBuilder(int index) {
-    return Consumer4<ProductsInCart,
-        CategoryList,
-        SubCategoryList,
-        DiscountList>(
+    return Consumer4<ProductsInCart, CategoryList, SubCategoryList,
+            DiscountList>(
         builder: (context, productInCart, cates, scates, discounts, child) {
-          ProductModel product =
+      ProductModel product =
           productInCart.getAllProductsInCart()!.keys.toList()[index];
-          DiscountModel? d = product.discountId != null ? discounts
-              .findDiscountById(product.discountId!) : null;
-          int quantityOfProduct =
-              productInCart.getAllProductsInCart()![product] ?? 0;
-          return GestureDetector(
-            onTap: () {
-              SubCategoryModel scate = scates.subCategories
-                  .where(
-                      (element) =>
-                  element.subCategoryId == product.subCategoryId)
-                  .first;
-              ShowModalBottomSheet.showEditProduct(
-                  context,
-                  product,
-                  getSubCategoryAndCategory(
-                      cates.categories
-                          .where(
-                              (element) =>
-                          element.categoryId == scate.categoryId)
-                          .first,
-                      scate),
-                  false);
-            },
-            child: Slidable(
-              child: ListTile(
-                minVerticalPadding: 0,
-                contentPadding: EdgeInsets.zero,
-                visualDensity: const VisualDensity(vertical: -4),
-                leading: GestureDetector(
-                  child: const Icon(
-                    Icons.edit,
-                    color: kPrimaryColor,
-                  ),
-                  onTap: () {},
-                ),
-                title: Text("$quantityOfProduct x ${product.productName}"),
-                subtitle: const Text("Gói"),
-                trailing: d != null && product.discountId != null
-                    ? d
-                    .discountPercent !=
-                    0
-                    ? Text(
-                    "${product.price! * (100 - (d.discountPercent as num)) /
-                        100}VND")
-                    : Text(
-                    "${product.price! - (d.discountMoney as num)}VND")
-                    : Text("${product.price}VND"),
+      DiscountModel? d = product.discountId != null
+          ? discounts.findDiscountById(product.discountId!)
+          : null;
+      int quantityOfProduct =
+          productInCart.getAllProductsInCart()![product] ?? 0;
+      return GestureDetector(
+        onTap: () {
+          SubCategoryModel scate = scates.subCategories
+              .where(
+                  (element) => element.subCategoryId == product.subCategoryId)
+              .first;
+          ShowModalBottomSheet.showEditProduct(
+              context,
+              product,
+              getSubCategoryAndCategory(
+                  cates.categories
+                      .where(
+                          (element) => element.categoryId == scate.categoryId)
+                      .first,
+                  scate),
+              false);
+        },
+        child: Slidable(
+          child: ListTile(
+            minVerticalPadding: 0,
+            contentPadding: EdgeInsets.zero,
+            visualDensity: const VisualDensity(vertical: -4),
+            leading: GestureDetector(
+              child: const Icon(
+                Icons.edit,
+                color: kPrimaryColor,
               ),
-              endActionPane: ActionPane(
-                  openThreshold: 0.2,
-                  extentRatio: 0.3,
-                  motion: const DrawerMotion(),
-                  children: [
-                    SlidableAction(
-                      //Space
-                      icon: Icons.add_circle,
-                      label: '',
-                      onPressed: (context) {},
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.transparent,
-                      flex: 1,
-                    ),
-                    SlidableAction(
-                      flex: 8,
-                      padding: const EdgeInsets.all(kDefaultPadding / 10),
-                      borderRadius: BorderRadius.circular(20),
-                      label: "Edit",
-                      backgroundColor: Colors.grey[600]!,
-                      foregroundColor: Colors.white,
-                      icon: Icons.edit,
-                      onPressed: (context) {
-                        SubCategoryModel scate = scates.subCategories
-                            .where((element) =>
-                        element.subCategoryId == product.subCategoryId)
-                            .first;
-                        ShowModalBottomSheet.showEditProduct(
-                            context,
-                            product,
-                            getSubCategoryAndCategory(
-                                cates.categories
-                                    .where((element) =>
-                                element.categoryId == scate.categoryId)
-                                    .first,
-                                scate),
-                            false);
-                      },
-                    ),
-                    SlidableAction(
-                      //Space
-                      icon: Icons.add_circle,
-                      label: '',
-                      onPressed: (context) {},
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.transparent,
-                      flex: 1,
-                    ),
-                    SlidableAction(
-                      flex: 8,
-                      padding: const EdgeInsets.all(kDefaultPadding / 10),
-                      borderRadius: BorderRadius.circular(20),
-                      label: "Delete",
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      onPressed: (context) {
-                        setState(() => onDeleteProduct(product));
-                      },
-                    ),
-                    SlidableAction(
-                      //Space
-                      icon: Icons.add_circle,
-                      label: '',
-                      onPressed: (context) {},
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.transparent,
-                      flex: 1,
-                    ),
-                  ]),
+              onTap: () {},
             ),
-          );
-        });
+            title: Text("$quantityOfProduct x ${product.productName}"),
+            subtitle: const Text("Gói"),
+            trailing: d != null && product.discountId != null
+                ? d.discountPercent != 0
+                    ? Text(
+                        "${(product.price! * (100 - (d.discountPercent as num)) / 100).toStringAsFixed(1)}VND")
+                    : Text(
+                        "${(product.price! - (d.discountMoney as num)).toStringAsFixed(1)}VND")
+                : Text("${product.price?.toStringAsFixed(1)}VND"),
+          ),
+          endActionPane: ActionPane(
+              openThreshold: 0.2,
+              extentRatio: 0.3,
+              motion: const DrawerMotion(),
+              children: [
+                SlidableAction(
+                  //Space
+                  icon: Icons.add_circle,
+                  label: '',
+                  onPressed: (context) {},
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.transparent,
+                  flex: 1,
+                ),
+                SlidableAction(
+                  flex: 8,
+                  padding: const EdgeInsets.all(kDefaultPadding / 10),
+                  borderRadius: BorderRadius.circular(20),
+                  label: "Sửa",
+                  backgroundColor: Colors.grey[600]!,
+                  foregroundColor: Colors.white,
+                  icon: Icons.edit,
+                  onPressed: (context) {
+                    SubCategoryModel scate = scates.subCategories
+                        .where((element) =>
+                            element.subCategoryId == product.subCategoryId)
+                        .first;
+                    ShowModalBottomSheet.showEditProduct(
+                        context,
+                        product,
+                        getSubCategoryAndCategory(
+                            cates.categories
+                                .where((element) =>
+                                    element.categoryId == scate.categoryId)
+                                .first,
+                            scate),
+                        false);
+                  },
+                ),
+                SlidableAction(
+                  //Space
+                  icon: Icons.add_circle,
+                  label: '',
+                  onPressed: (context) {},
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.transparent,
+                  flex: 1,
+                ),
+                SlidableAction(
+                  flex: 8,
+                  padding: const EdgeInsets.all(kDefaultPadding / 10),
+                  borderRadius: BorderRadius.circular(20),
+                  label: "Xoá",
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  onPressed: (context) {
+                    setState(() => onDeleteProduct(product));
+                  },
+                ),
+                SlidableAction(
+                  //Space
+                  icon: Icons.add_circle,
+                  label: '',
+                  onPressed: (context) {},
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.transparent,
+                  flex: 1,
+                ),
+              ]),
+        ),
+      );
+    });
   }
 
   priceCalculationBuilder() {
     return Consumer2<ProductsInCart, DiscountList>(
         builder: (context, psInCart, discounts, child) {
-          double price = 0;
-          for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
-            ProductModel p = psInCart.getProductAt(i);
-            DiscountModel? d = p.discountId != null
-                ? discounts.discounts
-                .firstWhereOrNull((element) =>
-            element.discountId == p.discountId)
-                : null;
-            price += d != null
-                ? d.discountPercent != 0
+      double price = 0;
+      for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
+        ProductModel p = psInCart.getProductAt(i);
+        DiscountModel? d = p.discountId != null
+            ? discounts.discounts.firstWhereOrNull(
+                (element) => element.discountId == p.discountId)
+            : null;
+        price += d != null
+            ? d.discountPercent != 0
                 ? psInCart.getQuantityOfProducts(p)! *
-                p.price! *
-                (100 - (d.discountPercent as num)) /
-                100
+                    p.price! *
+                    (100 - (d.discountPercent as num)) /
+                    100
                 : psInCart.getQuantityOfProducts(p)! *
-                (p.price! - d.discountMoney!)
-                : psInCart.getQuantityOfProducts(p)! * p.price!;
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: kDefaultPadding,
-                    top: kDefaultPadding / 4 * 3,
-                    bottom: kDefaultPadding / 4),
-                child: Text('Tổng cộng', style: CustomTextStyle.custom1(context)),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Thành tiền'),
-                    Text("${price}VND")
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: kDefaultPadding),
-                child: Divider(color: Colors.grey, thickness: 1),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Phí vận chuyển'),
-                    Text(price < 50000 ? "10.000VND" : "0VND"),
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: kDefaultPadding),
-                child: Divider(color: Colors.grey, thickness: 1),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: kDefaultPadding / 5, horizontal: kDefaultPadding),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Chọn khuyến mãi',
-                        style: TextStyle(color: kPrimaryColor),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 20,
-                      ),
-                    ],
+                    (p.price! - d.discountMoney!)
+            : psInCart.getQuantityOfProducts(p)! * p.price!;
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                left: kDefaultPadding,
+                top: kDefaultPadding / 4 * 3,
+                bottom: kDefaultPadding / 4),
+            child: Text('Tổng cộng', style: CustomTextStyle.custom1(context)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Thành tiền'),
+                Text("${price.toStringAsFixed(1)}VND")
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: kDefaultPadding),
+            child: Divider(color: Colors.grey, thickness: 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text('Phí vận chuyển'),
+                Text("0VND"),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: kDefaultPadding),
+            child: Divider(color: Colors.grey, thickness: 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: kDefaultPadding / 5, horizontal: kDefaultPadding),
+            child: GestureDetector(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Chọn khuyến mãi',
+                    style: TextStyle(color: kPrimaryColor),
                   ),
+                  Icon(
+                    Icons.keyboard_arrow_right,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: kDefaultPadding),
+            child: Divider(color: Colors.grey, thickness: 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: kDefaultPadding / 4,
+                bottom: kDefaultPadding / 4 * 3,
+                left: kDefaultPadding,
+                right: kDefaultPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Số tiền phải thanh toán',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: kDefaultPadding),
-                child: Divider(color: Colors.grey, thickness: 1),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: kDefaultPadding / 4,
-                    bottom: kDefaultPadding / 4 * 3,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Số tiền phải thanh toán',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                        price >= 50000
-                            ? "${price}VND"
-                            : "${price + 10000}VND",
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
+                Text("${price.toStringAsFixed(1)}VND",
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   paymentBuilder() {
@@ -564,7 +585,7 @@ class _CustomModalBottomSheetCartState
               left: kDefaultPadding,
               top: kDefaultPadding / 4 * 3,
               bottom: kDefaultPadding / 4),
-          child: Text('Thanh Toán',style: CustomTextStyle.custom1(context)),
+          child: Text('Thanh Toán', style: CustomTextStyle.custom1(context)),
         ),
         Padding(
           padding: const EdgeInsets.only(
@@ -684,10 +705,7 @@ class _CustomModalBottomSheetCartState
   }
 
   void getLoggedUserInfo() {
-    user = Provider
-        .of<User>(context, listen: false)
-        .user!;
-    print(user.token);
+    user = Provider.of<User>(context, listen: false).user;
+    print(user?.token);
   }
 }
-

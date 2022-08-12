@@ -82,10 +82,7 @@ class UpdateUserAPI {
       print(token);
       if (updateUserModel.customerId!.isNotEmpty &&
           updateUserModel.fullname!.isNotEmpty &&
-          updateUserModel.address!.isNotEmpty &&
-          updateUserModel.cwtId != 0 &&
-          token != null &&
-          token.isNotEmpty) {
+          token != null && token.isNotEmpty) {
         print(updateUserModel.address);
         final response =
             await http.post(Uri.parse(URI.BASE_URI + URI.CHANGE_CUSTOMER_INFO),

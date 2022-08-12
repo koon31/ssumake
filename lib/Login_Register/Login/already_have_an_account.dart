@@ -17,7 +17,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Text(
-            isLoginPage ? "Don’t have an Account? " : "Already have an Account? ",
+            isLoginPage ? "Chưa có tài khoản? " : "Đã có tài khoản? ",
             style: const TextStyle(color: kPrimaryColor, fontSize: 16),
           ),
         ),
@@ -25,7 +25,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
           child: InkWell(
             onTap: press,
             child: Text(
-              isLoginPage ? "Register" : "Login",
+              isLoginPage ? "Đăng ký" : "Đăng nhập",
               style: const TextStyle(
                 color: kPrimaryColor,
                 fontWeight: FontWeight.bold,

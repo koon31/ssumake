@@ -13,6 +13,7 @@ import 'package:ssumake/User/modal_bottom_sheet_update_user_phone.dart';
 import '../API/Order_API.dart';
 import '../CartOrder/custom_modal_bottom_sheet_cart.dart';
 import '../CartOrder/custom_modal_bottom_sheet_order.dart';
+import '../Login_Register/Login/login_dialog.dart';
 import '../Model/CartOrder/order_model.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/User/user_model.dart';
@@ -50,7 +51,7 @@ class ShowModalBottomSheet {
                   }
                   return CustomBottomAppBarCart(press: () async {
                     OrderModel order = OrderModel.empty();
-                    order.custormerId = user.user!.id;
+                    order.custormerId = user.user?.id;
                     order.dateCreate = DateTime.now();
                     order.address = user.user?.address;
                     order.paymentMethodId = 1;
@@ -59,20 +60,34 @@ class ShowModalBottomSheet {
                     order.status = 0;
                     order.orderDetails = orderDetails;
                     try {
-                      final result =
-                          await OrderAPI.addOrder(order);
-                      if (result == 200) {
-                        Timer(const Duration(seconds: 2), () {
-                          Navigator.pop(context);
-                          showOrder(context);
-                          DisplayToast.DisplaySuccessToast(context, 'Mua thành công');
-                          psInCart.deleteCart();
-                        });
-                      } else {
-                        DisplayToast.DisplayErrorToast(context, 'Mua thất bại');
+                      if(user.user!=null){
+                        if(user.user?.address != null ) {
+                          if (user.user!.address!.isNotEmpty){
+                            final result =
+                            await OrderAPI.addOrder(order);
+                            if (result == 200) {
+                              Timer(const Duration(seconds: 2), () {
+                                Navigator.pop(context);
+                                showOrder(context);
+                                DisplayToast.displaySuccessToast(context, 'Mua thành công');
+                                psInCart.deleteCart();
+                              });
+                            } else {
+                              DisplayToast.displayErrorToast(context, 'Mua thất bại');
+                            }
+                          }
+                        }
+                        else {
+
+                        }
+                      }
+                      else {
+                        showDialog(
+                            context: context,
+                            builder: (context) => const LoginDialog());
                       }
                     } catch (e) {
-                      DisplayToast.DisplayErrorToast(context, 'Mua thất bại fail');
+                      DisplayToast.displayErrorToast(context, 'Mua thất bại fail');
                     }
                   });
                 }),
