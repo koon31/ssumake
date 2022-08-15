@@ -16,6 +16,7 @@ import 'package:ssumake/Model/Product/unit_model.dart';
 
 import '../API/product_API.dart';
 import '../CommonFeatures/custom_bottom_app_bar.dart';
+import '../CommonFeatures/display_toast.dart';
 import '../CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import '../Constants/color.dart';
 import '../Model/Location/location_model.dart';
@@ -236,6 +237,50 @@ class HomePageState extends State<HomePage> {
       if (strLocation != null && strLocation.isNotEmpty) {
         locationProvider.getLocationFromAPI(strLocation);
       }
+    }
+  }
+  //scan qr code function
+  Future<void> scanQRcode() async {
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.QR);
+      debugPrint('Qrcode Found ' + scanResult.toString());
+
+      if (scanResult != null) {
+        CategoryModel? category;
+        SubCategoryModel? subCategory;
+        String? cateSubCate;
+        ProductModel? product = Provider.of<ProductList>(context, listen: false)
+            .products
+            .firstWhereOrNull((element) {
+          return element.productId!.toString() == scanResult;
+        });
+        if (product != null) {
+          subCategory = Provider.of<SubCategoryList>(context, listen: false)
+              .subCategories
+              .firstWhereOrNull((element) {
+            return element.subCategoryId! == product.subCategoryId;
+          });
+          if (subCategory != null) {
+            category = Provider.of<CategoryList>(context, listen: false)
+                .categories
+                .firstWhereOrNull((element) {
+              return element.categoryId! == subCategory!.categoryId;
+            });
+            if (category != null) {
+              cateSubCate =
+                  category.categoryName! + '/' + subCategory.subCategoryName!;
+              ShowModalBottomSheet.showEditProduct(
+                  context, product, cateSubCate, true);
+            }
+          }
+        }
+      } else {
+        Navigator.pop(context);
+        DisplayToast.DisplayErrorToast(context, 'Không tìm thấy sản phẩm');
+      }
+    } on PlatformException {
+      scanResult = 'Failed to get platform version.';
     }
   }
 }

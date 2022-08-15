@@ -136,7 +136,7 @@ class _ModalBottomSheetUpdatePasswordState
               child: Padding(
                 padding: EdgeInsets.only(left: 46),
                 child: Text(
-                  'Xác nhận mật khẩu',
+                  'Cập nhật mật khẩu',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   textAlign: TextAlign.center,
                 ),
