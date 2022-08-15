@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssumake/API/login_API.dart';
+import 'package:ssumake/CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import 'package:ssumake/Homepage/home_page.dart';
 import 'package:ssumake/Login_Register/Register/register_page.dart';
 import 'package:ssumake/Model/User/user_model.dart';
@@ -84,7 +85,8 @@ class _LoginBodyState extends State<LoginBody> {
                   text: "Đăng nhập",
                   press: () {
                     if (loginFormKey.currentState!.validate()) {
-                      onClickLogin(_phoneController.text, _passwordController.text);
+                      onClickLogin(
+                          _phoneController.text, _passwordController.text);
                     }
                     // Navigator.pushReplacement(
                     //   context,
@@ -96,7 +98,87 @@ class _LoginBodyState extends State<LoginBody> {
                     // );
                   },
                 ),
-                SizedBox(height: size.height * 0.03),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                  width: size.width * 0.8,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {ShowModalBottomSheet.showForgotPassword(context);},
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            child: Text(
+                              'Quên mật khẩu',
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                Container(
+                  margin: const EdgeInsets.only(bottom: kDefaultPadding / 2),
+                  width: size.width * 0.8,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: Row(
+                      children: const [
+                        Expanded(
+                            child: Divider(
+                          height: 1.5,
+                          thickness: 1,
+                          color: kPrimaryLightColor,
+                        )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Divider(
+                          height: 1.5,
+                          thickness: 1,
+                          color: kPrimaryLightColor,
+                        )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Divider(
+                          height: 1.5,
+                          thickness: 1,
+                          color: kPrimaryLightColor,
+                        )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Divider(
+                          height: 1.5,
+                          thickness: 1,
+                          color: kPrimaryLightColor,
+                        )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Divider(
+                          height: 1.5,
+                          thickness: 1,
+                          color: kPrimaryLightColor,
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
                 AlreadyHaveAnAccount(
                   press: () {
                     Navigator.pushReplacement(
@@ -117,7 +199,7 @@ class _LoginBodyState extends State<LoginBody> {
                           builder: (context) => const HomePage())),
                   child: const Padding(
                     padding:
-                    EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+                        EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
                     child: DefaultTextStyle(
                       style: TextStyle(
                           color: kPrimaryColor,

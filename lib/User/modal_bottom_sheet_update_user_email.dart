@@ -210,16 +210,20 @@ class _ModalBottomSheetUpdateUserEmailState
           codeVerify: _verifyController.text);
       final result = await UpdateUserAPI.changeEmail(user);
       print(result);
-      if (result == 200) {
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 3);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) {
-              return const UpdateUserPage();
-            }));
-        DisplayToast.displaySuccessToast(
-            context, 'Đổi email thành công');
-
+      if (result.statusCode == 200) {
+        if (result.body == "true") {
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 3);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) {
+                return const UpdateUserPage();
+              }));
+          DisplayToast.displaySuccessToast(
+              context, 'Đổi email thành công');
+        }
+        else {
+          DisplayToast.displayErrorToast(context, result.body);
+        }
       } else {
         DisplayToast.displayErrorToast(context, 'Đổi email thất bại');
       }

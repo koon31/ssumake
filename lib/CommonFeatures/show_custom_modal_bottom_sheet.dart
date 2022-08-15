@@ -8,6 +8,8 @@ import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
 import 'package:ssumake/Product/detail_product_page_body.dart';
+import 'package:ssumake/User/modal_bottom_sheet_forgot_password.dart';
+import 'package:ssumake/User/modal_bottom_sheet_update_password.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_email.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_phone.dart';
 import '../API/Order_API.dart';
@@ -113,6 +115,7 @@ class ShowModalBottomSheet {
   static showUpdatePhoneEmail(BuildContext context, bool isPhone) async {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -125,9 +128,11 @@ class ShowModalBottomSheet {
           ]);
         });
   }
+
   static showCheckPassword(BuildContext context, bool isPhone) async {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -142,6 +147,7 @@ class ShowModalBottomSheet {
   static showChangeAddress(BuildContext context) async {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -149,6 +155,36 @@ class ShowModalBottomSheet {
         builder: (BuildContext contextModal) {
           return Wrap(children: const [
             ModalBottomSheetChangeAddress(),
+          ]);
+        });
+  }
+
+  static showChangePassword(BuildContext context) async {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (BuildContext contextModal) {
+          return Wrap(children: const [
+            ModalBottomSheetUpdatePassword(),
+          ]);
+        });
+  }
+
+  static showForgotPassword(BuildContext context) async {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (BuildContext contextModal) {
+          return Wrap(children: const [
+            ModalBottomSheetForgotPassword(),
           ]);
         });
   }
