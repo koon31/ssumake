@@ -442,14 +442,20 @@ class _ModalBottomSheetChangeAddressState
           fullname: user.fullname,
           cwtId: _valueCWT.cwtId);
       final result = await UpdateUserAPI.updateCustomerInfo(uU);
-      print(result);
-      if (result == 200) {
-        DisplayToast.displaySuccessToast(
-            context, 'Đổi địa chỉ thành công');
-        Timer(const Duration(seconds: 2), () {
-          getLoggedInUser();
-          Navigator.pop(context);
-        });
+      print(result.body);
+      if (result.statusCode == 200) {
+        if(result.body == "true") {
+          DisplayToast.displaySuccessToast(
+              context, 'Đổi địa chỉ thành công');
+          Timer(const Duration(seconds: 2), () {
+            getLoggedInUser();
+            Navigator.pop(context);
+          });
+        }
+        else {
+          DisplayToast.displayErrorToast(
+              context, 'Đổi địa chỉ thất bại');
+        }
       } else {
         DisplayToast.displayErrorToast(
             context, 'Đổi địa chỉ thất bại');

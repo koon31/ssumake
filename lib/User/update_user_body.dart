@@ -375,6 +375,12 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                   },
                 ),
                 CustomButtonLarge(
+                  text: "Cập Nhật Mật Khẩu",
+                  press: () {
+                    ShowModalBottomSheet.showChangePassword(context);
+                  },
+                ),
+                CustomButtonLarge(
                   text: "Cập Nhật Thông Tin",
                   press: () {
                     if (_formKeyUpdate.currentState!.validate()) {
@@ -424,14 +430,20 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
           cwtId: _valueCWT.cwtId);
       final result = await UpdateUserAPI.updateCustomerInfo(uU);
       print(result);
-      if (result == 200) {
-        DisplayToast.displaySuccessToast(
-            context, 'Đổi thông tin cá nhân thành công');
-        Timer(const Duration(seconds: 2), () {
-          getLoggedInUser();
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
-        });
+      if (result.statusCode == 200) {
+        if(result.body == "true") {
+          DisplayToast.displaySuccessToast(
+              context, 'Đổi thông tin cá nhân thành công');
+          Timer(const Duration(seconds: 2), () {
+            getLoggedInUser();
+            int count = 0;
+            Navigator.of(context).popUntil((_) => count++ >= 2);
+          });
+        }
+        else {
+          DisplayToast.displayErrorToast(
+              context, 'Đổi thông tin cá nhân thất bại');
+        }
       } else {
         DisplayToast.displayErrorToast(
             context, 'Đổi thông tin cá nhân thất bại');

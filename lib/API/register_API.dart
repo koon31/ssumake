@@ -31,7 +31,7 @@ class RegisterAPI {
             }));
         print(response.statusCode);
         print(response.body);
-        return response.statusCode;
+        return response;
       }
     } catch (e) {
       throw Exception('Đăng ký thất bại');
@@ -48,12 +48,13 @@ class RegisterAPI {
               'Content-Type': 'application/json; charset=UTF-8'
             });
         print(response.statusCode);
-        return response.statusCode;
+        return response;
       }
     } catch (e) {
       throw Exception('Lấy mã xác thực thất bại');
     }
   }
+
   static Future<dynamic> getCodeVerifyEmail(String email) async {
     try {
       if (email.isNotEmpty) {

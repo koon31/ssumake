@@ -1,34 +1,32 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ssumake/Constants/color.dart';
-import '../API/register_API.dart';
+import 'package:ssumake/Model/User/forgot_password.dart';
 import '../API/update_user_API.dart';
 import '../CommonFeatures/custom_button.dart';
 import '../CommonFeatures/display_toast.dart';
 import '../CommonFeatures/input_decoration.dart';
-import '../Model/User/change_phone_number.dart';
-import '../Model/User/user_model.dart';
-import 'update_user_page.dart';
 
-class ModalBottomSheetUpdateUserPhone extends StatefulWidget {
-  const ModalBottomSheetUpdateUserPhone({Key? key}) : super(key: key);
+class ModalBottomSheetForgotPassword extends StatefulWidget {
+  const ModalBottomSheetForgotPassword({Key? key}) : super(key: key);
 
   @override
-  State<ModalBottomSheetUpdateUserPhone> createState() =>
-      _ModalBottomSheetUpdateUserPhoneState();
+  State<ModalBottomSheetForgotPassword> createState() =>
+      _ModalBottomSheetForgotPasswordState();
 }
 
-class _ModalBottomSheetUpdateUserPhoneState
-    extends State<ModalBottomSheetUpdateUserPhone> {
-  final GlobalKey<FormState> _formKeyPhoneUpdate = GlobalKey<FormState>();
-  final GlobalKey<FormState> _formKeyNewPhoneUpdate = GlobalKey<FormState>();
+class _ModalBottomSheetForgotPasswordState
+    extends State<ModalBottomSheetForgotPassword> {
+  final GlobalKey<FormState> _formKeyPhoneForgotPassword =
+      GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyVerifyPhoneForgotPassword =
+      GlobalKey<FormState>();
 
-  final _oldPhoneController = TextEditingController();
-  final _newPhoneController = TextEditingController();
-  final _confirmNewPhoneController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _verifyController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmNewPasswordController = TextEditingController();
 
   bool _isEnableTextFormField = false;
 
@@ -44,48 +42,26 @@ class _ModalBottomSheetUpdateUserPhoneState
       children: [
         titleModalBottomSheet(),
         Form(
-          key: _formKeyPhoneUpdate,
+          key: _formKeyPhoneForgotPassword,
           child: Container(
             color: Colors.white,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  RoundedInputField(
-                    controller: _oldPhoneController,
-                    hintText: "Số Điện Thoại",
-                    icon: Icons.phone,
-                    type: TextInputType.phone,
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Vui lòng điền đầy đủ thông tin';
-                      } else if (value.length > 11) {
-                        return 'Số Điện Thoại phải nhập bé hơn 12 ký tự';
-                      } else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
-                          .hasMatch(value)) {
-                        return 'Số điện thoại không đúng số điện thoại Việt Nam';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
                   Form(
-                    key: _formKeyNewPhoneUpdate,
+                    key: _formKeyVerifyPhoneForgotPassword,
                     child: RoundedInputField(
-                      controller: _newPhoneController,
-                      hintText: "Số Điện Thoại mới",
+                      controller: _phoneController,
+                      hintText: "Số Điện Thoại",
                       icon: Icons.phone,
                       type: TextInputType.phone,
                       onChanged: (value) {},
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Vui lòng điền đầy đủ thông tin';
-                        } else if (value == _oldPhoneController.text) {
-                          return 'Số Điện Thoại mới phải khác Số Điện Thoại cũ';
-                        }else if (value.length > 11) {
+                        } else if (value.length > 11) {
                           return 'Số Điện Thoại phải nhập bé hơn 12 ký tự';
-                        }
-                        else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
+                        } else if (!RegExp(r'^(\+84|0[1|3|5|7|8|9])+([0-9]{8})')
                             .hasMatch(value)) {
                           return 'Số điện thoại không đúng số điện thoại Việt Nam';
                         } else {
@@ -125,7 +101,8 @@ class _ModalBottomSheetUpdateUserPhoneState
                         CustomVerifyButton(
                             text: 'Xác thực SĐT',
                             press: () async {
-                              if (_formKeyNewPhoneUpdate.currentState!
+                              if (_formKeyVerifyPhoneForgotPassword
+                                  .currentState!
                                   .validate()) {
                                 if (await onClickGetCodeVerify()) {
                                   print('enable');
@@ -148,17 +125,44 @@ class _ModalBottomSheetUpdateUserPhoneState
                       ],
                     ),
                   ),
-                  RoundedInputField(
-                    controller: _confirmNewPhoneController,
-                    hintText: "Xác thực Số Điện Thoại mới",
-                    icon: Icons.phone,
-                    type: TextInputType.phone,
+                  RoundedPasswordField(
+                    controller: _newPasswordController,
                     onChanged: (value) {},
+                    isConfirm: false,
+                    validator: (val) {
+                      String errMs = '';
+                      if (val!.isEmpty) {
+                        return 'Vui lòng điền đầy đủ mật khẩu';
+                      } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(val)) {
+                        errMs.isEmpty ? errMs += '' : errMs += '\n';
+                        errMs += 'Mật khẩu cần ít nhất 1 chữ in hoa';
+                      } else if (!RegExp(r'^(?=.*[a-z])').hasMatch(val)) {
+                        errMs.isEmpty ? errMs += '' : errMs += '\n';
+                        errMs += 'Mật khẩu cần ít nhất 1 chữ thường';
+                      } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(val)) {
+                        errMs.isEmpty ? errMs += '' : errMs += '\n';
+                        errMs += 'Mật khẩu cần ít nhất 1 chữ số';
+                      } else if (!RegExp(r'^(?=.*?[!@#\$&*.~])')
+                          .hasMatch(val)) {
+                        errMs.isEmpty ? errMs += '' : errMs += '\n';
+                        errMs += 'Mật khẩu phải bao gồm 1 ký tự đặc biệt';
+                      } else if (!RegExp(r'^.{8,}').hasMatch(val)) {
+                        errMs.isEmpty ? errMs += '' : errMs += '\n';
+                        errMs += 'Mật khẩu cần có ít nhất 8 ký tự';
+                      } else {}
+                      return errMs.isNotEmpty ? errMs : null;
+                    },
+                  ),
+                  RoundedPasswordField(
+                    controller: _confirmNewPasswordController,
+                    onChanged: (value) {},
+                    isConfirm: true,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Vui lòng điền đầy đủ thông tin';
-                      } else if (value != _newPhoneController.text) {
-                        return 'Số Điện Thoại phải xác trùng với Số Điện Thoại mới';
+                        return 'Vui lòng điền đầy đủ nhập lại mật khẩu';
+                      } else if (_newPasswordController.text !=
+                          _confirmNewPasswordController.text) {
+                        return "Mật khẩu và nhập lại mật khẩu không trùng khớp";
                       } else {
                         return null;
                       }
@@ -167,8 +171,22 @@ class _ModalBottomSheetUpdateUserPhoneState
                   CustomButtonLarge(
                     text: "Cập nhật số điện thoại",
                     press: () {
-                      if (_formKeyPhoneUpdate.currentState!.validate()) {
-                        onClickChangeNumber();
+                      bool check = false;
+                      if (_formKeyVerifyPhoneForgotPassword.currentState!
+                          .validate()) {
+                        check = true;
+                      } else {
+                        check = false;
+                      }
+
+                      if (_formKeyPhoneForgotPassword.currentState!
+                          .validate()) {
+                        check = true;
+                      } else {
+                        check = false;
+                      }
+                      if (check) {
+                        onClickForgotPassword();
                       }
                     },
                   ),
@@ -219,62 +237,44 @@ class _ModalBottomSheetUpdateUserPhoneState
     );
   }
 
-  Future<void> onClickChangeNumber() async {
+  Future<void> onClickForgotPassword() async {
     try {
-      ChangePhoneNumberUserModel user = ChangePhoneNumberUserModel(
-          emailOrPhoneChange: _newPhoneController.text,
-          phoneNumber: _oldPhoneController.text,
-          codeVerify: _verifyController.text);
-      final result = await UpdateUserAPI.changePhoneNumber(user);
+      ForgotPasswordModel user = ForgotPasswordModel(
+          phonenumber: _phoneController.text,
+          code: _verifyController.text,
+          newPassword: _newPasswordController.text);
+      final result = await UpdateUserAPI.forgotPassword(user);
       print(result);
       if (result.statusCode == 200) {
-        if(result.body == "true") {
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 3);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) {
-                return const UpdateUserPage();
-              }));
-          DisplayToast.displaySuccessToast(
-              context, 'Đổi số điện thoại thành công');
-        }
-        else {
+        if (result.body != "false") {
+          Navigator.pop(context);
+          DisplayToast.displaySuccessToast(context, 'Đổi mật khẩu thành công');
+        } else {
           DisplayToast.displayErrorToast(context, result.body);
         }
       } else {
-        DisplayToast.displayErrorToast(context, 'Đổi số điện thoại thất bại');
+        DisplayToast.displayErrorToast(context, 'Đổi mật khẩu thất bại');
       }
     } catch (e) {
-      DisplayToast.displayErrorToast(
-          context, 'Đổi số điện thoại thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Đổi mật khẩu thất bại fail');
     }
   }
 
   Future<bool> onClickGetCodeVerify() async {
     try {
-      var provider = Provider.of<User>(context, listen: false);
-      UserModel user = provider.user!;
-      if (_newPhoneController.text != user.phoneNumber) {
-        print(_newPhoneController.text);
-        final result =
-            await RegisterAPI.getCodeVerifyPhone(_newPhoneController.text);
-        if (result.statusCode == 200) {
-          if(result.body == "true") {
-            DisplayToast.displaySuccessToast(
-                context, 'Lấy mã xác thực thành công');
-            return true;
-          }
-          else {
-            DisplayToast.displayErrorToast(context, result.body);
-            return false;
-          }
+      final result = await UpdateUserAPI.getCodeVerifyPhoneForgotPassword(
+          _phoneController.text);
+      if (result.statusCode == 200) {
+        if (result.body == "true") {
+          DisplayToast.displaySuccessToast(
+              context, 'Lấy mã xác thực thành công');
+          return true;
         } else {
-          DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
+          DisplayToast.displayErrorToast(context, result.body);
           return false;
         }
       } else {
-        DisplayToast.displayErrorToast(
-            context, 'Số điện thoại mới không được trùng');
+        DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
         return false;
       }
     } catch (e) {

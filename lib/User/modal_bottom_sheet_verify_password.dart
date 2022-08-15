@@ -33,7 +33,6 @@ class _ModalBottomSheetCheckPasswordState
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         titleModalBottomSheet(),
@@ -120,20 +119,27 @@ class _ModalBottomSheetCheckPasswordState
       if (u != null && u.phoneNumber != null) {
         result = await UpdateUserAPI.checkChangeInfo(
             u.phoneNumber, _passwordController.text);
-        print(result);
-        if (result == 200) {
-          Navigator.pop(context);
-          return true;
+        print(result.body);
+        if (result.statusCode == 200) {
+          if (result.body == "true") {
+            Navigator.pop(context);
+            return true;
+          }
+          else {
+            DisplayToast.displayErrorToast(context, 'Sai mật khẩu');
+            return false;
+          }
         } else {
-          DisplayToast.displayErrorToast(context, 'Không thể đổi thông tin');
+          DisplayToast.displayErrorToast(context, 'Sai mật khẩu');
           return false;
         }
       }
       else {
+        DisplayToast.displayErrorToast(context, 'Sai mật khẩu');
         return false;
       }
     } catch (e) {
-      DisplayToast.displayErrorToast(context, 'Không thể đổi thông tin fail');
+      DisplayToast.displayErrorToast(context, 'Sai mật khẩu fail');
       return false;
     }
   }

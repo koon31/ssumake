@@ -104,17 +104,19 @@ class _RegisterBodyState extends State<RegisterBody> {
                           child: SizedBox(
                             width: size.width / 2.12,
                             child: VerifyRoundedInputField(
-                                controller: _verifyController,
-                                hintText: "Xác thực SĐT",
-                                isEnable: _isEnableTextFormField,
-                                type: TextInputType.number,
-                                onChanged: (value) {},validator: (value) {
-                              if (value!.isEmpty || value.length!=6) {
-                                return 'Vui lòng điền đầy đủ mã xác thực bao gồm 6 số';
-                              } else {
-                                return null;
-                              }
-                            },),
+                              controller: _verifyController,
+                              hintText: "Xác thực SĐT",
+                              isEnable: _isEnableTextFormField,
+                              type: TextInputType.number,
+                              onChanged: (value) {},
+                              validator: (value) {
+                                if (value!.isEmpty || value.length != 6) {
+                                  return 'Vui lòng điền đầy đủ mã xác thực bao gồm 6 số';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
                           ),
                         ),
                         CustomVerifyButton(
@@ -269,15 +271,13 @@ class _RegisterBodyState extends State<RegisterBody> {
                       bool check = false;
                       if (_formKey.currentState!.validate()) {
                         check = true;
-                      }
-                      else {
+                      } else {
                         check = false;
                       }
 
                       if (_formKeyPhone.currentState!.validate()) {
                         check = true;
-                      }
-                      else {
+                      } else {
                         check = false;
                       }
 
@@ -287,7 +287,8 @@ class _RegisterBodyState extends State<RegisterBody> {
                             _selectedDate,
                             _phoneController.text,
                             _gender == Gender.Male ? 1 : 0,
-                            _nameController.text,_verifyController.text);
+                            _nameController.text,
+                            _verifyController.text);
                       }
                     },
                   ),
@@ -312,7 +313,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                             builder: (context) => const HomePage())),
                     child: const Padding(
                       padding:
-                      EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+                          EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
                       child: DefaultTextStyle(
                         style: TextStyle(
                             color: kPrimaryColor,
@@ -334,8 +335,13 @@ class _RegisterBodyState extends State<RegisterBody> {
     );
   }
 
-  Future<void> onClickRegister(String password, DateTime dBO,
-      String phoneNumber, int gender, String fullname, String codeVerify) async {
+  Future<void> onClickRegister(
+      String password,
+      DateTime dBO,
+      String phoneNumber,
+      int gender,
+      String fullname,
+      String codeVerify) async {
     try {
       RegisterUserModel user = RegisterUserModel(
           password: password,
@@ -344,12 +350,16 @@ class _RegisterBodyState extends State<RegisterBody> {
           gender: gender,
           fullname: fullname);
       final result = await RegisterAPI.register(user, codeVerify);
-      if (result == 200) {
-        DisplayToast.displaySuccessToast(context, 'Đăng ký thành công');
-        Timer(const Duration(seconds: 3), () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
-        });
+      if (result.statusCode == 200) {
+        if (result.body == "true") {
+          DisplayToast.displaySuccessToast(context, 'Đăng ký thành công');
+          Timer(const Duration(seconds: 2), () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const LoginPage()));
+          });
+        } else {
+          DisplayToast.displayErrorToast(context, result.body);
+        }
       } else {
         DisplayToast.displayErrorToast(context, 'Đăng ký thất bại');
       }
@@ -358,12 +368,16 @@ class _RegisterBodyState extends State<RegisterBody> {
     }
   }
 
-  Future<void> onClickGetCodeVerify(
-      String phoneNumber) async {
+  Future<void> onClickGetCodeVerify(String phoneNumber) async {
     try {
       final result = await RegisterAPI.getCodeVerifyPhone(phoneNumber);
-      if (result == 200) {
-        DisplayToast.displaySuccessToast(context, 'Lấy mã xác thực thành công');
+      if (result.statusCode == 200) {
+        if (result.body == "true") {
+          DisplayToast.displaySuccessToast(
+              context, 'Lấy mã xác thực thành công');
+        } else {
+          DisplayToast.displayErrorToast(context, result.body);
+        }
       } else {
         DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
       }

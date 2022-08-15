@@ -22,7 +22,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
           ),
         ),
         Flexible(
-          child: InkWell(
+          child: GestureDetector(
             onTap: press,
             child: Text(
               isLoginPage ? "Đăng ký" : "Đăng nhập",
