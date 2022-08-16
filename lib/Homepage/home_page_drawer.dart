@@ -249,8 +249,8 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: ListView.builder(
-        scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: categoriesExtended.length,
         itemBuilder: (context, index) => categoriesExtended.isNotEmpty
             ? buildCategoryItem(index)
@@ -314,8 +314,8 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
         padding: const EdgeInsets.only(
             left: kDefaultPadding, top: kDefaultPadding / 4),
         child: ListView.builder(
-          scrollDirection: Axis.vertical,
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: scatesByCateId.length,
           itemBuilder: (context, index) => scatesByCateId.isNotEmpty
               ? buildSubCategoryItem(cate, scatesByCateId, index)

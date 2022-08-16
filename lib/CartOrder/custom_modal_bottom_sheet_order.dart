@@ -12,7 +12,8 @@ import '../Model/Product/unit_model.dart';
 import '../Model/User/user_model.dart';
 
 class CustomModalBottomSheetOrder extends StatefulWidget {
-  const CustomModalBottomSheetOrder({Key? key}) : super(key: key);
+  const CustomModalBottomSheetOrder({Key? key, this.selectedOrder}) : super(key: key);
+  final OrderModel? selectedOrder;
 
   @override
   State<CustomModalBottomSheetOrder> createState() =>
@@ -304,7 +305,12 @@ class _CustomModalBottomSheetOrderState
 
   productListInCart() {
     return Consumer<OrderHistory>(builder: (context, value, child) {
-      OrderModel od = value.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+      OrderModel od;
+      if (widget.selectedOrder != null) {
+        od = widget.selectedOrder!;
+      } else {
+        od = value.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+      }
       return ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
           physics: const NeverScrollableScrollPhysics(),
@@ -318,7 +324,12 @@ class _CustomModalBottomSheetOrderState
     return Consumer3<OrderHistory, UnitList,
             ProductList>(
         builder: (context, orderHistory, units, products, child) {
-          OrderModel od = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+          OrderModel od;
+          if (widget.selectedOrder != null) {
+            od = widget.selectedOrder!;
+          } else {
+            od = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+          }
           ProductModel? product = products.products.firstWhereOrNull((element) => element.productId == od.orderDetails![index].productId);
           UnitModel? unit = units.units.firstWhereOrNull((element) => element.unitId == product!.unitId);
       return ListTile(
@@ -336,7 +347,12 @@ class _CustomModalBottomSheetOrderState
   priceCalculationBuilder() {
     return Consumer<OrderHistory>(
         builder: (context, orderHistory, child) {
-          OrderModel order = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+          OrderModel order;
+          if (widget.selectedOrder != null) {
+            order = widget.selectedOrder!;
+          } else {
+            order = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+          }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

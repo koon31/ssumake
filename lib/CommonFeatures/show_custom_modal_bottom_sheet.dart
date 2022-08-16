@@ -67,13 +67,18 @@ class ShowModalBottomSheet {
                           if (user.user!.address!.isNotEmpty){
                             final result =
                             await OrderAPI.addOrder(order);
-                            if (result == 200) {
-                              Timer(const Duration(seconds: 2), () {
-                                Navigator.pop(context);
-                                showOrder(context);
-                                DisplayToast.displaySuccessToast(context, 'Mua thành công');
-                                psInCart.deleteCart();
-                              });
+                            if (result.statusCode == 200) {
+                              if (result.body == true) {
+                                Timer(const Duration(seconds: 2), () {
+                                  Navigator.pop(context);
+                                  showOrder(context);
+                                  DisplayToast.displaySuccessToast(context, 'Mua thành công');
+                                  psInCart.deleteCart();
+                                });
+                              }
+                              else {
+                                DisplayToast.displayErrorToast(context, result.body);
+                              }
                             } else {
                               DisplayToast.displayErrorToast(context, 'Mua thất bại');
                             }

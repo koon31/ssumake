@@ -216,7 +216,7 @@ class _ModalBottomSheetForgotPasswordState
               child: Padding(
                 padding: EdgeInsets.only(left: 46),
                 child: Text(
-                  'Cập nhật số điện thoại',
+                  'Cập nhật mật khẩu',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   textAlign: TextAlign.center,
                 ),
