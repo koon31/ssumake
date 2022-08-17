@@ -57,7 +57,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   late DistrictModel _valueDistrict = DistrictModel.empty();
   late CWTModel _valueCWT = CWTModel.empty();
 
-  late UserModel user;
+  late UserModel? user;
 
   @override
   void initState() {
@@ -71,7 +71,10 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return GestureDetector(
+    if(user==null) {
+      return Container();
+    } else {
+      return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Form(
         key: _formKeyUpdate,
@@ -418,35 +421,42 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
         ),
       ),
     );
+    }
   }
 
   Future<void> onClickUpdateCustomerInfo() async {
     try {
-      UpdateUserModel uU = UpdateUserModel(
-          customerId: user.id,
-          address: _addressController.text,
-          gender: _gender == Gender.Male ? 1 : 0,
-          fullname: _nameController.text,
-          cwtId: _valueCWT.cwtId);
-      final result = await UpdateUserAPI.updateCustomerInfo(uU);
-      print(result);
-      if (result.statusCode == 200) {
-        if(result.body == "true") {
-          DisplayToast.displaySuccessToast(
-              context, 'Đổi thông tin cá nhân thành công');
-          Timer(const Duration(seconds: 2), () {
-            getLoggedInUser();
-            int count = 0;
-            Navigator.of(context).popUntil((_) => count++ >= 2);
-          });
-        }
-        else {
+      if(user!=null) {
+        UpdateUserModel uU = UpdateUserModel(
+            customerId: user!.id,
+            address: _addressController.text,
+            gender: _gender == Gender.Male ? 1 : 0,
+            fullname: _nameController.text,
+            cwtId: _valueCWT.cwtId);
+        final result = await UpdateUserAPI.updateCustomerInfo(uU);
+        print(result);
+        if (result.statusCode == 200) {
+          if(result.body == "true") {
+            DisplayToast.displaySuccessToast(
+                context, 'Đổi thông tin cá nhân thành công');
+            Timer(const Duration(seconds: 2), () {
+              getLoggedInUser();
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
+            });
+          }
+          else {
+            DisplayToast.displayErrorToast(
+                context, 'Đổi thông tin cá nhân thất bại');
+          }
+        } else {
           DisplayToast.displayErrorToast(
               context, 'Đổi thông tin cá nhân thất bại');
         }
-      } else {
+      }
+      else {
         DisplayToast.displayErrorToast(
-            context, 'Đổi thông tin cá nhân thất bại');
+            context, 'Vui lòng đăng nhập');
       }
     } catch (e) {
       DisplayToast.displayErrorToast(
@@ -455,11 +465,14 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   }
 
   void getLoggedUserInfo() {
-    user = Provider.of<User>(context, listen: false).user!;
-    _phoneController.text = user.phoneNumber!;
-    _nameController.text = user.fullname!;
-    _gender = user.gender == 1 ? Gender.Male : Gender.Female;
-    print(user.token);
+    user = Provider.of<User>(context, listen: false).user;
+    if (user != null) {
+      _phoneController.text = user!.phoneNumber!;
+      _nameController.text = user!.fullname!;
+      _gender = user?.gender == 1 ? Gender.Male : Gender.Female;
+      print(user?.token);
+    }
+    print(user);
   }
 
   Future<void> updateCWT() async {
@@ -571,28 +584,30 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   }
 
   getUserLocation() async {
-    String? address = user.address;
-    LocationModel? location =
-        Provider.of<Location>(context, listen: false).location;
-    if (location != null &&
-        user.address != null &&
-        user.address!.isNotEmpty &&
-        address != null &&
-        address.isNotEmpty) {
-      //if (location.cwt!=null && location.district!=null && location.province!=null) address += ', ' + location.cwt! + ', ' + location.district! + ', ' + location.province!;
-      _valueProvince = _provinceList.firstWhereOrNull((element) {
-        return element.name! == location.province;
-      })!;
-      await updateDistrict();
-      _valueDistrict = _districtList.firstWhereOrNull((element) {
-        return element.name! == location.district;
-      })!;
-      await updateCWT();
-      _valueCWT = _cwtList.firstWhereOrNull((element) {
-        return element.name! == location.cwt;
-      })!;
-      _addressController.text = address;
-      if (mounted) setState(() {});
+    if (user!=null) {
+      String? address = user!.address;
+      LocationModel? location =
+          Provider.of<Location>(context, listen: false).location;
+      if (location != null &&
+          user!.address != null &&
+          user!.address!.isNotEmpty &&
+          address != null &&
+          address.isNotEmpty) {
+        //if (location.cwt!=null && location.district!=null && location.province!=null) address += ', ' + location.cwt! + ', ' + location.district! + ', ' + location.province!;
+        _valueProvince = _provinceList.firstWhereOrNull((element) {
+          return element.name! == location.province;
+        })!;
+        await updateDistrict();
+        _valueDistrict = _districtList.firstWhereOrNull((element) {
+          return element.name! == location.district;
+        })!;
+        await updateCWT();
+        _valueCWT = _cwtList.firstWhereOrNull((element) {
+          return element.name! == location.cwt;
+        })!;
+        _addressController.text = address;
+        if (mounted) setState(() {});
+      }
     }
     // if (address != null && address.isNotEmpty) {
     //   String? province =

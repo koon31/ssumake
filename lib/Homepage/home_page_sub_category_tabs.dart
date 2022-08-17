@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/Model/Product/sub_category_model.dart';
-import 'package:ssumake/a_test/category_test.dart';
 
 import '../Constants/color.dart';
 import '../Model/Product/category_model.dart';
@@ -43,8 +43,8 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
   Widget build(BuildContext context) {
     List<SubCategoryModel> scates =
         Provider.of<SubCategoryList>(context, listen: false).subCategories;
-    CategoryModel cate =
-        Provider.of<CategoryList>(context, listen: false).categories.first;
+    CategoryModel? cate =
+        Provider.of<CategoryList>(context, listen: false).categories.firstOrNull;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: SizedBox(
@@ -54,14 +54,14 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
           itemCount: widget.subCategoriesByCategoryId != null
               ? widget.subCategoriesByCategoryId!.length
               : scates
-                  .where((element) => element.categoryId == cate.categoryId)
+                  .where((element) => element.categoryId == cate?.categoryId)
                   .length,
           itemBuilder: (context, index) => widget.subCategoriesByCategoryId !=
                   null
               ? buildSubCategory(widget.subCategoriesByCategoryId!, index)
               : buildSubCategory(
                   scates
-                      .where((element) => element.categoryId == cate.categoryId)
+                      .where((element) => element.categoryId == cate?.categoryId)
                       .toList(),
                   index),
         ),
