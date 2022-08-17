@@ -5,7 +5,7 @@ class URI {
 
   //192.168.0.104
   //192.168.1.35
-  static const String BASE_URI = 'http://192.168.1.35:5000/';
+  static const String BASE_URI = 'http://192.168.1.22:5000/';
   //Account
   static const String USER_LOGIN = 'api/v1/Account/Login';
   static const String USER_REGISTER = 'api/v1/Account/RegisterCustomer';
