@@ -150,10 +150,13 @@ class CustomButtonMedium extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+          ),
         ),
       ),
     );

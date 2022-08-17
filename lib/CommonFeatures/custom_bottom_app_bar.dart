@@ -20,10 +20,12 @@ class CustomBottomAppBarHomePage extends StatefulWidget {
   final Function() press;
 
   @override
-  State<CustomBottomAppBarHomePage> createState() => _CustomBottomAppBarHomePageState();
+  State<CustomBottomAppBarHomePage> createState() =>
+      _CustomBottomAppBarHomePageState();
 }
 
-class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage> {
+class _CustomBottomAppBarHomePageState
+    extends State<CustomBottomAppBarHomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -41,7 +43,7 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: kDefaultPadding/3),
+            padding: const EdgeInsets.only(top: kDefaultPadding / 3),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -63,13 +65,13 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
                 ),
                 const Text(
                   'Các sản phẩm sẽ được giao đến địa chỉ',
-                  style: TextStyle(color: kTextColor, fontSize: 14),
+                  style: TextStyle(color: kTextColor, fontSize: 13),
                 ),
               ],
             ),
           ),
           const Spacer(),
-          customButtonOfSnackBar(size),
+          Flexible(flex: 10, child: FittedBox(fit: BoxFit.scaleDown, child: customButtonOfSnackBar(size),)),
         ],
       ),
     );
@@ -77,7 +79,7 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
 
   Widget customButtonOfSnackBar(Size size) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: kDefaultPadding/5),
+      margin: const EdgeInsets.symmetric(vertical: kDefaultPadding / 5),
       width: size.width / 3,
       height: size.height / 20,
       child: ClipRRect(
@@ -92,7 +94,8 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
       onPressed: widget.press,
       style: ElevatedButton.styleFrom(
         primary: kPrimaryColor,
-        padding: EdgeInsets.zero, visualDensity: const VisualDensity(vertical: -4),
+        padding: EdgeInsets.zero,
+        visualDensity: const VisualDensity(vertical: -4),
         textStyle: const TextStyle(
           color: kPrimaryColor,
           fontSize: 17,
@@ -103,7 +106,9 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            padding: widget.buttonLabel2<10?const EdgeInsets.only(left: 10):const EdgeInsets.only(left: 5.25),
+            padding: widget.buttonLabel2 < 10
+                ? const EdgeInsets.only(left: 10)
+                : const EdgeInsets.only(left: 5.25),
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.white),
             width: 30,
@@ -130,7 +135,8 @@ class _CustomBottomAppBarHomePageState extends State<CustomBottomAppBarHomePage>
 }
 
 class CustomBottomAppBarCart extends StatefulWidget {
-  const CustomBottomAppBarCart({Key? key, required this.press}) : super(key: key);
+  const CustomBottomAppBarCart({Key? key, required this.press})
+      : super(key: key);
   final Function() press;
 
   @override
@@ -150,55 +156,62 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
   }
 
   Widget messageContent(Size size) {
-    return Padding(
-      padding: const EdgeInsets.all(0),
-      child: Consumer2<ProductsInCart, DiscountList>(builder: (context, psInCart, discounts, child) {
-        double price = 0;
-        for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
-          ProductModel p = psInCart.getProductAt(i);
-          DiscountModel? d = p.discountId != null
-              ? discounts.discounts
-              .firstWhereOrNull((element) => element.discountId == p.discountId)
-              : null;
-          price += d != null
-              ? d.discountPercent != 0
-              ? psInCart.getQuantityOfProducts(p)! *
-              p.price! *
-              (100 - (d.discountPercent as num)) /
-              100
-              : psInCart.getQuantityOfProducts(p)! *
-              (p.price! - d.discountMoney!)
-              : psInCart.getQuantityOfProducts(p)! * p.price!;
-        }
-        return Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: kDefaultPadding/4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
+    return Flexible(
+      flex: 5,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: Consumer2<ProductsInCart, DiscountList>(
+              builder: (context, psInCart, discounts, child) {
+            double price = 0;
+            for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
+              ProductModel p = psInCart.getProductAt(i);
+              DiscountModel? d = p.discountId != null
+                  ? discounts.discounts.firstWhereOrNull(
+                      (element) => element.discountId == p.discountId)
+                  : null;
+              price += d != null
+                  ? d.discountPercent != 0
+                      ? psInCart.getQuantityOfProducts(p)! *
+                          p.price! *
+                          (100 - (d.discountPercent as num)) /
+                          100
+                      : psInCart.getQuantityOfProducts(p)! *
+                          (p.price! - d.discountMoney!)
+                  : psInCart.getQuantityOfProducts(p)! * p.price!;
+            }
+            return Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: kDefaultPadding / 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "${price.toStringAsFixed(1)}VND",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "${price.toStringAsFixed(1)}VND",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(),
-            customButtonOfBottomAppBarCart(size),
-          ],
-        );
-      }),
+                ),
+                const Spacer(),
+                Flexible(flex: 2, child: customButtonOfBottomAppBarCart(size)),
+              ],
+            );
+          }),
+        ),
+      ),
     );
   }
 
@@ -235,4 +248,3 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
     );
   }
 }
-

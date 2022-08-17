@@ -71,362 +71,370 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    if(user==null) {
+    if (user == null) {
       return Container();
     } else {
       return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Form(
-        key: _formKeyUpdate,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: kDefaultPadding / 2 * 5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: size.height * 0.03),
-                Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                    height: size.width * 0.3,
-                    width: size.width * 0.3,
-                    child: const Icon(
-                      Icons.person,
-                      size: 140,
-                    )),
-                GestureDetector(
-                  onTap: () =>
-                      ShowModalBottomSheet.showCheckPassword(context, true),
-                  child: Consumer<User>(builder: (context, value, child) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding * 2.4,
-                          vertical: kDefaultPadding / 2),
-                      child: Container(
-                        height: size.height * 0.06,
-                        decoration: BoxDecoration(
-                          color: kPrimaryLightColor,
-                          border: Border.all(
-                            color: Colors.transparent,
-                          ),
-                          borderRadius: BorderRadius.circular(28),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding / 5 * 3),
-                          child: IntrinsicHeight(
-                            child: Row(children: [
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                    right: kDefaultPadding / 5 * 3),
-                                child: Icon(
-                                  Icons.phone,
-                                  color: kPrimaryColor,
-                                ),
-                              ),
-                              Text(
-                                value.user!.phoneNumber!,
-                                style: const TextStyle(
-                                    color: Colors.grey, fontSize: 17),
-                              ),
-                              const Spacer(),
-                              const VerticalDivider(
-                                  thickness: 1, color: Colors.grey),
-                              const Text(
-                                'Đổi SĐT',
-                                style: TextStyle(
-                                    color: kPrimaryColor, fontSize: 17),
-                              ),
-                            ]),
-                          ),
-                        ),
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Form(
+          key: _formKeyUpdate,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: kDefaultPadding / 2 * 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: size.height * 0.03),
+                  Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        shape: BoxShape.circle,
                       ),
-                    );
-                  }),
-                ),
-                GestureDetector(
-                  onTap: () =>
-                      ShowModalBottomSheet.showCheckPassword(context, false),
-                  child: Consumer<User>(builder: (context, value, child) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding * 2.4,
-                          vertical: kDefaultPadding / 2),
-                      child: Container(
-                        height: size.height * 0.06,
-                        decoration: BoxDecoration(
-                          color: kPrimaryLightColor,
-                          border: Border.all(
-                            color: Colors.transparent,
+                      height: size.width * 0.3,
+                      width: size.width * 0.3,
+                      child: const Icon(
+                        Icons.person,
+                        size: 100,
+                      )),
+                  GestureDetector(
+                    onTap: () =>
+                        ShowModalBottomSheet.showCheckPassword(context, true),
+                    child: Consumer<User>(builder: (context, value, child) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding * 2.4,
+                            vertical: kDefaultPadding / 2),
+                        child: Container(
+                          height: size.height * 0.06,
+                          decoration: BoxDecoration(
+                            color: kPrimaryLightColor,
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: BorderRadius.circular(28),
                           ),
-                          borderRadius: BorderRadius.circular(28),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding / 5 * 3),
-                          child: IntrinsicHeight(
-                            child: Row(children: [
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                    right: kDefaultPadding / 5 * 3),
-                                child: Icon(
-                                  Icons.email,
-                                  color: kPrimaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding / 5 * 3),
+                            child: IntrinsicHeight(
+                              child: Row(children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                      right: kDefaultPadding / 5 * 3),
+                                  child: Icon(
+                                    Icons.phone,
+                                    color: kPrimaryColor,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                value.user!.email!,
-                                style: const TextStyle(
-                                    color: Colors.grey, fontSize: 17),
-                              ),
-                              const Spacer(),
-                              const VerticalDivider(
-                                  thickness: 1, color: Colors.grey),
-                              const Text(
-                                'Đổi Email',
-                                style: TextStyle(
-                                    color: kPrimaryColor, fontSize: 17),
-                              ),
-                            ]),
+                                Text(
+                                  value.user!.phoneNumber!,
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 17),
+                                ),
+                                const Spacer(),
+                                const VerticalDivider(
+                                    thickness: 1, color: Colors.grey),
+                                const Text(
+                                  'Đổi SĐT',
+                                  style: TextStyle(
+                                      color: kPrimaryColor, fontSize: 17),
+                                ),
+                              ]),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
-                RoundedInputField(
-                  controller: _nameController,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Vui lòng điền đầy đủ thông tin';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 2.4),
-                  child: Row(
-                    children: <Widget>[
-                      for (var gender in Gender.values)
-                        Row(children: [
-                          Radio(
-                            value: gender,
-                            activeColor: Colors.black,
-                            groupValue: _gender,
-                            onChanged: (value) {
-                              setState(() {
-                                print(value);
-                                _gender = value as Gender;
-                              });
-                            },
-                          ),
-                          Text(gender.name)
-                        ]),
-                    ],
+                      );
+                    }),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 2.4,
-                      vertical: kDefaultPadding / 2),
-                  child: DropdownButtonFormField<ProvinceModel>(
-                    elevation: 10,
-                    isDense: true,
-                    menuMaxHeight: 300,
-                    dropdownColor: kPrimaryLightColor,
-                    items: _valueProvinceList.isNotEmpty
-                        ? _valueProvinceList
-                        : null,
-                    value: _valueProvince != ProvinceModel.empty() ||
-                            _valueProvinceList.isNotEmpty
-                        ? _valueProvince
-                        : null,
-                    onChanged: (ProvinceModel? selectedProvince) {
-                      if (selectedProvince != _valueProvince) {
-                        _valueProvince = selectedProvince!;
-                        provinceChanged();
+                  GestureDetector(
+                    onTap: () =>
+                        ShowModalBottomSheet.showCheckPassword(context, false),
+                    child: Consumer<User>(builder: (context, value, child) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding * 2.4,
+                            vertical: kDefaultPadding / 2),
+                        child: Container(
+                          height: size.height * 0.06,
+                          decoration: BoxDecoration(
+                            color: kPrimaryLightColor,
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding / 5 * 3),
+                            child: IntrinsicHeight(
+                              child: Row(children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                      right: kDefaultPadding / 5 * 3),
+                                  child: Icon(
+                                    Icons.email,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 3,
+                                  child: FittedBox(
+                                    child: Text(
+                                      value.user!.email!,
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 17),
+                                    ),
+                                  ),
+                                ),
+                                const VerticalDivider(
+                                    thickness: 1, color: Colors.grey),
+                                const FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Đổi Email',
+                                    style: TextStyle(
+                                        color: kPrimaryColor, fontSize: 15),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                  RoundedInputField(
+                    controller: _nameController,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Vui lòng điền đầy đủ thông tin';
+                      } else {
+                        return null;
                       }
                     },
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor: kPrimaryLightColor,
-                      prefixIcon: const Icon(
-                        Icons.location_city,
-                        color: kPrimaryColor,
-                      ),
-                      hintText: _valueProvince.name!,
-                      border: InputBorder.none,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 2.4),
+                    child: Row(
+                      children: <Widget>[
+                        for (var gender in Gender.values)
+                          Row(children: [
+                            Radio(
+                              value: gender,
+                              activeColor: Colors.black,
+                              groupValue: _gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  print(value);
+                                  _gender = value as Gender;
+                                });
+                              },
+                            ),
+                            Text(gender.name)
+                          ]),
+                      ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 2.4,
-                      vertical: kDefaultPadding / 2),
-                  child: DropdownButtonFormField<DistrictModel>(
-                    elevation: 10,
-                    menuMaxHeight: 300,
-                    dropdownColor: kPrimaryLightColor,
-                    items: _districtList.isNotEmpty ? _valueDistrictList : null,
-                    value: _valueDistrict != DistrictModel.empty() ||
-                            _valueDistrictList.isNotEmpty
-                        ? _valueDistrict
-                        : null,
-                    onChanged: (DistrictModel? selectedDistrict) {
-                      if (selectedDistrict != _valueDistrict) {
-                        _valueDistrict = selectedDistrict!;
-                        updateCWT();
-                      }
-                    },
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor: kPrimaryLightColor,
-                      prefixIcon: const Icon(
-                        Icons.location_city,
-                        color: kPrimaryColor,
-                      ),
-                      hintText: _valueDistrict.name!,
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 2.4,
-                      vertical: kDefaultPadding / 2),
-                  child: DropdownButtonFormField<CWTModel>(
-                    elevation: 10,
-                    menuMaxHeight: 300,
-                    dropdownColor: kPrimaryLightColor,
-                    items: _valueCWTList.isNotEmpty ? _valueCWTList : null,
-                    value: _valueCWT != CWTModel.empty() ||
-                            _valueCWTList.isNotEmpty
-                        ? _valueCWT
-                        : null,
-                    onChanged: (CWTModel? selectedCWT) {
-                      setState(() {
-                        if (selectedCWT != _valueCWT) {
-                          _valueCWT = selectedCWT!;
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 2.4,
+                        vertical: kDefaultPadding / 2),
+                    child: DropdownButtonFormField<ProvinceModel>(
+                      elevation: 10,
+                      isDense: true,
+                      menuMaxHeight: 300,
+                      dropdownColor: kPrimaryLightColor,
+                      items: _valueProvinceList.isNotEmpty
+                          ? _valueProvinceList
+                          : null,
+                      value: _valueProvince != ProvinceModel.empty() ||
+                              _valueProvinceList.isNotEmpty
+                          ? _valueProvince
+                          : null,
+                      onChanged: (ProvinceModel? selectedProvince) {
+                        if (selectedProvince != _valueProvince) {
+                          _valueProvince = selectedProvince!;
+                          provinceChanged();
                         }
-                      });
-                    },
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor: kPrimaryLightColor,
-                      prefixIcon: const Icon(
-                        Icons.location_city,
-                        color: kPrimaryColor,
+                      },
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        fillColor: kPrimaryLightColor,
+                        prefixIcon: const Icon(
+                          Icons.location_city,
+                          color: kPrimaryColor,
+                        ),
+                        hintText: _valueProvince.name!,
+                        border: InputBorder.none,
                       ),
-                      hintText: _valueCWT.name!,
-                      border: InputBorder.none,
                     ),
                   ),
-                ),
-                RoundedInputField(
-                  controller: _addressController,
-                  hintText: "Số nhà, toà nhà, tên đường",
-                  icon: Icons.location_on,
-                  onChanged: (value) {},
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Vui lòng điền đầy đủ thông tin';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-                CustomButtonLarge(
-                  text: "Cập Nhật Mật Khẩu",
-                  press: () {
-                    ShowModalBottomSheet.showChangePassword(context);
-                  },
-                ),
-                CustomButtonLarge(
-                  text: "Cập Nhật Thông Tin",
-                  press: () {
-                    if (_formKeyUpdate.currentState!.validate()) {
-                      onClickUpdateCustomerInfo();
-                    }
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 2.4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomButtonMedium(
-                        text: "Cập nhật SĐT",
-                        press: () {
-                          ShowModalBottomSheet.showCheckPassword(
-                              context, true);
-                        },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 2.4,
+                        vertical: kDefaultPadding / 2),
+                    child: DropdownButtonFormField<DistrictModel>(
+                      elevation: 10,
+                      menuMaxHeight: 300,
+                      dropdownColor: kPrimaryLightColor,
+                      items:
+                          _districtList.isNotEmpty ? _valueDistrictList : null,
+                      value: _valueDistrict != DistrictModel.empty() ||
+                              _valueDistrictList.isNotEmpty
+                          ? _valueDistrict
+                          : null,
+                      onChanged: (DistrictModel? selectedDistrict) {
+                        if (selectedDistrict != _valueDistrict) {
+                          _valueDistrict = selectedDistrict!;
+                          updateCWT();
+                        }
+                      },
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        fillColor: kPrimaryLightColor,
+                        prefixIcon: const Icon(
+                          Icons.location_city,
+                          color: kPrimaryColor,
+                        ),
+                        hintText: _valueDistrict.name!,
+                        border: InputBorder.none,
                       ),
-                      CustomButtonMedium(
-                        text: "Cập nhật Email",
-                        press: () {
-                          ShowModalBottomSheet.showCheckPassword(
-                              context, false);
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                Padding(padding: MediaQuery.of(context).viewInsets),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 2.4,
+                        vertical: kDefaultPadding / 2),
+                    child: DropdownButtonFormField<CWTModel>(
+                      elevation: 10,
+                      menuMaxHeight: 300,
+                      dropdownColor: kPrimaryLightColor,
+                      items: _valueCWTList.isNotEmpty ? _valueCWTList : null,
+                      value: _valueCWT != CWTModel.empty() ||
+                              _valueCWTList.isNotEmpty
+                          ? _valueCWT
+                          : null,
+                      onChanged: (CWTModel? selectedCWT) {
+                        setState(() {
+                          if (selectedCWT != _valueCWT) {
+                            _valueCWT = selectedCWT!;
+                          }
+                        });
+                      },
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(28),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        fillColor: kPrimaryLightColor,
+                        prefixIcon: const Icon(
+                          Icons.location_city,
+                          color: kPrimaryColor,
+                        ),
+                        hintText: _valueCWT.name!,
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  RoundedInputField(
+                    controller: _addressController,
+                    hintText: "Số nhà, toà nhà, tên đường",
+                    icon: Icons.location_on,
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Vui lòng điền đầy đủ thông tin';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  CustomButtonLarge(
+                    text: "Cập Nhật Mật Khẩu",
+                    press: () {
+                      ShowModalBottomSheet.showChangePassword(context);
+                    },
+                  ),
+                  CustomButtonLarge(
+                    text: "Cập Nhật Thông Tin",
+                    press: () {
+                      if (_formKeyUpdate.currentState!.validate()) {
+                        onClickUpdateCustomerInfo();
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomButtonMedium(
+                          text: "Cập nhật SĐT",
+                          press: () {
+                            ShowModalBottomSheet.showCheckPassword(
+                                context, true);
+                          },
+                        ),
+                        CustomButtonMedium(
+                          text: "Cập nhật Email",
+                          press: () {
+                            ShowModalBottomSheet.showCheckPassword(
+                                context, false);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(padding: MediaQuery.of(context).viewInsets),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
     }
   }
 
   Future<void> onClickUpdateCustomerInfo() async {
     try {
-      if(user!=null) {
+      if (user != null) {
         UpdateUserModel uU = UpdateUserModel(
             customerId: user!.id,
             address: _addressController.text,
@@ -436,7 +444,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
         final result = await UpdateUserAPI.updateCustomerInfo(uU);
         print(result);
         if (result.statusCode == 200) {
-          if(result.body == "true") {
+          if (result.body == "true") {
             DisplayToast.displaySuccessToast(
                 context, 'Đổi thông tin cá nhân thành công');
             Timer(const Duration(seconds: 2), () {
@@ -444,8 +452,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             });
-          }
-          else {
+          } else {
             DisplayToast.displayErrorToast(
                 context, 'Đổi thông tin cá nhân thất bại');
           }
@@ -453,10 +460,8 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
           DisplayToast.displayErrorToast(
               context, 'Đổi thông tin cá nhân thất bại');
         }
-      }
-      else {
-        DisplayToast.displayErrorToast(
-            context, 'Vui lòng đăng nhập');
+      } else {
+        DisplayToast.displayErrorToast(context, 'Vui lòng đăng nhập');
       }
     } catch (e) {
       DisplayToast.displayErrorToast(
@@ -584,7 +589,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   }
 
   getUserLocation() async {
-    if (user!=null) {
+    if (user != null) {
       String? address = user!.address;
       LocationModel? location =
           Provider.of<Location>(context, listen: false).location;
