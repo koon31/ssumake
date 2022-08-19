@@ -74,6 +74,7 @@ class _ModalBottomSheetUpdateUserEmailState
                         vertical: kDefaultPadding / 2,
                         horizontal: kDefaultPadding * 2.4),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ssumake/CommonFeatures/custom_button.dart';
 import 'package:ssumake/Product/detail_product.dart';
 
+import '../CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import '../Constants/color.dart';
 import '../Model/Product/product_model.dart';
 import 'counter_with_add_to_cart_btn.dart';
@@ -26,31 +28,27 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(size.height);
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: size.height,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.34),
-                  padding: EdgeInsets.only(
-                    top: size.height * 0.1,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                    bottom: kDefaultPadding*2.5,
-                  ),
-                  height: size.height-size.height*0.34,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: size.height,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: size.height * 0.34),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: kDefaultPadding,
                     ),
-                  ),
-                  child: SingleChildScrollView(
+                    height: size.height-size.height*0.34,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
+                      ),
+                    ),
                     child: Column(
                       children: <Widget>[
                         ProductColorAndSize(product: widget.product),
@@ -59,16 +57,19 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                         const SizedBox(height: kDefaultPadding / 2),
                         const CounterWithFavBtn(),
                         const SizedBox(height: kDefaultPadding / 2),
+                        CustomButtonLarge(text: "Món ngon nấu cùng", press: () {ShowModalBottomSheet.showDish(context);}),
+                        const SizedBox(height: kDefaultPadding / 2),
                         //AddToCart(product: widget.product, quantityOfProducts: quantityOfProducts, onNumberOfProductsChanged: widget.onNumberOfProductsChanged,)
                       ],
                     ),
                   ),
-                ),
-                DetailProduct(product: widget.product, cate_SubCateTitle: widget.cateSubCateTitle,)
-              ],
-            ),
-          )
-        ],
+                  DetailProduct(product: widget.product, cate_SubCateTitle: widget.cateSubCateTitle,),
+
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

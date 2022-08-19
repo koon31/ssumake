@@ -11,6 +11,7 @@ class RoundedInputField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final int? maxLength;
 
   const RoundedInputField({
     Key? key,
@@ -21,6 +22,7 @@ class RoundedInputField extends StatefulWidget {
     this.icon = Icons.person,
     this.suffixText,
     required this.onChanged,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -102,6 +104,7 @@ class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
       cursorColor: kPrimaryColor,
       enabled: widget.isEnable,
       validator: widget.validator,
+      maxLength: 6,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(6),
@@ -130,7 +133,7 @@ class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
         ),
         hintText: widget.hintText,
         border: InputBorder.none,
-        hintStyle: TextStyle(fontSize: 14),
+        hintStyle: const TextStyle(fontSize: 14),
       ),
     );
   }
