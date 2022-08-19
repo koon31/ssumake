@@ -74,7 +74,7 @@ class CustomVerifyButton extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: size.width/3.5,
-      height: height ?? size.height * 0.055,
+      height: height ?? size.height * 0.06,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
         child: customElevatedButton(),
@@ -97,10 +97,13 @@ class CustomVerifyButton extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+          ),
         ),
       ),
     );

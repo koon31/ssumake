@@ -101,27 +101,24 @@ class _ModalBottomSheetUpdateUserPhoneState
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: kDefaultPadding),
-                          child: SizedBox(
-                            width: size.width / 2.12,
-                            child: VerifyRoundedInputField(
-                              controller: _verifyController,
-                              hintText: "Xác thực SĐT",
-                              isEnable: _isEnableTextFormField,
-                              type: TextInputType.number,
-                              onChanged: (value) {},
-                              validator: (value) {
-                                if (value!.isEmpty || value.length != 6) {
-                                  return 'Vui lòng điền đầy đủ mã xác thực bao gồm 6 số';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
+                        SizedBox(
+                          width: size.width / 2.4,
+                          child: VerifyRoundedInputField(
+                            controller: _verifyController,
+                            hintText: "Xác thực SĐT",
+                            isEnable: _isEnableTextFormField,
+                            type: TextInputType.number,
+                            onChanged: (value) {},
+                            validator: (value) {
+                              if (value!.isEmpty || value.length != 6) {
+                                return 'Vui lòng điền đầy đủ mã xác thực bao gồm 6 số';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                         ),
+                        const Spacer(),
                         CustomVerifyButton(
                             text: 'Xác thực SĐT',
                             press: () async {
@@ -150,7 +147,7 @@ class _ModalBottomSheetUpdateUserPhoneState
                   ),
                   RoundedInputField(
                     controller: _confirmNewPhoneController,
-                    hintText: "Xác thực Số Điện Thoại mới",
+                    hintText: "Xác nhận Số Điện Thoại mới",
                     icon: Icons.phone,
                     type: TextInputType.phone,
                     onChanged: (value) {},
