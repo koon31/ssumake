@@ -96,10 +96,11 @@ class _RegisterBodyState extends State<RegisterBody> {
                         vertical: kDefaultPadding / 2,
                         horizontal: kDefaultPadding * 2.4),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: size.width / 2.12,
+                          width: size.width / 2.4,
                           child: VerifyRoundedInputField(
                             controller: _verifyController,
                             hintText: "Xác thực SĐT",

@@ -56,7 +56,7 @@ class OrderAPI {
                 }));
         print(response.statusCode);
         print(response.body);
-        return response.statusCode;
+        return response;
       }
     } catch (e) {
       throw Exception('Thêm order thất bại');

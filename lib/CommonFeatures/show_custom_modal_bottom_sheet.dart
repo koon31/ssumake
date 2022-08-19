@@ -7,6 +7,7 @@ import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
+import 'package:ssumake/Model/Product/modal_bottom_sheet_dish.dart';
 import 'package:ssumake/Product/detail_product_page_body.dart';
 import 'package:ssumake/User/modal_bottom_sheet_forgot_password.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_password.dart';
@@ -68,7 +69,7 @@ class ShowModalBottomSheet {
                             final result =
                             await OrderAPI.addOrder(order);
                             if (result.statusCode == 200) {
-                              if (result.body == true) {
+                              if (result.body == 'true'){
                                 Timer(const Duration(seconds: 2), () {
                                   Navigator.pop(context);
                                   showOrder(context);
@@ -77,7 +78,7 @@ class ShowModalBottomSheet {
                                 });
                               }
                               else {
-                                DisplayToast.displayErrorToast(context, result.body);
+                                DisplayToast.displaySuccessToast(context, result.body);
                               }
                             } else {
                               DisplayToast.displayErrorToast(context, 'Mua thất bại');
@@ -114,6 +115,20 @@ class ShowModalBottomSheet {
           return const Scaffold(
               backgroundColor: Colors.transparent,
               body: CustomModalBottomSheetOrder());
+        });
+  }
+
+  static showDish(BuildContext context) async {
+    showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (BuildContext contextModal) {
+          return const Scaffold(
+              backgroundColor: Colors.transparent,
+              body: CustomModalBottomSheetDish());
         });
   }
 

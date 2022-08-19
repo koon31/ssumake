@@ -25,92 +25,88 @@ class CustomModalBottomSheetCart extends StatefulWidget {
 
 class _CustomModalBottomSheetCartState
     extends State<CustomModalBottomSheetCart> {
-  late UserModel? user;
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      getLoggedUserInfo();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        titleModalBottomSheet(),
-        Expanded(
-          child: Container(
-            color: Colors.white,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                      height: 15,
-                      child: Container(
-                        color: Colors.grey[200],
-                      )),
-                  Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding,
-                        vertical: kDefaultPadding / 5),
-                    child: Column(
-                      children: [
-                        deliveryInformation(),
-                        userInformation(),
-                      ],
+    return SafeArea(
+      child: Column(
+        children: [
+          titleModalBottomSheet(),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        height: 15,
+                        child: Container(
+                          color: Colors.grey[200],
+                        )),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding,
+                          vertical: kDefaultPadding / 5),
+                      child: Column(
+                        children: [
+                          deliveryInformation(),
+                          userInformation(),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                      height: 15,
-                      child: Container(
-                        color: Colors.grey[200],
-                      )),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding,
-                        vertical: kDefaultPadding / 5),
-                    child: Column(
-                      children: [
-                        productListTitle(),
-                        productListInCart(),
-                      ],
+                    SizedBox(
+                        height: 15,
+                        child: Container(
+                          color: Colors.grey[200],
+                        )),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding,
+                          vertical: kDefaultPadding / 5),
+                      child: Column(
+                        children: [
+                          productListTitle(),
+                          productListInCart(),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                      height: 15,
-                      child: Container(
-                        color: Colors.grey[200],
-                      )),
-                  priceCalculationBuilder(),
-                  SizedBox(
-                      height: 15,
-                      child: Container(
-                        color: Colors.grey[200],
-                      )),
-                  paymentBuilder(),
-                  SizedBox(
-                      height: 15,
-                      child: Container(
-                        color: Colors.grey[200],
-                      )),
-                  deleteCartBuild(),
-                ],
+                    SizedBox(
+                        height: 15,
+                        child: Container(
+                          color: Colors.grey[200],
+                        )),
+                    priceCalculationBuilder(),
+                    SizedBox(
+                        height: 15,
+                        child: Container(
+                          color: Colors.grey[200],
+                        )),
+                    paymentBuilder(),
+                    SizedBox(
+                        height: 15,
+                        child: Container(
+                          color: Colors.grey[200],
+                        )),
+                    deleteCartBuild(),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Container titleModalBottomSheet() {
     return Container(
-      margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -151,21 +147,23 @@ class _CustomModalBottomSheetCartState
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Giao Tận Nơi', style: CustomTextStyle.custom1(context)),
-              customButtonOfModalBottomSheet('Thay Đổi', () {
-                if (user != null) {
-                  ShowModalBottomSheet.showChangeAddress(context);
-                } else {
-                  showDialog(
-                      context: context,
-                      builder: (context) => const LoginDialog());
-                }
-              })
-            ],
-          ),
+          child: Consumer<User>(builder: (context, user, child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Giao Tận Nơi', style: CustomTextStyle.custom1(context)),
+                customButtonOfModalBottomSheet('Thay Đổi', () {
+                  if (user.user!=null) {
+                    ShowModalBottomSheet.showChangeAddress(context);
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const LoginDialog());
+                  }
+                })
+              ],
+            );
+          }),
         ),
         addressInformation(),
       ],
@@ -704,8 +702,4 @@ class _CustomModalBottomSheetCartState
         scate.subCategoryName.toString();
   }
 
-  void getLoggedUserInfo() {
-    user = Provider.of<User>(context, listen: false).user;
-    print(user?.token);
-  }
 }

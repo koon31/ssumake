@@ -72,9 +72,8 @@ class CustomVerifyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
       width: size.width/3.5,
-      height: height ?? size.height * 0.06,
+      height: height ?? size.height * 0.07,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
         child: customElevatedButton(),

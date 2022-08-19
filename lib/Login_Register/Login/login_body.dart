@@ -224,19 +224,24 @@ class _LoginBodyState extends State<LoginBody> {
     try {
       if (phoneNumber.isNotEmpty && password.isNotEmpty) {
         final result = await LoginAPI.login(phoneNumber, password);
-        final UserModel? loggedInUser =
-            UserModel.fromMap(jsonDecode(result.body));
-        if (loggedInUser != null) {
-          Provider.of<User>(context, listen: false).login(loggedInUser);
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          preferences
-              .setStringList('user', [loggedInUser.token!, loggedInUser.id!]);
-          DisplayToast.displaySuccessToast(context, 'Đăng nhập thành công');
-          Timer(const Duration(seconds: 2), () {
-            // 3 seconds over, navigate to Page2.
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomePage()));
-          });
+        if (result.statusCode == 200) {
+          final UserModel? loggedInUser =
+        UserModel.fromMap(jsonDecode(result.body));
+          if (loggedInUser!=null) {
+            Provider.of<User>(context, listen: false).login(loggedInUser);
+            SharedPreferences preferences = await SharedPreferences.getInstance();
+            preferences
+                .setStringList('user', [loggedInUser.token!, loggedInUser.id!]);
+            DisplayToast.displaySuccessToast(context, 'Đăng nhập thành công');
+            Timer(const Duration(seconds: 2), () {
+              // 3 seconds over, navigate to Page2.
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            });
+          }
+          else {
+            DisplayToast.displayErrorToast(context, "Sai số điện thoại hoặc mật khẩu");
+          }
         } else {
           DisplayToast.displayErrorToast(context, 'Đăng nhập thất bại');
         }

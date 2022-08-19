@@ -75,6 +75,7 @@ class _ModalBottomSheetForgotPasswordState
                         vertical: kDefaultPadding / 2,
                         horizontal: kDefaultPadding * 2.4),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
@@ -202,7 +203,6 @@ class _ModalBottomSheetForgotPasswordState
 
   Container titleModalBottomSheet() {
     return Container(
-      margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),

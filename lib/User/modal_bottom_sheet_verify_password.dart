@@ -77,7 +77,6 @@ class _ModalBottomSheetCheckPasswordState
 
   Container titleModalBottomSheet() {
     return Container(
-      margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),

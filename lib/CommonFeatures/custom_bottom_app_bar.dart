@@ -41,6 +41,7 @@ class _CustomBottomAppBarHomePageState
     return GestureDetector(
       onTap: () {},
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: kDefaultPadding / 3),
@@ -63,15 +64,20 @@ class _CustomBottomAppBarHomePageState
                     ),
                   ],
                 ),
-                const Text(
-                  'Các sản phẩm sẽ được giao đến địa chỉ',
-                  style: TextStyle(color: kTextColor, fontSize: 13),
+                const Flexible(
+                  flex: 3,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child:  Text(
+                      'Các sản phẩm sẽ được giao đến địa chỉ',
+                      style: TextStyle(color: kTextColor, fontSize: 13),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          const Spacer(),
-          Flexible(flex: 10, child: FittedBox(fit: BoxFit.scaleDown, child: customButtonOfSnackBar(size),)),
+          Flexible(flex: 1, child: FittedBox(fit:BoxFit.scaleDown, child: customButtonOfSnackBar(size))),
         ],
       ),
     );
@@ -80,7 +86,7 @@ class _CustomBottomAppBarHomePageState
   Widget customButtonOfSnackBar(Size size) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: kDefaultPadding / 5),
-      width: size.width / 3,
+      width: size.width / 3.25,
       height: size.height / 20,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
@@ -106,21 +112,29 @@ class _CustomBottomAppBarHomePageState
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            padding: widget.buttonLabel2 < 10
-                ? const EdgeInsets.only(left: 10)
-                : const EdgeInsets.only(left: 5.25),
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.white),
-            width: 30,
-            child: Text(
-              widget.buttonLabel2.toString(),
-              style: const TextStyle(color: kPrimaryColor),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Padding(
+                padding: const EdgeInsets.all(2),
+                child: Text(
+                  widget.buttonLabel2.toString(),
+                  style: const TextStyle(color: kPrimaryColor),
+                ),
+              ),
             ),
           ),
-          Text(
-            widget.buttonLabel1.toStringAsFixed(1),
-            style: const TextStyle(
-              color: kPrimaryLightColor,
+          SizedBox(width: 1,),
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                widget.buttonLabel1.toStringAsFixed(1),
+                style: const TextStyle(
+                  color: kPrimaryLightColor,
+                ),
+              ),
             ),
           ),
           const Icon(
@@ -151,16 +165,12 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
         padding: const EdgeInsets.symmetric(
             vertical: kDefaultPadding / 2, horizontal: kDefaultPadding),
         color: kPrimaryColor,
-        height: size.height / 15,
+        height: size.height / 12,
         child: messageContent(size));
   }
 
   Widget messageContent(Size size) {
-    return Flexible(
-      flex: 5,
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Padding(
+    return Padding(
           padding: const EdgeInsets.all(0),
           child: Consumer2<ProductsInCart, DiscountList>(
               builder: (context, psInCart, discounts, child) {
@@ -181,37 +191,39 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
                           (p.price! - d.discountMoney!)
                   : psInCart.getQuantityOfProducts(p)! * p.price!;
             }
-            return Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: kDefaultPadding / 4),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "${price.toStringAsFixed(1)}VND",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ],
+            return Container(
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: kDefaultPadding / 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "${price.toStringAsFixed(1)}VND",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Flexible(flex: 2, child: customButtonOfBottomAppBarCart(size)),
-              ],
+                  const Spacer(),
+                  customButtonOfBottomAppBarCart(size),
+                ],
+              ),
             );
-          }),
-        ),
-      ),
+          },),
+
     );
   }
 
