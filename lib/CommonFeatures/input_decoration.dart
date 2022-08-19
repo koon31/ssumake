@@ -130,6 +130,7 @@ class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
         ),
         hintText: widget.hintText,
         border: InputBorder.none,
+        hintStyle: TextStyle(fontSize: 14),
       ),
     );
   }

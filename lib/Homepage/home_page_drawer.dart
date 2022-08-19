@@ -71,6 +71,7 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
                             primary: Colors.transparent, padding: EdgeInsets.zero),
                         onPressed: () {
                           if (user != null) {
+                            Navigator.pop(context);
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
                               return const WelcomePage();
@@ -139,6 +140,7 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
                               primary: Colors.transparent, padding: EdgeInsets.zero),
                           onPressed: () {
                             if (user != null) {
+                              Navigator.pop(context);
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                     return const UpdateUserPage();
@@ -189,6 +191,7 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
                               primary: Colors.transparent, padding: EdgeInsets.zero),
                           onPressed: () {
                             if (user != null) {
+                              Navigator.pop(context);
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                     return const OrderHistoryPage();

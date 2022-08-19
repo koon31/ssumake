@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:ssumake/Model/Product/sub_category_model.dart';
 
 import '../Constants/color.dart';
@@ -29,6 +30,8 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
   //List<String> categories = ["Hand bag", "Jewellery", "Footwear", "Dresses", "Cap"];
   // By default our first item will be selected
   late int selectedIndex;
+  final ItemScrollController _itemScrollController = ItemScrollController();
+  final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void initState() {
@@ -49,7 +52,7 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: SizedBox(
         height: 25,
-        child: ListView.builder(
+        child: ScrollablePositionedList.builder(
           scrollDirection: Axis.horizontal,
           itemCount: widget.subCategoriesByCategoryId != null
               ? widget.subCategoriesByCategoryId!.length
@@ -64,6 +67,8 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
                       .where((element) => element.categoryId == cate?.categoryId)
                       .toList(),
                   index),
+          itemScrollController: _itemScrollController,
+          itemPositionsListener: _itemPositionsListener,
         ),
       ),
     );
@@ -105,5 +110,6 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
 
   void onTabChange(int index) {
     selectedIndex = index;
+    _itemScrollController.scrollTo(index: index, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
   }
 }

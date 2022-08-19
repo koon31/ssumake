@@ -125,7 +125,7 @@ class _ModalBottomSheetUpdateUserEmailState
                   ),
                   RoundedInputField(
                     controller: _phoneController,
-                    hintText: "Số Điện Thoại mới",
+                    hintText: "Số Điện Thoại",
                     icon: Icons.phone,
                     type: TextInputType.phone,
                     onChanged: (value) {},
