@@ -1,16 +1,24 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ssumake/CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import 'package:ssumake/Constants/color.dart';
+import 'package:ssumake/Model/Dish/dish_detail_model.dart';
+import 'package:ssumake/Model/Dish/dish_model.dart';
+
+import 'category_model.dart';
+import 'product_model.dart';
+import 'sub_category_model.dart';
 
 class CustomModalBottomSheetDish extends StatefulWidget {
-  const CustomModalBottomSheetDish({Key? key}) : super(key: key);
+  const CustomModalBottomSheetDish({Key? key, this.dish}) : super(key: key);
+  final DishModel? dish;
 
   @override
-  State<CustomModalBottomSheetDish> createState() =>
-      _CustomModalBottomSheetDishState();
+  State<CustomModalBottomSheetDish> createState() => _CustomModalBottomSheetDishState();
 }
 
-class _CustomModalBottomSheetDishState
-    extends State<CustomModalBottomSheetDish> {
+class _CustomModalBottomSheetDishState extends State<CustomModalBottomSheetDish> {
   @override
   void initState() {
     super.initState();
@@ -19,6 +27,15 @@ class _CustomModalBottomSheetDishState
 
   @override
   Widget build(BuildContext context) {
+    print(widget.dish?.dishName);
+    print(widget.dish?.dishDescription);
+    print(widget.dish?.dishCooking);
+    for (DishDetailModel dd in widget.dish!.dishDetails!) {
+      print(dd.productName);
+      print(dd.quantity);
+      print(dd.unitName);
+    }
+    print(widget.dish?.dishName);
     return SafeArea(
       child: Column(
         children: [
@@ -28,63 +45,90 @@ class _CustomModalBottomSheetDishState
               color: Colors.white,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2, vertical: kDefaultPadding),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "MÓN THỊT THĂN BÒ SỐT RƯỢU VANG\n".toUpperCase(),
-                          style:
-                              TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "Nguyên liệu:\n",
-                          style:
-                          TextStyle(fontSize: 17, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 500-700 g Thịt Thăn Bò\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 1/2 Chén Rượu Vang\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 1 Củ Hành tây\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 2 Tép Tỏi\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 2 chén nước Sốt mì ống\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "- 2 muỗng canh Dầu ô liu\n",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "Thịt thăn bò sốt rượu vang luôn là lựa chọn hàng đầu của chị em phụ nữ. Chỉ mất 15 phút cho mỗi khâu chuẩn bị và chế biến. Bạn đã có ngay một món  thịt thăn bò chiên bổ dưỡng, thơm ngon và ấn tượng bởi hương vị của rượu vang đó.\n".toUpperCase(),
-                          style:
-                              TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "-Sơ chế nguyên liệu: băm nhỏ hành tây, tỏi đã bóc vỏ. Thăn bò sau khi được rửa sạch thái thành những lát dài, mỏng vừa ăn.\n-Đun nóng dầu trong chảo trên ngọn lửa vừa,thêm hành tây vào xào cho đến khi hành thơm và trở nên mềm hơn.\n- Cho thịt bò vào chiên cho tới khi 2 mặt vừa chín,vàng nhẹ.\n- Cho nước sốt,tỏi và rượu vang đỏ vào chảo.Giảm nhiệt xuống,để thức ăn đun sôi khoảng 10 - 15 phút.",
-                          style:
-                          TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2, vertical: kDefaultPadding),
+                  child: widget.dish != null
+                      ? RichText(
+                          text: TextSpan(
+                            children: [
+                              WidgetSpan(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding / 20,
+                                  ),
+                                  child: Text(
+                                    "${widget.dish?.dishName}\n".toUpperCase(),
+                                    style:
+                                        const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                              const WidgetSpan(
+                                child: Text(
+                                  "Nguyên liệu:\n",
+                                  style: TextStyle(fontSize: 18, color: Colors.black),
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: widget.dish?.dishDetails?.length,
+                                  itemBuilder: (context, index) 
+                                  {
+                                    ProductModel? p = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) => element.productId == widget.dish?.dishDetails?[index].productId);
+                                    SubCategoryModel? scate;
+                                    CategoryModel? cate;
+                                    if (p!=null) {
+                                      scate = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) => element.subCategoryId == p.subCategoryId);
+                                      if (scate!=null) {
+                                        cate = Provider.of<CategoryList>(context, listen: false)
+                                              .categories
+                                              .firstWhereOrNull((element) => element.categoryId == scate?.categoryId);
+                                      }
+                                    }
+                                    return Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                                    child: InkWell( onTap: () {
+                                      if (p != null && scate != null && cate != null) {
+                                        ShowModalBottomSheet.showEditProduct(
+                                            context,
+                                            p,
+                                            getSubCategoryAndCategory(
+                                                cate,
+                                                scate),
+                                            true,);
+                                      }
+                                    },
+                                      child: Text(
+                                        '- ${widget.dish?.dishDetails?[index].quantity} ${widget.dish
+                                            ?.dishDetails?[index].quantity} ${widget.dish?.dishDetails?[index]
+                                            .unitName} ${widget.dish?.dishDetails?[index].productName}\n',
+                                        style: const TextStyle(fontSize: 16, color: Colors.black),),
+                                    ),
+                                  );}
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                                  child: Text(
+                                    '- ${widget.dish?.dishDescription}',
+                                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                                  child: Text(
+                                    '- ${widget.dish?.dishCooking}',
+                                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(),
                 ),
               ),
             ),
@@ -97,8 +141,7 @@ class _CustomModalBottomSheetDishState
   Container titleModalBottomSheet() {
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         color: Colors.grey,
       ),
       child: Container(
@@ -123,10 +166,15 @@ class _CustomModalBottomSheetDishState
         ),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
       ),
     );
+  }
+
+  getSubCategoryAndCategory(CategoryModel cate, SubCategoryModel scate) {
+    return cate.categoryName.toString() +
+        '/' +
+        scate.subCategoryName.toString();
   }
 }

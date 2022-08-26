@@ -33,13 +33,12 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
     super.initState();
     _future = getLoggedAccount();
     categoriesExtended = toMapCategories();
-
   }
 
   Future<void> getLoggedAccount() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     user = preferences.getStringList('user');
-    print(user[0]);
+    print(user?[0]);
   }
 
   logout() async {
@@ -52,198 +51,223 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double statusBarHeight = MediaQuery.of(context).viewPadding.top;
     return Drawer(
-      child: SingleChildScrollView(
-        child: Column(children: [
-          FutureBuilder(
-            future: _future,
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: kDefaultPadding * 2,
-                          left: kDefaultPadding,
-                          right: kDefaultPadding),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, padding: EdgeInsets.zero),
-                        onPressed: () {
-                          if (user != null) {
-                            Navigator.pop(context);
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const WelcomePage();
-                            }));
-                            logout();
-                          } else {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const WelcomePage();
-                            }));
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: kPrimaryLightColor),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.all(kDefaultPadding / 4 * 3),
-                                child: user == null
-                                    ? Row(
-                                      children: const [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              right: kDefaultPadding / 2),
-                                          child: Icon(Icons.login, color: Colors.black,),
-                                        ),
-                                        Text('Đăng Nhập',
-                                            style: TextStyle(
+      backgroundColor: Colors.white,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(children: [
+            FutureBuilder(
+              future: _future,
+              builder: (ctx, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    children: [
+                      Visibility(
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      height: (size.height - statusBarHeight) * 0.2,
+                                      color: kPrimaryColor,
+                                    ),
+                                    Container(
+                                      height: (size.height - statusBarHeight) * 0.1,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(bottom: (size.height - statusBarHeight) * 0.025),
+                                  decoration: const BoxDecoration(
+                                    color: kPrimaryLightColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  height: size.width * 0.3,
+                                  width: size.width * 0.3,
+                                  child: const FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 200,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                                onPressed: () {
+                                  if (user != null) {
+                                    Navigator.pop(context);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return const UpdateUserPage();
+                                    }));
+                                  }
+                                },
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                        child: Row(
+                                          children: const [
+                                            Padding(
+                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                              child: Icon(
+                                                Icons.person,
                                                 color: Colors.black,
-                                                fontWeight: FontWeight.w500)),
-                                      ],
-                                    )
-                                    : Row(
-                                        children: const [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                right: kDefaultPadding / 2),
-                                            child: Icon(Icons.logout, color: Colors.black,),
-                                          ),
-                                          Text('Đăng Xuất',
+                                              ),
+                                            ),
+                                            Text(
+                                              'Thông tin cá nhân',
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500)),
-                                        ],
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      const Spacer(),
+                                      const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              const Spacer(),
-                              const Icon(Icons.arrow_forward_ios,
-                                  color: Colors.black),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: kDefaultPadding,
-                            left: kDefaultPadding,
-                            right: kDefaultPadding),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.transparent, padding: EdgeInsets.zero),
-                          onPressed: () {
-                            if (user != null) {
-                              Navigator.pop(context);
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return const UpdateUserPage();
-                                  }));
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: kPrimaryLightColor),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                                onPressed: () {
+                                  if (user != null) {
+                                    Navigator.pop(context);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return const OrderHistoryPage();
+                                    }));
+                                  }
+                                },
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
                                   child: Row(
-                                    children: const [
+                                    children: [
                                       Padding(
-                                        padding: EdgeInsets.only(
-                                            right: kDefaultPadding / 2),
-                                        child: Icon(Icons.person, color: Colors.black,),
+                                        padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                        child: Row(
+                                          children: const [
+                                            Padding(
+                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                              child: Icon(
+                                                Icons.history_edu,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text('Lịch sử đơn hàng',
+                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                          ],
+                                        ),
                                       ),
-                                      Text('Thông tin cá nhân',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500)),
+                                      const Spacer(),
+                                      const Icon(Icons.arrow_forward_ios, color: Colors.black),
                                     ],
                                   ),
                                 ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        visible: user != null,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                          onPressed: () {
+                            if (user != null) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                return const WelcomePage();
+                              }));
+                              logout();
+                            } else {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                return const WelcomePage();
+                              }));
+                            }
+                          },
+                          child: Container(
+                            decoration:
+                                BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                  child: user == null
+                                      ? Row(
+                                          children: const [
+                                            Padding(
+                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                              child: Icon(
+                                                Icons.login,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text('Đăng Nhập',
+                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                          ],
+                                        )
+                                      : Row(
+                                          children: const [
+                                            Padding(
+                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                              child: Icon(
+                                                Icons.logout,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text('Đăng Xuất',
+                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                          ],
+                                        ),
+                                ),
                                 const Spacer(),
-                                const Icon(Icons.arrow_forward_ios,
-                                    color: Colors.black),
+                                const Icon(Icons.arrow_forward_ios, color: Colors.black),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      visible: user!=null,
-                    ),
-                    Visibility(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: kDefaultPadding,
-                            left: kDefaultPadding,
-                            right: kDefaultPadding),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.transparent, padding: EdgeInsets.zero),
-                          onPressed: () {
-                            if (user != null) {
-                              Navigator.pop(context);
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return const OrderHistoryPage();
-                                  }));
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: kPrimaryLightColor),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.all(kDefaultPadding / 4 * 3),
-                                  child: Row(
-                                    children: const [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: kDefaultPadding / 2),
-                                        child: Icon(Icons.history_edu, color: Colors.black,),
-                                      ),
-                                      Text('Lịch sử đơn hàng',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                                const Icon(Icons.arrow_forward_ios,
-                                    color: Colors.black),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      visible: user!=null,
-                    ),
-                  ],
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding/2),
-            child: Divider(thickness: 2),
-          ),
-          mapCategoriesToMenuList()
-        ]),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding / 2),
+              child: Divider(thickness: 2),
+            ),
+            mapCategoriesToMenuList(),
+          ]),
+        ),
       ),
     );
   }
@@ -251,13 +275,14 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
   mapCategoriesToMenuList() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      child: ListView.builder(
+      child: ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: categoriesExtended.length,
-        itemBuilder: (context, index) => categoriesExtended.isNotEmpty
-            ? buildCategoryItem(index)
-            : const SizedBox.shrink(),
+        itemBuilder: (context, index) => categoriesExtended.isNotEmpty ? buildCategoryItem(index) : Container(),
+        separatorBuilder: (context, index) => const Divider(
+          thickness: 1,
+        ),
       ),
     );
   }
@@ -268,74 +293,57 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
 
   buildCategoryItem(int index) {
     CategoryModel cate = categoriesExtended.keys.toList()[index];
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                primary: Colors.transparent, padding: EdgeInsets.zero),
-            onPressed: () => setState(() {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () => setState(
+            () {
               categoriesExtended[cate] = !categoriesExtended[cate]!;
-            }),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: kPrimaryLightColor),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text(cate.categoryName!,
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500)),
-                  ),
-                  const Spacer(),
-                  Icon(
-                      categoriesExtended[cate]!
-                          ? Icons.arrow_left
-                          : Icons.arrow_drop_down,
-                      color: Colors.black),
-                ],
-              ),
-            ),
+            },
           ),
-          getSubCategoryMenuItem(cate).isNotEmpty
-              ? mapSubCategoriesToMenuList(
-                  cate, getSubCategoryMenuItem(cate), categoriesExtended[cate]!)
-              : const SizedBox.shrink(),
-        ],
-      ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child:
+                    Text(cate.categoryName!, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+              ),
+              const Spacer(),
+              Icon(categoriesExtended[cate]! ? Icons.arrow_left : Icons.arrow_drop_down, color: Colors.black),
+            ],
+          ),
+        ),
+        getSubCategoryMenuItem(cate).isNotEmpty
+            ? mapSubCategoriesToMenuList(cate, getSubCategoryMenuItem(cate), categoriesExtended[cate]!)
+            : Container(),
+      ],
     );
   }
 
-  mapSubCategoriesToMenuList(CategoryModel cate,
-      List<SubCategoryModel> scatesByCateId, bool isExtended) {
+  mapSubCategoriesToMenuList(CategoryModel cate, List<SubCategoryModel> scatesByCateId, bool isExtended) {
     return Visibility(
       visible: isExtended,
       child: Padding(
-        padding: const EdgeInsets.only(
-            left: kDefaultPadding, top: kDefaultPadding / 4),
-        child: ListView.builder(
+        padding: const EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding / 4),
+        child: ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: scatesByCateId.length,
           itemBuilder: (context, index) => scatesByCateId.isNotEmpty
               ? buildSubCategoryItem(cate, scatesByCateId, index)
               : const Text("No Sub Categories"),
+          separatorBuilder: (context, index) => const Divider(
+            thickness: 1,
+          ),
         ),
       ),
     );
   }
 
-  buildSubCategoryItem(
-      CategoryModel cate, List<SubCategoryModel> scates, int index) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          primary: Colors.transparent, elevation: 0, padding: EdgeInsets.zero),
-      onPressed: () {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
+  buildSubCategoryItem(CategoryModel cate, List<SubCategoryModel> scates, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return HomePage(
             category: cate,
             subCategoriesByCategoryId: scates,
@@ -345,28 +353,20 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 4),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: kPrimaryLightColor),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(scates[index].subCategoryName!,
-                    style: const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500)),
-              ),
-            ],
-          ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(scates[index].subCategoryName!,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+            ),
+          ],
         ),
       ),
     );
   }
 
   List<SubCategoryModel> getSubCategoryMenuItem(CategoryModel cate) {
-    return widget.subCategories
-        .where((element) => element.categoryId == cate.categoryId)
-        .toList();
+    return widget.subCategories.where((element) => element.categoryId == cate.categoryId).toList();
   }
 }

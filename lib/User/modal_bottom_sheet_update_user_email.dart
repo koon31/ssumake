@@ -81,7 +81,7 @@ class _ModalBottomSheetUpdateUserEmailState
                           padding:
                           const EdgeInsets.only(right: kDefaultPadding),
                           child: SizedBox(
-                            width: size.width / 2.12,
+                            width: size.width / 2.4,
                             child: VerifyRoundedInputField(
                               controller: _verifyController,
                               hintText: "Xác thực Email",

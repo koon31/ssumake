@@ -18,7 +18,6 @@ class OrderDetailHistory with ChangeNotifier{
       notifyListeners();
     }
   }
-
 }
 
 class OrderDetailModel {

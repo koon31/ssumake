@@ -22,7 +22,7 @@ class CustomDiscountTag extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
               )
             : Text(
-                '- ' + title.toString() + 'VND',
+                '- ' + title.toString() + ' VND',
                 style: const TextStyle(color: Colors.white),
               ),
       ),
