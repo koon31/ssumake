@@ -26,6 +26,7 @@ class ItemCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(kDefaultPadding),
               // For  demo we use fixed height and width
               // Now we don't need them
@@ -35,52 +36,52 @@ class ItemCard extends StatelessWidget {
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Stack(
-                children: [
-                  Hero(
-                    tag: "${product!.productId}",
-                    child: Image.network(product!.productImageURl!),
-                  ),
-                  product?.discountId != null
-                      ? Consumer<DiscountList>(
-                          builder: (context, value, child) {
+              child: Hero(
+                tag: "${product!.productId}",
+                child: Stack(
+                  children: [
+                    Image.network(product!.productImageURl!),
+                    product?.discountId != null
+                        ? Consumer<DiscountList>(
+                        builder: (context, value, child) {
                           DiscountModel? d =
-                              value.findDiscountById(product!.discountId!);
+                          value.findDiscountById(product!.discountId!);
                           return d != null
                               ? d.discountPercent != 0
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CustomDiscountTag(
-                                          title: d.discountPercent,
-                                          isPercent: true,
-                                        ),
-                                        (d.discountPercent! > 25)
-                                            ? const CustomShockPriceTag(
-                                                title: 'Giá sốc')
-                                            : const SizedBox.shrink()
-                                      ],
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CustomDiscountTag(
-                                          title: d.discountMoney,
-                                          isPercent: false,
-                                        ),
-                                        (d.discountMoney! >
-                                                (product?.price! as num) / 4)
-                                            ? const CustomShockPriceTag(
-                                                title: 'Giá sốc')
-                                            : const SizedBox.shrink()
-                                      ],
-                                    )
+                              ? Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomDiscountTag(
+                                title: d.discountPercent,
+                                isPercent: true,
+                              ),
+                              (d.discountPercent! > 25)
+                                  ? const CustomShockPriceTag(
+                                  title: 'Giá sốc')
+                                  : const SizedBox.shrink()
+                            ],
+                          )
+                              : Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomDiscountTag(
+                                title: d.discountMoney,
+                                isPercent: false,
+                              ),
+                              (d.discountMoney! >
+                                  (product?.price! as num) / 4)
+                                  ? const CustomShockPriceTag(
+                                  title: 'Giá sốc')
+                                  : const SizedBox.shrink()
+                            ],
+                          )
                               : const SizedBox.shrink();
                         })
-                      : const SizedBox.shrink(),
-                ],
+                        : const SizedBox.shrink(),
+                  ],
+                ),
               ),
             ),
           ),
