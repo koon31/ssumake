@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ssumake/API/Order_API.dart';
+import 'package:ssumake/API/order_API.dart';
 import 'package:ssumake/CommonFeatures/custom_title_style.dart';
+import 'package:ssumake/CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/order_model.dart';
 import 'package:ssumake/Model/User/user_model.dart';
@@ -44,7 +45,7 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: orderHistory.orderHistory.length,
-                  itemBuilder: (context, index) => orderBuilder(index),
+                  itemBuilder: (context, index) => orderBuilder(index, context),
                   separatorBuilder: (BuildContext context, int index) {
                     return const Divider();
                   },
@@ -60,7 +61,7 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
         });
   }
 
-  orderBuilder(int index) {
+  orderBuilder(int index, BuildContext context) {
     return Consumer2<OrderHistory, ProductList>(
         builder: (context, orderHistory, products, child) {
       String nameProductList = '';
@@ -80,26 +81,29 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
         }
       }
       print(nameProductList);
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-        child: ListTile(
-          minVerticalPadding: 0,
-          contentPadding: EdgeInsets.zero,
-          visualDensity: const VisualDensity(vertical: -4),
-          leading: const Icon(
-            Icons.delivery_dining,
-            color: Colors.black,
+      return InkWell(
+        onTap: (){ShowModalBottomSheet.showOrder(context, orderHistory.orderHistory[index]);},
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: ListTile(
+            minVerticalPadding: 0,
+            contentPadding: EdgeInsets.zero,
+            visualDensity: const VisualDensity(vertical: -4),
+            leading: const Icon(
+              Icons.delivery_dining,
+              color: Colors.black,
+            ),
+            title: Text(nameProductList,
+                style: CustomTextStyle.custom1(context),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis),
+            subtitle: Text(DateFormat("hh:mm - dd/MM/yyyy")
+                .format(orderHistory.orderHistory[index].dateCreate!)),
+            trailing: Text(
+                orderHistory.orderHistory[index].totalPrice!.toStringAsFixed(1) +
+                    ' VND',
+                style: CustomTextStyle.custom1(context)),
           ),
-          title: Text(nameProductList,
-              style: CustomTextStyle.custom1(context),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis),
-          subtitle: Text(DateFormat("hh:mm - dd/MM/yyyy")
-              .format(orderHistory.orderHistory[index].dateCreate!)),
-          trailing: Text(
-              orderHistory.orderHistory[index].totalPrice!.toStringAsFixed(1) +
-                  'VND',
-              style: CustomTextStyle.custom1(context)),
         ),
       );
     });

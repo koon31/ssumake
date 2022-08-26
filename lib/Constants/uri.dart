@@ -26,6 +26,7 @@ class URI {
   static const String GET_SUB_CATEGORY = 'api/v1/Product/GetAllSubCategoriesbyCategoryId';
   static const String GET_UNIT = 'api/v1/Product/GetAllUnit';
   static const String GET_DISCOUNT = 'api/v1/Product/GetAllDiscount';
+  static const String GET_DISH_BY_PRODUCT = 'api/v1/Dish/GetDishByProductId?Id=';
 
   static const String GET_PROVINCES = 'api/v1/Support/GetAllProvince';
   static const String GET_DISTRICTS_BY_PROVINCE =
@@ -38,4 +39,5 @@ class URI {
   //order
   static const String ADD_ORDER = 'api/v1/Order/AddOrder';
   static const String GET_ORDER = 'api/v1/Order/GetAllOrderIncludeOderDetailbyCustomerId?id=';
+
 }

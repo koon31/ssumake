@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssumake/Homepage/home_page.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/order_model.dart';
+import 'package:ssumake/Model/Dish/dish_detail_model.dart';
+import 'package:ssumake/Model/Dish/dish_model.dart';
 import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Location/district_model.dart';
 import 'package:ssumake/Model/Product/product_model.dart';
@@ -70,6 +72,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<OrderHistory>(
           create: (context) => OrderHistory(),
+        ),
+        ChangeNotifierProvider<DishList>(
+          create: (context) => DishList(),
+        ),
+        ChangeNotifierProvider<DishDetailList>(
+          create: (context) => DishDetailList(),
         ),
       ],
       child: MaterialApp(

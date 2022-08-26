@@ -14,7 +14,7 @@ class ProductDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      padding: const EdgeInsets.only(top:kDefaultPadding),
       child: product.productDescribe == null
           ? const SizedBox.shrink()
           : Text(

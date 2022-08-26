@@ -39,7 +39,7 @@ class _AddToCartState extends State<AddToCart> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             primary: kPrimaryColor),
         onPressed: () {
           if (widget.quantityOfProducts > 0) {
@@ -63,22 +63,6 @@ class _AddToCartState extends State<AddToCart> {
               print('add');
             }
           }
-          // widget.onNumberOfProductsChanged!(
-          //     provider.getNumberOfProducts());
-          //
-          // for (int i = 0;
-          // i <
-          //     provider.productsInCarts.quantityProducts
-          //         .keys.length;
-          // ++i) {
-          //   print(provider
-          //       .productsInCarts.quantityProducts.keys
-          //       .toList()[i]
-          //       .title);
-          //   print(provider
-          //       .productsInCarts.quantityProducts.values
-          //       .toList()[i]);
-          // }
           if (!isAdd) {
             if (provider.getTotalQuantityOfProducts() == 0) {
               int count = 0;
@@ -103,21 +87,24 @@ class _AddToCartState extends State<AddToCart> {
                           100)
                   : product.price!
               : product.price!;
-          return Text(
-            isAdd
-                ? widget.quantityOfProducts > 0
-                    ? (widget.quantityOfProducts * priceAfterDiscount)
-                        .toStringAsFixed(1)
-                    : ((widget.quantityOfProducts + 1) * priceAfterDiscount)
-                        .toStringAsFixed(1)
-                : widget.quantityOfProducts > 0
-                    ? (widget.quantityOfProducts * priceAfterDiscount)
-                        .toStringAsFixed(1)
-                    : "Bỏ chọn sản phẩm này".toUpperCase(),
-            style: const TextStyle(
-              fontSize: 17.5,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
+            child: Text(
+              isAdd
+                  ? widget.quantityOfProducts > 0
+                      ? (widget.quantityOfProducts * priceAfterDiscount)
+                          .toStringAsFixed(1) + ' VND'
+                      : ((widget.quantityOfProducts + 1) * priceAfterDiscount)
+                          .toStringAsFixed(1) + ' VND'
+                  : widget.quantityOfProducts > 0
+                      ? (widget.quantityOfProducts * priceAfterDiscount)
+                          .toStringAsFixed(1) + ' VND'
+                      : "Bỏ chọn sản phẩm này".toUpperCase(),
+              style: const TextStyle(
+                fontSize: 17.5,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           );
         }),

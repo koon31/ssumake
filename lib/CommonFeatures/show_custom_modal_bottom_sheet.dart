@@ -4,6 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/CommonFeatures/custom_bottom_app_bar.dart';
 import 'package:ssumake/Constants/color.dart';
+import 'package:ssumake/Model/Dish/dish_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
@@ -13,7 +14,7 @@ import 'package:ssumake/User/modal_bottom_sheet_forgot_password.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_password.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_email.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_user_phone.dart';
-import '../API/Order_API.dart';
+import '../API/order_API.dart';
 import '../CartOrder/custom_modal_bottom_sheet_cart.dart';
 import '../CartOrder/custom_modal_bottom_sheet_order.dart';
 import '../Login_Register/Login/login_dialog.dart';
@@ -72,7 +73,7 @@ class ShowModalBottomSheet {
                               if (result.body == 'true'){
                                 Timer(const Duration(seconds: 2), () {
                                   Navigator.pop(context);
-                                  showOrder(context);
+                                  showOrder(context, null);
                                   DisplayToast.displaySuccessToast(context, 'Mua thành công');
                                   psInCart.deleteCart();
                                 });
@@ -104,7 +105,7 @@ class ShowModalBottomSheet {
         });
   }
 
-  static showOrder(BuildContext context) async {
+  static showOrder(BuildContext context, OrderModel? seletedOrder) async {
     showMaterialModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -112,13 +113,13 @@ class ShowModalBottomSheet {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
-          return const Scaffold(
+          return Scaffold(
               backgroundColor: Colors.transparent,
-              body: CustomModalBottomSheetOrder());
+              body: CustomModalBottomSheetOrder(selectedOrder: seletedOrder,));
         });
   }
 
-  static showDish(BuildContext context) async {
+  static showDish(BuildContext context, DishModel? dish) async {
     showMaterialModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -126,9 +127,9 @@ class ShowModalBottomSheet {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
-          return const Scaffold(
+          return Scaffold(
               backgroundColor: Colors.transparent,
-              body: CustomModalBottomSheetDish());
+              body: CustomModalBottomSheetDish(dish: dish,),);
         });
   }
 

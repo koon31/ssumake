@@ -228,13 +228,13 @@ class _LoginBodyState extends State<LoginBody> {
           final UserModel? loggedInUser =
         UserModel.fromMap(jsonDecode(result.body));
           if (loggedInUser!=null) {
+
             Provider.of<User>(context, listen: false).login(loggedInUser);
             SharedPreferences preferences = await SharedPreferences.getInstance();
-            preferences
-                .setStringList('user', [loggedInUser.token!, loggedInUser.id!]);
+
+            preferences.setStringList('user', [loggedInUser.token!, loggedInUser.id!]);
             DisplayToast.displaySuccessToast(context, 'Đăng nhập thành công');
             Timer(const Duration(seconds: 2), () {
-              // 3 seconds over, navigate to Page2.
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const HomePage()));
             });

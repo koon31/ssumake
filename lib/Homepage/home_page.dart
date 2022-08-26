@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -29,12 +30,7 @@ import '../Model/User/user_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage(
-      {Key? key,
-      this.category,
-      this.subCategoriesByCategoryId,
-      this.subCategory})
-      : super(key: key);
+  const HomePage({Key? key, this.category, this.subCategoriesByCategoryId, this.subCategory}) : super(key: key);
 
   final CategoryModel? category;
   final List<SubCategoryModel>? subCategoriesByCategoryId;
@@ -45,6 +41,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+
   int numberOfProducts = 0;
   late final Future _futureData;
 
@@ -57,7 +54,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  loadData() async {
+  Future<void> loadData() async {
     await getAllCategories();
     await getAllSubCategories();
     await getAllUnits();
@@ -71,8 +68,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: buildAppBar(context),
       bottomNavigationBar: buildBottomAppBar(context),
-      drawer: Consumer2<CategoryList, SubCategoryList>(
-          builder: (context, cates, scates, child) {
+      drawer: Consumer2<CategoryList, SubCategoryList>(builder: (context, cates, scates, child) {
         return HomePageDrawer(
           categories: cates.categories,
           subCategories: scates.subCategories,
@@ -81,10 +77,8 @@ class HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: _futureData,
         builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return (widget.category != null &&
-                    widget.subCategoriesByCategoryId != null &&
-                    widget.subCategory != null)
+          if (snapshot.connectionState == ConnectionState.done && !snapshot.hasError) {
+            return (widget.category != null && widget.subCategoriesByCategoryId != null && widget.subCategory != null)
                 ? HomePageBody(
                     category: widget.category,
                     subCategoriesByCategoryId: widget.subCategoriesByCategoryId,
@@ -92,10 +86,15 @@ class HomePageState extends State<HomePage> {
                   )
                 : const HomePageBody();
           } else {
-            return Center(
-              child: LoadingAnimationWidget.halfTriangleDot(
-                color: kPrimaryColor,
-                size: 40,
+            return SingleChildScrollView(
+              child: SizedBox.fromSize(
+                size: MediaQuery.of(context).size,
+                child: Center(
+                  child: LoadingAnimationWidget.halfTriangleDot(
+                    color: kPrimaryColor,
+                    size: 40,
+                  ),
+                ),
               ),
             );
           }
@@ -106,23 +105,17 @@ class HomePageState extends State<HomePage> {
 
   BottomAppBar buildBottomAppBar(BuildContext context) {
     return BottomAppBar(
-      child: Consumer2<ProductsInCart, DiscountList>(
-          builder: (context, psInCart, discounts, child) {
+      child: Consumer2<ProductsInCart, DiscountList>(builder: (context, psInCart, discounts, child) {
         double price = 0;
         for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
           ProductModel p = psInCart.getProductAt(i);
           DiscountModel? d = p.discountId != null
-              ? discounts.discounts.firstWhereOrNull(
-                  (element) => element.discountId == p.discountId)
+              ? discounts.discounts.firstWhereOrNull((element) => element.discountId == p.discountId)
               : null;
           price += d != null
               ? d.discountPercent != 0
-                  ? psInCart.getQuantityOfProducts(p)! *
-                      p.price! *
-                      (100 - (d.discountPercent as num)) /
-                      100
-                  : psInCart.getQuantityOfProducts(p)! *
-                      (p.price! - d.discountMoney!)
+                  ? psInCart.getQuantityOfProducts(p)! * p.price! * (100 - (d.discountPercent as num)) / 100
+                  : psInCart.getQuantityOfProducts(p)! * (p.price! - d.discountMoney!)
               : psInCart.getQuantityOfProducts(p)! * p.price!;
         }
         return CustomBottomAppBarHomePage(
@@ -155,13 +148,13 @@ class HomePageState extends State<HomePage> {
       actions: <Widget>[
         IconButton(
             icon: const Icon(
-              Icons.scanner,
+              CupertinoIcons.barcode,
               color: kTextColor,
             ),
             onPressed: scanBarcode), // call scanBarcode  function
         IconButton(
             icon: const Icon(
-              Icons.qr_code,
+              CupertinoIcons.qrcode,
               color: kTextColor,
             ),
             onPressed: scanQRCode),
@@ -202,8 +195,7 @@ class HomePageState extends State<HomePage> {
     provider.removeAllSubCategories();
     final cates = Provider.of<CategoryList>(context, listen: false).categories;
     for (CategoryModel c in cates) {
-      final stringOfSubCategories =
-          await SubCategoryAPI.getSubCategoriesByCategoryId(c.categoryId!);
+      final stringOfSubCategories = await SubCategoryAPI.getSubCategoriesByCategoryId(c.categoryId!);
       provider.getAllSubCategoriesFromAPI(stringOfSubCategories);
     }
   }
@@ -234,14 +226,13 @@ class HomePageState extends State<HomePage> {
     var locationProvider = Provider.of<Location>(context, listen: false);
     final result = await LoginAPI.getLoggedInUser();
     final UserModel? loggedInUser = UserModel.fromMap(jsonDecode(result.body));
-    if(loggedInUser!=null) userProvider.login(loggedInUser);
+    if (loggedInUser != null) userProvider.login(loggedInUser);
     print(userProvider.user!.token);
     print(userProvider.user!.id);
     String? strLocation;
     if (userProvider.user != null) {
       if (userProvider.user!.cwtId != null && userProvider.user!.cwtId != 0) {
-        strLocation = await LocationAPI.getLocationByCWTId(
-            userProvider.user!.cwtId.toString());
+        strLocation = await LocationAPI.getLocationByCWTId(userProvider.user!.cwtId.toString());
       }
       if (strLocation != null && strLocation.isNotEmpty) {
         locationProvider.getLocationFromAPI(strLocation);
@@ -252,35 +243,26 @@ class HomePageState extends State<HomePage> {
   //scan bar code function
   Future<void> scanBarcode() async {
     try {
-      scanResult = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      scanResult = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
       debugPrint('Qrcode Found ' + scanResult.toString());
 
       CategoryModel? category;
       SubCategoryModel? subCategory;
       String? cateSubCate;
-      ProductModel? product = Provider.of<ProductList>(context, listen: false)
-          .products
-          .firstWhereOrNull((element) {
+      ProductModel? product = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) {
         return element.productId!.toString() == scanResult;
       });
       if (product != null) {
-        subCategory = Provider.of<SubCategoryList>(context, listen: false)
-            .subCategories
-            .firstWhereOrNull((element) {
+        subCategory = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) {
           return element.subCategoryId! == product.subCategoryId;
         });
         if (subCategory != null) {
-          category = Provider.of<CategoryList>(context, listen: false)
-              .categories
-              .firstWhereOrNull((element) {
+          category = Provider.of<CategoryList>(context, listen: false).categories.firstWhereOrNull((element) {
             return element.categoryId! == subCategory!.categoryId;
           });
           if (category != null) {
-            cateSubCate =
-                category.categoryName! + '/' + subCategory.subCategoryName!;
-            ShowModalBottomSheet.showEditProduct(
-                context, product, cateSubCate, true);
+            cateSubCate = category.categoryName! + '/' + subCategory.subCategoryName!;
+            ShowModalBottomSheet.showEditProduct(context, product, cateSubCate, true);
           }
         }
       } else {
@@ -290,7 +272,6 @@ class HomePageState extends State<HomePage> {
           Navigator.of(context).popUntil((_) => count++ >= 2);
           DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm');
         });
-
       }
     } on PlatformException {
       Timer(const Duration(seconds: 2), () {
@@ -306,43 +287,31 @@ class HomePageState extends State<HomePage> {
   //scan qr code function
   Future<void> scanQRCode() async {
     try {
-      scanResult = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.QR);
+      scanResult = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
       debugPrint('Qrcode Found ' + scanResult.toString());
 
       if (scanResult != null) {
         CategoryModel? category;
         SubCategoryModel? subCategory;
         String? cateSubCate;
-        ProductModel? product = Provider.of<ProductList>(context, listen: false)
-            .products
-            .firstWhereOrNull((element) {
+        ProductModel? product = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) {
           return element.productId!.toString() == scanResult;
         });
         if (product != null) {
-          subCategory = Provider.of<SubCategoryList>(context, listen: false)
-              .subCategories
-              .firstWhereOrNull((element) {
+          subCategory = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) {
             return element.subCategoryId! == product.subCategoryId;
           });
           if (subCategory != null) {
-            category = Provider.of<CategoryList>(context, listen: false)
-                .categories
-                .firstWhereOrNull((element) {
+            category = Provider.of<CategoryList>(context, listen: false).categories.firstWhereOrNull((element) {
               return element.categoryId! == subCategory!.categoryId;
             });
             if (category != null) {
-              cateSubCate =
-                  category.categoryName! + '/' + subCategory.subCategoryName!;
-              ShowModalBottomSheet.showEditProduct(
-                  context, product, cateSubCate, true);
+              cateSubCate = category.categoryName! + '/' + subCategory.subCategoryName!;
+              ShowModalBottomSheet.showEditProduct(context, product, cateSubCate, true);
             }
           }
         }
-      } else {
-
-
-      }
+      } else {}
     } on PlatformException {
       Timer(const Duration(seconds: 2), () {
         getLoggedInUser();

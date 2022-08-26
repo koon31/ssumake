@@ -110,9 +110,13 @@ class DetailProduct extends StatelessWidget {
               Expanded(
                 child: Hero(
                   tag: "${product.productId}",
-                  child: Image.network(
-                    product.productImageURl!,
-                    fit: BoxFit.fill,
+                  child: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Image.network(
+                      product.productImageURl!,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               )
