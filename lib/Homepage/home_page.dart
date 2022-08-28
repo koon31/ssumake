@@ -41,7 +41,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   int numberOfProducts = 0;
   late final Future _futureData;
 
@@ -77,7 +76,7 @@ class HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: _futureData,
         builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && !snapshot.hasError) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return (widget.category != null && widget.subCategoriesByCategoryId != null && widget.subCategory != null)
                 ? HomePageBody(
                     category: widget.category,
@@ -138,7 +137,7 @@ class HomePageState extends State<HomePage> {
         return IconButton(
           icon: const Icon(
             Icons.menu,
-            color: kTextColor,
+            color: kTextColor, size: 30,
           ),
           onPressed: () {
             Scaffold.of(context).openDrawer();
@@ -146,18 +145,15 @@ class HomePageState extends State<HomePage> {
         );
       }),
       actions: <Widget>[
-        IconButton(
-            icon: const Icon(
-              CupertinoIcons.barcode,
-              color: kTextColor,
-            ),
-            onPressed: scanBarcode), // call scanBarcode  function
-        IconButton(
-            icon: const Icon(
-              CupertinoIcons.qrcode,
-              color: kTextColor,
-            ),
-            onPressed: scanQRCode),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: InkWell(
+              child: const Icon(
+                CupertinoIcons.qrcode_viewfinder,
+                color: kTextColor, size: 30,
+              ),
+              onTap: scanBarcode),
+        ), // call scanBarcode  function
         Consumer<ProductsInCart>(
           builder: (context, value, child) {
             return Padding(
@@ -243,81 +239,35 @@ class HomePageState extends State<HomePage> {
   //scan bar code function
   Future<void> scanBarcode() async {
     try {
-      scanResult = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
-      debugPrint('Qrcode Found ' + scanResult.toString());
-
-      CategoryModel? category;
-      SubCategoryModel? subCategory;
-      String? cateSubCate;
+      scanResult = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", false, ScanMode.BARCODE);
+      print('Barcode Found ' + scanResult.toString());
       ProductModel? product = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) {
         return element.productId!.toString() == scanResult;
       });
-      if (product != null) {
-        subCategory = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) {
-          return element.subCategoryId! == product.subCategoryId;
-        });
-        if (subCategory != null) {
-          category = Provider.of<CategoryList>(context, listen: false).categories.firstWhereOrNull((element) {
-            return element.categoryId! == subCategory!.categoryId;
-          });
-          if (category != null) {
-            cateSubCate = category.categoryName! + '/' + subCategory.subCategoryName!;
-            ShowModalBottomSheet.showEditProduct(context, product, cateSubCate, true);
+      if (scanResult != "-1") {
+        setState(() async {
+          scanResult = scanResult;
+          print(scanResult);
+          if (product != null) {
+            ShowModalBottomSheet.showEditProduct(context, product, true);
+          } else {
+            Future.delayed(const Duration(seconds: 1));
+            DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm');
+            await Future.delayed(const Duration(seconds: 1, milliseconds: 500));
+            Navigator.pop(context);
           }
-        }
+        });
       } else {
-        Timer(const Duration(seconds: 2), () {
-          getLoggedInUser();
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
-          DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm');
+        setState(() {
+          scanResult = "Scan canceled";
         });
       }
+
     } on PlatformException {
       Timer(const Duration(seconds: 2), () {
-        getLoggedInUser();
         int count = 0;
         Navigator.of(context).popUntil((_) => count++ >= 2);
-        DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm');
-      });
-      scanResult = 'Lấy phiên bản điện thoại thất bại';
-    }
-  }
-
-  //scan qr code function
-  Future<void> scanQRCode() async {
-    try {
-      scanResult = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
-      debugPrint('Qrcode Found ' + scanResult.toString());
-
-      if (scanResult != null) {
-        CategoryModel? category;
-        SubCategoryModel? subCategory;
-        String? cateSubCate;
-        ProductModel? product = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) {
-          return element.productId!.toString() == scanResult;
-        });
-        if (product != null) {
-          subCategory = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) {
-            return element.subCategoryId! == product.subCategoryId;
-          });
-          if (subCategory != null) {
-            category = Provider.of<CategoryList>(context, listen: false).categories.firstWhereOrNull((element) {
-              return element.categoryId! == subCategory!.categoryId;
-            });
-            if (category != null) {
-              cateSubCate = category.categoryName! + '/' + subCategory.subCategoryName!;
-              ShowModalBottomSheet.showEditProduct(context, product, cateSubCate, true);
-            }
-          }
-        }
-      } else {}
-    } on PlatformException {
-      Timer(const Duration(seconds: 2), () {
-        getLoggedInUser();
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 2);
-        DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm');
+        DisplayToast.displayErrorToast(context, 'Không tìm thấy sản phẩm fail');
       });
       scanResult = 'Lấy phiên bản điện thoại thất bại';
     }

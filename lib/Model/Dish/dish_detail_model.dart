@@ -21,34 +21,34 @@ class DishDetailList with ChangeNotifier{
 
 class DishDetailModel {
   int? productId;
-  String? productName;
+  String? ingredient;
   String? quantity;
   String? unitName;
 
   DishDetailModel(
       {required this.productId,
-        required this.productName,
+        required this.ingredient,
         required this.quantity,
         required this.unitName,
       });
 
   DishDetailModel.empty() {
     productId = 0;
-    productName = '';
+    ingredient = '';
     quantity = '';
     unitName = '';
   }
 
   factory DishDetailModel.fromJson(Map<String, dynamic> json) => DishDetailModel(
     productId: json["productId"],
-    productName: json["productName"],
+    ingredient: json["ingredient"],
     quantity: json["quantity"],
     unitName: json["unitName"],
     );
 
   Map<String, dynamic> toJson() => {
     "productId": productId,
-    "productName": productName,
+    "ingredient": ingredient,
     "quantity": quantity,
     "unitName": unitName,
   };

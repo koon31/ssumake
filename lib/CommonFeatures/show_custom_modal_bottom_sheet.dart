@@ -8,7 +8,7 @@ import 'package:ssumake/Model/Dish/dish_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 import 'package:ssumake/Model/CartOrder/product_in_cart_model.dart';
-import 'package:ssumake/Model/Product/modal_bottom_sheet_dish.dart';
+import 'package:ssumake/Product/modal_bottom_sheet_dish.dart';
 import 'package:ssumake/Product/detail_product_page_body.dart';
 import 'package:ssumake/User/modal_bottom_sheet_forgot_password.dart';
 import 'package:ssumake/User/modal_bottom_sheet_update_password.dart';
@@ -33,17 +33,15 @@ class ShowModalBottomSheet {
         context: context,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Scaffold(
               backgroundColor: Colors.transparent,
               bottomNavigationBar: BottomAppBar(
-                child: Consumer3<User, ProductsInCart, DiscountList>(
-                    builder: (context, user, psInCart, discounts, child) {
+                child:
+                    Consumer3<User, ProductsInCart, DiscountList>(builder: (context, user, psInCart, discounts, child) {
                   double price = 0;
-                  List<OrderDetailModel> orderDetails =
-                      List<OrderDetailModel>.empty(growable: true);
+                  List<OrderDetailModel> orderDetails = List<OrderDetailModel>.empty(growable: true);
                   for (int i = 0; i < psInCart.getNumberOfProducts(); ++i) {
                     OrderDetailModel orderDetail = OrderDetailModel.empty();
                     ProductModel p = psInCart.getProductAt(i);
@@ -64,36 +62,28 @@ class ShowModalBottomSheet {
                     order.status = 0;
                     order.orderDetails = orderDetails;
                     try {
-                      if(user.user!=null){
-                        if(user.user?.address != null ) {
-                          if (user.user!.address!.isNotEmpty){
-                            final result =
-                            await OrderAPI.addOrder(order);
+                      if (user.user != null) {
+                        if (user.user?.address != null) {
+                          if (user.user!.address!.isNotEmpty) {
+                            final result = await OrderAPI.addOrder(order);
                             if (result.statusCode == 200) {
-                              if (result.body == 'true'){
+                              if (result.body == 'true') {
                                 Timer(const Duration(seconds: 2), () {
                                   Navigator.pop(context);
                                   showOrder(context, null);
                                   DisplayToast.displaySuccessToast(context, 'Mua thành công');
                                   psInCart.deleteCart();
                                 });
-                              }
-                              else {
+                              } else {
                                 DisplayToast.displaySuccessToast(context, result.body);
                               }
                             } else {
                               DisplayToast.displayErrorToast(context, 'Mua thất bại');
                             }
                           }
-                        }
-                        else {
-
-                        }
-                      }
-                      else {
-                        showDialog(
-                            context: context,
-                            builder: (context) => const LoginDialog());
+                        } else {}
+                      } else {
+                        showDialog(context: context, builder: (context) => const LoginDialog());
                       }
                     } catch (e) {
                       DisplayToast.displayErrorToast(context, 'Mua thất bại fail');
@@ -110,12 +100,13 @@ class ShowModalBottomSheet {
         context: context,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Scaffold(
               backgroundColor: Colors.transparent,
-              body: CustomModalBottomSheetOrder(selectedOrder: seletedOrder,));
+              body: CustomModalBottomSheetOrder(
+                selectedOrder: seletedOrder,
+              ));
         });
   }
 
@@ -124,12 +115,14 @@ class ShowModalBottomSheet {
         context: context,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Scaffold(
-              backgroundColor: Colors.transparent,
-              body: CustomModalBottomSheetDish(dish: dish,),);
+            backgroundColor: Colors.transparent,
+            body: CustomModalBottomSheetDish(
+              dish: dish,
+            ),
+          );
         });
   }
 
@@ -139,14 +132,10 @@ class ShowModalBottomSheet {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
-          return Wrap(children: [
-            isPhone
-                ? const ModalBottomSheetUpdateUserPhone()
-                : const ModalBottomSheetUpdateUserEmail()
-          ]);
+          return Wrap(
+              children: [isPhone ? const ModalBottomSheetUpdateUserPhone() : const ModalBottomSheetUpdateUserEmail()]);
         });
   }
 
@@ -156,11 +145,12 @@ class ShowModalBottomSheet {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Wrap(children: [
-             ModalBottomSheetCheckPassword(isPhone: isPhone,)
+            ModalBottomSheetCheckPassword(
+              isPhone: isPhone,
+            )
           ]);
         });
   }
@@ -171,8 +161,7 @@ class ShowModalBottomSheet {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Wrap(children: const [
             ModalBottomSheetChangeAddress(),
@@ -186,8 +175,7 @@ class ShowModalBottomSheet {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Wrap(children: const [
             ModalBottomSheetUpdatePassword(),
@@ -201,8 +189,7 @@ class ShowModalBottomSheet {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext contextModal) {
           return Wrap(children: const [
             ModalBottomSheetForgotPassword(),
@@ -210,30 +197,33 @@ class ShowModalBottomSheet {
         });
   }
 
-  static showEditProduct(BuildContext context, ProductModel product,
-      String cateSubCateTitle, bool isAdd) async {
+  static showEditProduct(BuildContext context, ProductModel product, bool isAdd) async {
     showMaterialModalBottomSheet(
+        expand: true,
         context: context,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
         builder: (BuildContext contextModal) {
-          return Container(
-              padding: const EdgeInsets.only(top: kDefaultPadding),
-              margin: const EdgeInsets.only(top: kDefaultPadding * 1.4),
-              decoration: const BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
+          return SafeArea(
+            child: Container(
+                padding: const EdgeInsets.only(top: kDefaultPadding),
+                decoration: const BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
                 ),
-              ),
-              child: DetailProductPageBody(
-                cateSubCateTitle: cateSubCateTitle,
-                product: product,
-                isAdd: isAdd,
-              ));
+                child: DetailProductPageBody(
+                  product: product,
+                  isAdd: isAdd,
+                )),
+          );
         });
   }
 }

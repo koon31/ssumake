@@ -12,13 +12,11 @@ import 'product_description.dart';
 
 class DetailProductPageBody extends StatefulWidget {
   final ProductModel product;
-  final String cateSubCateTitle;
   final bool isAdd;
 
   const DetailProductPageBody(
       {Key? key,
       required this.product,
-      required this.cateSubCateTitle,
       required this.isAdd /*required this.quantityOfProducts, required this.onNumberOfProductsChanged*/
       })
       : super(key: key);
@@ -40,123 +38,117 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: size.height - MediaQuery.of(context).viewPadding.top,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: size.height * 0.34),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding,
-                    ),
-                    height: size.height - size.height * 0.34,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                      child: Column(
-                        children: <Widget>[
-                          ProductQuantityAndUnit(product: widget.product),
-                          ProductDescription(product: widget.product),
-                          const CounterWithFavBtn(),
-                          //CustomButtonLarge(text: "Món ngon nấu cùng", press: () {}),
-                          FutureBuilder(
-                            future: _futureData,
-                            builder: (ctx, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.done) {
-                                return Consumer<DishList>(
-                                  builder: (context, value, child) {
-                                    return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.only(top: kDefaultPadding / 2),
-                                          child: Divider(
-                                            thickness: 2,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: kDefaultPadding, bottom: kDefaultPadding),
-                                          child: value.dishes.isNotEmpty
-                                              ? FittedBox(
-                                                  alignment: Alignment.topLeft,
-                                                  fit: BoxFit.scaleDown,
-                                                  child: Text(
-                                                    'Các món ngon ăn cùng'.toUpperCase(),
-                                                    style: Theme.of(context).textTheme.headline4?.copyWith(
-                                                          color: Colors.black,
-                                                          fontWeight: FontWeight.bold,
-                                                        ),
-                                                    maxLines: 1,
-                                                  ))
-                                              : Container(),
-                                        ),
-                                        ListView.separated(
-                                          shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: value.dishes.length,
-                                          separatorBuilder: (context, index) => const Divider(
-                                            thickness: 1,
-                                            color: Colors.white70,
-                                          ),
-                                          itemBuilder: (context, index) {
-                                            DishModel? d = value.dishes[index];
-                                            if (d != null && d.dishName != null && d.dishName!.isNotEmpty) {
-                                              return InkWell(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                                                  child: FittedBox(
-                                                    alignment: Alignment.topLeft,
-                                                    fit: BoxFit.scaleDown,
-                                                    child: Text(
-                                                      '- ${d.dishName!}',
-                                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                                            color: Colors.black,
-                                                          ),
-                                                      maxLines: 1,
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: size.height * 0.34 - MediaQuery.of(context).viewPadding.top),
+                height: size.height - size.height*0.34 - MediaQuery.of(context).viewPadding.top-AppBar().preferredSize.height,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Column(
+                    children: <Widget>[
+                      ProductQuantityAndUnit(product: widget.product),
+                      ProductDescription(product: widget.product),
+                      const CounterWithFavBtn(),
+                      //CustomButtonLarge(text: "Món ngon nấu cùng", press: () {}),
+                      FutureBuilder(
+                        future: _futureData,
+                        builder: (ctx, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return Consumer<DishList>(
+                              builder: (context, value, child) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: kDefaultPadding / 2),
+                                      child: Divider(
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: kDefaultPadding, bottom: kDefaultPadding),
+                                      child: value.dishes.isNotEmpty
+                                          ? FittedBox(
+                                              alignment: Alignment.topLeft,
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                'Các món ngon ăn cùng'.toUpperCase(),
+                                                style: Theme.of(context).textTheme.headline4?.copyWith(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
-                                                  ),
+                                                maxLines: 1,
+                                              ))
+                                          : Container(),
+                                    ),
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: value.dishes.length,
+                                      separatorBuilder: (context, index) => const Divider(
+                                        thickness: 1,
+                                        color: Colors.white70,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        DishModel? d = value.dishes[index];
+                                        if (d != null && d.dishName != null && d.dishName!.isNotEmpty) {
+                                          return InkWell(
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                                              child: FittedBox(
+                                                alignment: Alignment.topLeft,
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  '- ${d.dishName!}',
+                                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                                        color: Colors.black,
+                                                      ),
+                                                  maxLines: 1,
                                                 ),
-                                                onTap: () {
-                                                  ShowModalBottomSheet.showDish(context, d);
-                                                },
-                                              );
-                                            } else {
-                                              return Container();
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              ShowModalBottomSheet.showDish(context, d);
+                                            },
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 );
-                              } else {
-                                return Container();
-                              }
-                            },
-                          ),
-                        ],
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
                       ),
-                    ),
+                    ],
                   ),
-                  DetailProduct(
-                    product: widget.product,
-                    cate_SubCateTitle: widget.cateSubCateTitle,
-                  ),
-                ],
+                ),
               ),
-            )
-          ],
-        ),
+              DetailProduct(
+                product: widget.product,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

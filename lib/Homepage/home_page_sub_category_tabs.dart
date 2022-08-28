@@ -98,7 +98,7 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
               margin: const EdgeInsets.only(top: kDefaultPadding / 4),
               //top padding 5
               height: 2,
-              width: 30,
+              width: 50,
               color:
                   selectedIndex == index ? kPrimaryColor : Colors.transparent,
             )
@@ -110,6 +110,6 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
 
   void onTabChange(int index) {
     selectedIndex = index;
-    _itemScrollController.scrollTo(index: index, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
+    _itemScrollController.scrollTo(index: index, duration: const Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
   }
 }

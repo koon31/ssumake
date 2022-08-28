@@ -6,9 +6,9 @@ import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Model/Dish/dish_detail_model.dart';
 import 'package:ssumake/Model/Dish/dish_model.dart';
 
-import 'category_model.dart';
-import 'product_model.dart';
-import 'sub_category_model.dart';
+import '../Model/Product/category_model.dart';
+import '../Model/Product/product_model.dart';
+import '../Model/Product/sub_category_model.dart';
 
 class CustomModalBottomSheetDish extends StatefulWidget {
   const CustomModalBottomSheetDish({Key? key, this.dish}) : super(key: key);
@@ -31,7 +31,7 @@ class _CustomModalBottomSheetDishState extends State<CustomModalBottomSheetDish>
     print(widget.dish?.dishDescription);
     print(widget.dish?.dishCooking);
     for (DishDetailModel dd in widget.dish!.dishDetails!) {
-      print(dd.productName);
+      print(dd.ingredient);
       print(dd.quantity);
       print(dd.unitName);
     }
@@ -55,10 +55,12 @@ class _CustomModalBottomSheetDishState extends State<CustomModalBottomSheetDish>
                                   padding: const EdgeInsets.symmetric(
                                     vertical: kDefaultPadding / 20,
                                   ),
-                                  child: Text(
-                                    "${widget.dish?.dishName}\n".toUpperCase(),
-                                    style:
-                                        const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                                  child: Center(
+                                    child: Text(
+                                      "${widget.dish?.dishName}\n".toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -70,42 +72,45 @@ class _CustomModalBottomSheetDishState extends State<CustomModalBottomSheetDish>
                               ),
                               WidgetSpan(
                                 child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: widget.dish?.dishDetails?.length,
-                                  itemBuilder: (context, index) 
-                                  {
-                                    ProductModel? p = Provider.of<ProductList>(context, listen: false).products.firstWhereOrNull((element) => element.productId == widget.dish?.dishDetails?[index].productId);
-                                    SubCategoryModel? scate;
-                                    CategoryModel? cate;
-                                    if (p!=null) {
-                                      scate = Provider.of<SubCategoryList>(context, listen: false).subCategories.firstWhereOrNull((element) => element.subCategoryId == p.subCategoryId);
-                                      if (scate!=null) {
-                                        cate = Provider.of<CategoryList>(context, listen: false)
+                                  physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: widget.dish?.dishDetails?.length,
+                                    itemBuilder: (context, index) {
+                                      ProductModel? p = Provider.of<ProductList>(context, listen: false)
+                                          .products
+                                          .firstWhereOrNull((element) =>
+                                              element.productId == widget.dish?.dishDetails?[index].productId);
+                                      SubCategoryModel? scate;
+                                      CategoryModel? cate;
+                                      if (p != null) {
+                                        scate = Provider.of<SubCategoryList>(context, listen: false)
+                                            .subCategories
+                                            .firstWhereOrNull((element) => element.subCategoryId == p.subCategoryId);
+                                        if (scate != null) {
+                                          cate = Provider.of<CategoryList>(context, listen: false)
                                               .categories
                                               .firstWhereOrNull((element) => element.categoryId == scate?.categoryId);
+                                        }
                                       }
-                                    }
-                                    return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                                    child: InkWell( onTap: () {
-                                      if (p != null && scate != null && cate != null) {
-                                        ShowModalBottomSheet.showEditProduct(
-                                            context,
-                                            p,
-                                            getSubCategoryAndCategory(
-                                                cate,
-                                                scate),
-                                            true,);
-                                      }
-                                    },
-                                      child: Text(
-                                        '- ${widget.dish?.dishDetails?[index].quantity} ${widget.dish
-                                            ?.dishDetails?[index].quantity} ${widget.dish?.dishDetails?[index]
-                                            .unitName} ${widget.dish?.dishDetails?[index].productName}\n',
-                                        style: const TextStyle(fontSize: 16, color: Colors.black),),
-                                    ),
-                                  );}
-                                ),
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (p != null && scate != null && cate != null) {
+                                              ShowModalBottomSheet.showEditProduct(
+                                                context,
+                                                p,
+                                                true,
+                                              );
+                                            }
+                                          },
+                                          child: Text(
+                                            '- ${widget.dish?.dishDetails?[index].quantity} ${widget.dish?.dishDetails?[index].unitName} ${widget.dish?.dishDetails?[index].ingredient}\n',
+                                            style: const TextStyle(fontSize: 16, color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    }),
                               ),
                               WidgetSpan(
                                 child: Padding(
@@ -170,11 +175,5 @@ class _CustomModalBottomSheetDishState extends State<CustomModalBottomSheetDish>
         ),
       ),
     );
-  }
-
-  getSubCategoryAndCategory(CategoryModel cate, SubCategoryModel scate) {
-    return cate.categoryName.toString() +
-        '/' +
-        scate.subCategoryName.toString();
   }
 }

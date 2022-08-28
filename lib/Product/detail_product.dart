@@ -2,32 +2,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 
 import '../Constants/color.dart';
 import '../Model/Product/product_model.dart';
+import '../Model/Product/sub_category_model.dart';
 
 class DetailProduct extends StatelessWidget {
   const DetailProduct({
     Key? key,
     required this.product,
-    required this.cate_SubCateTitle,
   }) : super(key: key);
-  final String cate_SubCateTitle;
   final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(
+          horizontal: kDefaultPadding,),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            cate_SubCateTitle.isNotEmpty ? cate_SubCateTitle : "NoTitle",
-            style: const TextStyle(color: Colors.white),
-          ),
+        Consumer2<CategoryList, SubCategoryList>(builder: (context, categories, subCategories, child) {
+          SubCategoryModel sc = subCategories.subCategories.firstWhere((element) => element.subCategoryId == product.subCategoryId);
+          CategoryModel c = categories.categories.firstWhere((element) => element.categoryId == sc.categoryId);
+          return Text(
+              '${c.categoryName} / ${sc.subCategoryName}',
+              style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            );
+          },),
           Text(
             product.productName!,
             style: Theme.of(context)
@@ -35,7 +39,6 @@ class DetailProduct extends StatelessWidget {
                 .headline4
                 ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: kDefaultPadding),
           Row(
             children: <Widget>[
               Consumer<DiscountList>(builder: (context, value, child) {

@@ -21,6 +21,7 @@ class _CustomCartButtonState extends State<CustomCartButton> {
         child: Icon(
           Icons.shopping_cart,
           color: widget.color ?? Colors.white,
+          size: 30,
         ),
         badgeContent: Text(widget.numberOfProducts.toString()),
         showBadge: widget.numberOfProducts>0?true:false,

@@ -44,7 +44,7 @@ class DishModel {
   factory DishModel.fromJson(Map<String, dynamic> json) {
     List<DishDetailModel>? dDetails = List<DishDetailModel>.from(json['dishDetails'].map((x) => DishDetailModel.fromJson(x)));
     for(int i = 0; i < dDetails.length; ++i) {
-      print(dDetails[i].productName);
+      print(dDetails[i].ingredient);
     }
   return DishModel(
   dishId: json["dishId"],
