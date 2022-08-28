@@ -117,7 +117,7 @@ class HomePageBodyState extends State<HomePageBody> {
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
-                          childAspectRatio: 0.75,
+                          childAspectRatio: 2/3,
                         ),
                         itemBuilder: (context, proIndex) => ItemCard(
                           product: (scatesByCateId != null && productsInEachSubCategories != null)
@@ -130,9 +130,6 @@ class HomePageBodyState extends State<HomePageBody> {
                                   context,
                                   productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]![
                                       proIndex],
-                                  cate!.categoryName! +
-                                      // ignore: unnecessary_null_comparison
-                                      (selectedSCate != null ? '/' + selectedSCate!.subCategoryName! : ''),
                                   true);
                             }
                           },
@@ -192,7 +189,7 @@ class HomePageBodyState extends State<HomePageBody> {
     if (scatesByCateId != null) {
       selectedSCate = scatesByCateId![index];
       if (_productPageController != null) {
-        _productPageController!.animateToPage(index, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        _productPageController!.jumpToPage(index,);
       }
     }
   }
@@ -204,20 +201,4 @@ class HomePageBodyState extends State<HomePageBody> {
     totalPrice = provider.getTotalPrice();
   }
 
-// showSnackBar(){
-//   if(numberOfProducts>0) {
-//     isSnackBarShown = true;
-//     ScaffoldMessenger.of(context).showSnackBar(customSnackBar(
-//       'Hello', totalPrice.toString(), totalQuantityOfProducts.toString(), () {
-//     showModalBottomSheetCart(context);
-//   }, MediaQuery.of(context).size));
-//   }
-//   else {
-//     if(isSnackBarShown) {
-//       isSnackBarShown = false;
-//       ScaffoldMessenger.of(context).removeCurrentSnackBar();
-//     }
-//
-//   }
-// }
 }

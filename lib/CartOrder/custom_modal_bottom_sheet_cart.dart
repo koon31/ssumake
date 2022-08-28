@@ -6,9 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:ssumake/CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Login_Register/Login/login_dialog.dart';
-import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
-import 'package:ssumake/Model/Product/sub_category_model.dart';
 import '../CommonFeatures/custom_title_style.dart';
 import '../Model/Location/location_model.dart';
 import '../Model/Product/product_model.dart';
@@ -343,9 +341,9 @@ class _CustomModalBottomSheetCartState
   }
 
   productBuilder(int index) {
-    return Consumer4<ProductsInCart, CategoryList, SubCategoryList,
+    return Consumer2<ProductsInCart,
             DiscountList>(
-        builder: (context, productInCart, cates, scates, discounts, child) {
+        builder: (context, productInCart, discounts, child) {
       ProductModel product =
           productInCart.getAllProductsInCart()!.keys.toList()[index];
       DiscountModel? d = product.discountId != null
@@ -355,19 +353,9 @@ class _CustomModalBottomSheetCartState
           productInCart.getAllProductsInCart()![product] ?? 0;
       return GestureDetector(
         onTap: () {
-          SubCategoryModel scate = scates.subCategories
-              .where(
-                  (element) => element.subCategoryId == product.subCategoryId)
-              .first;
           ShowModalBottomSheet.showEditProduct(
               context,
               product,
-              getSubCategoryAndCategory(
-                  cates.categories
-                      .where(
-                          (element) => element.categoryId == scate.categoryId)
-                      .first,
-                  scate),
               false);
         },
         child: Slidable(
@@ -415,19 +403,9 @@ class _CustomModalBottomSheetCartState
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
                   onPressed: (context) {
-                    SubCategoryModel scate = scates.subCategories
-                        .where((element) =>
-                            element.subCategoryId == product.subCategoryId)
-                        .first;
                     ShowModalBottomSheet.showEditProduct(
                         context,
                         product,
-                        getSubCategoryAndCategory(
-                            cates.categories
-                                .where((element) =>
-                                    element.categoryId == scate.categoryId)
-                                .first,
-                            scate),
                         false);
                   },
                 ),
@@ -694,12 +672,6 @@ class _CustomModalBottomSheetCartState
     var provider = Provider.of<ProductsInCart>(context, listen: false);
     provider.deleteToCart(p);
     if (provider.getTotalQuantityOfProducts() == 0) Navigator.pop(context);
-  }
-
-  getSubCategoryAndCategory(CategoryModel cate, SubCategoryModel scate) {
-    return cate.categoryName.toString() +
-        '/' +
-        scate.subCategoryName.toString();
   }
 
 }

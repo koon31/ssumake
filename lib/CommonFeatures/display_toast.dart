@@ -17,7 +17,7 @@ class DisplayToast {
             width: width,
             height: height,
             animationType: AnimationType.fromRight,
-            toastDuration: const Duration(seconds: 1, milliseconds: 500))
+            toastDuration: const Duration(seconds: 1, milliseconds: 500),)
         .show(context);
   }
 
@@ -33,7 +33,7 @@ class DisplayToast {
             animationType: AnimationType.fromRight,
             width: width,
             height: height,
-            toastDuration: const Duration(seconds: 1, milliseconds: 500))
+            toastDuration: const Duration(seconds: 1, milliseconds: 500),)
         .show(context);
   }
 }
