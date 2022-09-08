@@ -266,19 +266,13 @@ class _RegisterBodyState extends State<RegisterBody> {
                   CustomButtonLarge(
                     text: "Đăng Ký",
                     press: () {
-                      bool check = false;
-                      if (_formKey.currentState!.validate()) {
-                        check = true;
-                      } else {
+                      bool check = true;
+                      if (!_formKeyPhone.currentState!.validate()) {
                         check = false;
                       }
-
-                      if (_formKeyPhone.currentState!.validate()) {
-                        check = true;
-                      } else {
+                      if (!_formKey.currentState!.validate()) {
                         check = false;
                       }
-
                       if (check) {
                         onClickRegister(
                             _passwordController.text,
@@ -356,7 +350,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                 MaterialPageRoute(builder: (context) => const LoginPage()));
           });
         } else {
-          DisplayToast.displayErrorToast(context, result.body);
+          DisplayToast.displayErrorToast(context, result.body == "Phone is already exist"?"Số điện thoại đã tồn tại":"Mã xác thực không hợp lệ");
         }
       } else {
         DisplayToast.displayErrorToast(context, 'Đăng ký thất bại');

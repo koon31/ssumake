@@ -56,91 +56,90 @@ class HomePageBodyState extends State<HomePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return HomePageBackground(
-      child: (scatesByCateId == null ||
-              selectedSCate == null ||
-              productsInEachSubCategories == null ||
-              scatesByCateId == null ||
-              cate == null ||
-              productsInSelectedSubCategory == null)
-          ? Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Padding(
-                  padding: const EdgeInsets.all(kDefaultPadding),
-                  child: Text(
-                    "Không thể tải dữ liệu",
-                    style:
-                        Theme.of(context).textTheme.headline2?.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
+    return (scatesByCateId == null ||
+            selectedSCate == null ||
+            productsInEachSubCategories == null ||
+            scatesByCateId == null ||
+            cate == null ||
+            productsInSelectedSubCategory == null)
+        ? Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Padding(
+                padding: const EdgeInsets.all(kDefaultPadding),
+                child: Text(
+                  "Không thể tải dữ liệu",
+                  style:
+                      Theme.of(context).textTheme.headline2?.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
                 ),
               ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: Text(
-                    cate != null ? cate!.categoryName! : '',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
-                  ),
+            ),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: Text(
+                  cate != null ? cate!.categoryName! : '',
+                  style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                HomePageSubCategoryTabs(
-                  key: keyTab,
-                  subCategoriesByCategoryId: scatesByCateId,
-                  selectedCategory: selectedSCate,
-                  onTabChanged: (int i) {
-                    tabChange(i);
+              ),
+              HomePageSubCategoryTabs(
+                key: keyTab,
+                subCategoriesByCategoryId: scatesByCateId,
+                selectedCategory: selectedSCate,
+                onTabChanged: (int i) {
+                  tabChange(i);
+                },
+              ),
+              Expanded(
+                child: PageView.builder(
+                  controller: _productPageController,
+                  itemCount: scatesByCateId != null ? scatesByCateId!.length : 0,
+                  onPageChanged: (pageIndex) {
+                    setState(() {
+                      keyTab.currentState?.onTabChange(pageIndex);
+                      if (selectedSCate != null && scatesByCateId != null) {
+                        selectedSCate = scatesByCateId![pageIndex];
+                      }
+                    });
                   },
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: _productPageController,
-                    itemCount: scatesByCateId != null ? scatesByCateId!.length : 0,
-                    onPageChanged: (pageIndex) {
-                      setState(() {
-                        keyTab.currentState?.onTabChange(pageIndex);
-                        if (selectedSCate != null && scatesByCateId != null) {
-                          selectedSCate = scatesByCateId![pageIndex];
-                        }
-                      });
-                    },
-                    itemBuilder: (context, subCateIndex) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                      child: GridView.builder(
-                        itemCount: (scatesByCateId != null && productsInEachSubCategories != null)
-                            ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]!
-                                .length
-                            : 0,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: kDefaultPadding,
-                          crossAxisSpacing: kDefaultPadding,
-                          childAspectRatio: 2/3,
-                        ),
-                        itemBuilder: (context, proIndex) => ItemCard(
-                          product: (scatesByCateId != null && productsInEachSubCategories != null)
-                              ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]![
-                                  proIndex]
-                              : null,
-                          press: () {
-                            if (cate != null && scatesByCateId != null && productsInEachSubCategories != null) {
-                              ShowModalBottomSheet.showEditProduct(
-                                  context,
-                                  productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]![
-                                      proIndex],
-                                  true);
-                            }
-                          },
-                        ),
+                  itemBuilder: (context, subCateIndex) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: GridView.builder(
+                      itemCount: (scatesByCateId != null && productsInEachSubCategories != null)
+                          ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]!
+                              .length
+                          : 0,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: kDefaultPadding,
+                        crossAxisSpacing: kDefaultPadding,
+                        childAspectRatio: 4 / 7,
+                      ),
+                      itemBuilder: (context, proIndex) => ItemCard(
+                        product: (scatesByCateId != null && productsInEachSubCategories != null)
+                            ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]![
+                                proIndex]
+                            : null,
+                        press: () {
+                          if (cate != null && scatesByCateId != null && productsInEachSubCategories != null) {
+                            ShowModalBottomSheet.showEditProduct(
+                              context,
+                              productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]![
+                                  proIndex],
+                              true,
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-    );
+              ),
+            ],
+          );
   }
 
   CategoryModel? getCategory() {
@@ -189,7 +188,9 @@ class HomePageBodyState extends State<HomePageBody> {
     if (scatesByCateId != null) {
       selectedSCate = scatesByCateId![index];
       if (_productPageController != null) {
-        _productPageController!.jumpToPage(index,);
+        _productPageController!.jumpToPage(
+          index,
+        );
       }
     }
   }
@@ -200,5 +201,4 @@ class HomePageBodyState extends State<HomePageBody> {
     totalQuantityOfProducts = provider.getTotalQuantityOfProducts();
     totalPrice = provider.getTotalPrice();
   }
-
 }

@@ -22,7 +22,6 @@ class _CounterWithFavBtnState extends State<CounterWithFavBtn> {
 
   @override
   void initState() {
-    // TODO: implement initState
       final DetailProductPageBody? detailProductPageBody =
           context.findAncestorWidgetOfExactType<DetailProductPageBody>();
       product = detailProductPageBody!.product;
@@ -40,12 +39,15 @@ class _CounterWithFavBtnState extends State<CounterWithFavBtn> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          CartCounter(onQuantityChange: (int quantity) {
-            setState(() {
-              quantityOfProducts = quantity;
-            });
-            print(quantity.toString() + quantityOfProducts.toString());
-          }),
+          Padding(
+            padding: const EdgeInsets.only(right: kDefaultPadding/4),
+            child: CartCounter(onQuantityChange: (int quantity) {
+              setState(() {
+                quantityOfProducts = quantity;
+              });
+              print(quantity.toString() + quantityOfProducts.toString());
+            }),
+          ),
           AddToCart(quantityOfProducts: quantityOfProducts),
           // Container(
           //   padding: const EdgeInsets.all(8),

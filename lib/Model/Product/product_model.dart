@@ -6,8 +6,9 @@ class ProductList extends ChangeNotifier {
   List<ProductModel> products = List.empty();
 
   void getAllProductsFromAPI(String str) {
-    products = List<ProductModel>.from(
-        json.decode(str).map((x) => ProductModel.fromJson(x)));
+    products = List<ProductModel>.from(json.decode(str).map((x) => ProductModel.fromJson(x)))
+        .where((element) => element.disabled == false)
+        .toList();
     notifyListeners();
   }
 
@@ -31,7 +32,7 @@ class ProductModel {
   int? subCategoryId;
   int? unitId;
   int? brandId;
-  Color? color;
+  bool? disabled;
 
   ProductModel(
       {required this.productId,
@@ -44,7 +45,8 @@ class ProductModel {
       this.discountId,
       required this.subCategoryId,
       required this.unitId,
-      this.brandId});
+      this.brandId,
+      this.disabled});
 
   ProductModel.empty() {
     productId = 0;
@@ -55,20 +57,23 @@ class ProductModel {
     price = 0;
     quantity = 0;
     subCategoryId = 0;
+    disabled = false;
   }
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-      productId: json["productId"],
-      productName: json["productName"],
-      productCode: json["productCode"],
-      productDescribe: json["productDescribe"],
-      productImageURl: json["productImageURl"],
-      price: json["price"].toDouble(),
-      quantity: json["quantity"],
-      discountId: json["discountId"],
-      subCategoryId: json["subCategoryId"],
-      unitId: json["unitId"],
-      brandId: json["brandId"]);
+        productId: json["productId"],
+        productName: json["productName"],
+        productCode: json["productCode"],
+        productDescribe: json["productDescribe"],
+        productImageURl: json["productImageURl"],
+        price: json["price"].toDouble(),
+        quantity: json["quantity"],
+        discountId: json["discountId"],
+        subCategoryId: json["subCategoryId"],
+        unitId: json["unitId"],
+        brandId: json["brandId"],
+        disabled: json["disabled"],
+      );
 
   Map<String, dynamic> toJson() => {
         "productId": productId,
@@ -81,6 +86,7 @@ class ProductModel {
         "discountId": discountId,
         "subCategoryId": subCategoryId,
         "unitId": unitId,
-        "brandId": brandId
+        "brandId": brandId,
+        "disabled": disabled,
       };
 }

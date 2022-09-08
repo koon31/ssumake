@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Model/User/change_password.dart';
 import 'package:ssumake/User/update_user_page.dart';
 
@@ -195,7 +194,7 @@ class _ModalBottomSheetUpdatePasswordState
         final result = await UpdateUserAPI.changePassword(user);
         //print(result.body);
         if (result.statusCode == 200) {
-          if (result.body == 'true') {
+          if (result.body == "\"true\"") {
             int count = 0;
             Navigator.of(context).popUntil((_) => count++ >= 3);
             Navigator.push(context,
@@ -206,7 +205,7 @@ class _ModalBottomSheetUpdatePasswordState
                 context, 'Đổi mật khẩu thành công');
           }
           else {
-            DisplayToast.displayErrorToast(context, result.body);
+            DisplayToast.displayErrorToast(context, "Sai mật khẩu");
           }
         }
         else {

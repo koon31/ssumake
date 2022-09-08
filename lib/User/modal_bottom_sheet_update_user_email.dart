@@ -223,7 +223,7 @@ class _ModalBottomSheetUpdateUserEmailState
               context, 'Đổi email thành công');
         }
         else {
-          DisplayToast.displayErrorToast(context, result.body);
+          DisplayToast.displayErrorToast(context, "Email đã tồn tại");
         }
       } else {
         DisplayToast.displayErrorToast(context, 'Đổi email thất bại');

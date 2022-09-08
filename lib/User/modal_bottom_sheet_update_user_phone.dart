@@ -236,7 +236,7 @@ class _ModalBottomSheetUpdateUserPhoneState
               context, 'Đổi số điện thoại thành công');
         }
         else {
-          DisplayToast.displayErrorToast(context, result.body);
+          DisplayToast.displayErrorToast(context, "Đổi số điện thoại thất bại");
         }
       } else {
         DisplayToast.displayErrorToast(context, 'Đổi số điện thoại thất bại');
@@ -262,7 +262,7 @@ class _ModalBottomSheetUpdateUserPhoneState
             return true;
           }
           else {
-            DisplayToast.displayErrorToast(context, result.body);
+            DisplayToast.displayErrorToast(context, "Số điện thoại không tồn tại");
             return false;
           }
         } else {

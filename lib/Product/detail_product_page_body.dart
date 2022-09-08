@@ -56,8 +56,7 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                     topRight: Radius.circular(24),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       ProductQuantityAndUnit(product: widget.product),
@@ -68,8 +67,7 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                         future: _futureData,
                         builder: (ctx, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            return Consumer<DishList>(
-                              builder: (context, value, child) {
+                            List<DishModel> dishes = Provider.of<DishList>(context, listen: false).dishes;
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -81,7 +79,7 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: kDefaultPadding, bottom: kDefaultPadding),
-                                      child: value.dishes.isNotEmpty
+                                      child: dishes.isNotEmpty
                                           ? FittedBox(
                                               alignment: Alignment.topLeft,
                                               fit: BoxFit.scaleDown,
@@ -98,13 +96,13 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                                     ListView.separated(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: value.dishes.length,
+                                      itemCount: dishes.length,
                                       separatorBuilder: (context, index) => const Divider(
                                         thickness: 1,
                                         color: Colors.white70,
                                       ),
                                       itemBuilder: (context, index) {
-                                        DishModel? d = value.dishes[index];
+                                        DishModel? d = dishes[index];
                                         if (d != null && d.dishName != null && d.dishName!.isNotEmpty) {
                                           return InkWell(
                                             child: Padding(
@@ -132,8 +130,7 @@ class DetailProductPageBodyState extends State<DetailProductPageBody> {
                                     ),
                                   ],
                                 );
-                              },
-                            );
+
                           } else {
                             return Container();
                           }

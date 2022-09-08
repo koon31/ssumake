@@ -34,80 +34,88 @@ class _AddToCartState extends State<AddToCart> {
   Widget build(BuildContext context) {
     var provider = Provider.of<ProductsInCart>(context);
     print(widget.quantityOfProducts);
-    return SizedBox(
-      height: 45,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            primary: kPrimaryColor),
-        onPressed: () {
-          if (widget.quantityOfProducts > 0) {
-            if (!provider.isContainInCart(product)) {
-              provider.addToCart(product, widget.quantityOfProducts);
-              print('add');
+    return Flexible(
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              primary: kPrimaryColor),
+          onPressed: () {
+            if (widget.quantityOfProducts > 0) {
+              if (!provider.isContainInCart(product)) {
+                provider.addToCart(product, widget.quantityOfProducts);
+                print('add');
+              } else {
+                provider.updateToCart(product, widget.quantityOfProducts);
+                print(widget.quantityOfProducts);
+                print('update');
+              }
             } else {
-              provider.updateToCart(product, widget.quantityOfProducts);
-              print(widget.quantityOfProducts);
-              print('update');
+              print('delete');
+              print(product.productName! +
+                  ' ' +
+                  widget.quantityOfProducts.toString());
+              if (provider.isContainInCart(product)) {
+                provider.deleteToCart(product);
+              } else {
+                provider.addToCart(product, widget.quantityOfProducts + 1);
+                print('add');
+              }
             }
-          } else {
-            print('delete');
-            print(product.productName! +
-                ' ' +
-                widget.quantityOfProducts.toString());
-            if (provider.isContainInCart(product)) {
-              provider.deleteToCart(product);
-            } else {
-              provider.addToCart(product, widget.quantityOfProducts + 1);
-              print('add');
-            }
-          }
-          if (!isAdd) {
-            if (provider.getTotalQuantityOfProducts() == 0) {
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
+            if (!isAdd) {
+              if (provider.getTotalQuantityOfProducts() == 0) {
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              } else {
+                Navigator.pop(context);
+              }
             } else {
               Navigator.pop(context);
             }
-          } else {
-            Navigator.pop(context);
-          }
-        },
-        child: Consumer<DiscountList>(builder: (context, value, child) {
-          DiscountModel? d = product.discountId != null
-              ? value.findDiscountById(product.discountId!)
-              : null;
-          double priceAfterDiscount = product.discountId != null
-              ? d != null
-                  ? d.discountPercent == 0
-                      ? (product.price! - (d.discountMoney as num))
-                      : (product.price! *
-                          (100 - (d.discountPercent as num)) /
-                          100)
-                  : product.price!
-              : product.price!;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
-            child: Text(
-              isAdd
+          },
+          child: Consumer<DiscountList>(builder: (context, value, child) {
+            DiscountModel? d = product.discountId != null
+                ? value.findDiscountById(product.discountId!)
+                : null;
+            double priceAfterDiscount = product.discountId != null
+                ? d != null
+                    ? d.discountPercent == 0
+                        ? (product.price! - (d.discountMoney as num))
+                        : (product.price! *
+                            (100 - (d.discountPercent as num)) /
+                            100)
+                    : product.price!
+                : product.price!;
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/2, vertical: isAdd
                   ? widget.quantityOfProducts > 0
-                      ? (widget.quantityOfProducts * priceAfterDiscount)
-                          .toStringAsFixed(1) + ' VND'
-                      : ((widget.quantityOfProducts + 1) * priceAfterDiscount)
-                          .toStringAsFixed(1) + ' VND'
+                  ? kDefaultPadding/2
+                  : kDefaultPadding/2
                   : widget.quantityOfProducts > 0
-                      ? (widget.quantityOfProducts * priceAfterDiscount)
-                          .toStringAsFixed(1) + ' VND'
-                      : "Bỏ chọn sản phẩm này".toUpperCase(),
-              style: const TextStyle(
-                fontSize: 17.5,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                  ? kDefaultPadding/2
+                  : kDefaultPadding/5*3.5),
+              child: Text(
+                isAdd
+                    ? widget.quantityOfProducts > 0
+                        ? (widget.quantityOfProducts * priceAfterDiscount)
+                            .toStringAsFixed(1) + ' VND'
+                        : ((widget.quantityOfProducts + 1) * priceAfterDiscount)
+                            .toStringAsFixed(1) + ' VND'
+                    : widget.quantityOfProducts > 0
+                        ? (widget.quantityOfProducts * priceAfterDiscount)
+                            .toStringAsFixed(1) + ' VND'
+                        : "Bỏ chọn sản phẩm này".toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

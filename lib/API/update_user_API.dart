@@ -40,7 +40,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Đổi số điện thoại thất bại');
+      print('Đổi số điện thoại thất bại');
     }
   }
 
@@ -71,7 +71,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Đổi Email thất bại');
+      print('Đổi Email thất bại');
     }
   }
 
@@ -102,7 +102,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Đổi Password thất bại');
+      print('Đổi Password thất bại');
     }
   }
 
@@ -133,7 +133,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Đổi Password thất bại');
+       print('Đổi mật khẩu thất bại');
     }
   }
 
@@ -167,7 +167,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Đổi thông tin thất bại');
+      print('Đổi thông tin thất bại');
     }
   }
 
@@ -184,7 +184,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Lấy mã xác thực thất bại fail');
+      print('Lấy mã xác thực thất bại fail');
     }
   }
 
@@ -219,7 +219,7 @@ class UpdateUserAPI {
         return response;
       }
     } catch (e) {
-      throw Exception('Không thể đổi thông tin');
+      print('Không thể đổi thông tin');
     }
   }
 }
