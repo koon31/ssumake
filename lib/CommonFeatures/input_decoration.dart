@@ -33,8 +33,7 @@ class _RoundedInputFieldState extends State<RoundedInputField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
       child: TextFormField(
         controller: widget.controller,
         keyboardType: widget.type,
@@ -42,18 +41,10 @@ class _RoundedInputFieldState extends State<RoundedInputField> {
         cursorColor: kPrimaryColor,
         validator: widget.validator,
         decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
           filled: true,
           fillColor: kPrimaryLightColor,
           prefixIcon: Icon(
@@ -90,8 +81,7 @@ class VerifyRoundedInputField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VerifyRoundedInputField> createState() =>
-      _VerifyRoundedInputFieldState();
+  State<VerifyRoundedInputField> createState() => _VerifyRoundedInputFieldState();
 }
 
 class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
@@ -110,21 +100,11 @@ class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
         LengthLimitingTextInputFormatter(6),
       ],
       decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide.none),
-        disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide.none),
-        errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide.none),
-        focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+        disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
         filled: true,
         fillColor: kPrimaryLightColor,
         prefixIcon: Icon(
@@ -134,6 +114,7 @@ class _VerifyRoundedInputFieldState extends State<VerifyRoundedInputField> {
         hintText: widget.hintText,
         border: InputBorder.none,
         hintStyle: const TextStyle(fontSize: 14),
+        counterText: '',
       ),
     );
   }
@@ -164,26 +145,17 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
       child: TextFormField(
         controller: widget.controller,
         obscureText: _isObscure,
         onChanged: widget.onChanged,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-              borderSide: BorderSide.none),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
+          focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
           filled: true,
           fillColor: kPrimaryLightColor,
           hintText: widget.isConfirm ? "Nhập lại mật khẩu" : "Mật khẩu",

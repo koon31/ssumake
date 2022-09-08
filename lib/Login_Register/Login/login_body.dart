@@ -247,7 +247,7 @@ class _LoginBodyState extends State<LoginBody> {
         }
       }
     } catch (e) {
-      DisplayToast.displayErrorToast(context, 'Đăng nhập thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Có vấn đề về đăng nhập');
     }
   }
 }

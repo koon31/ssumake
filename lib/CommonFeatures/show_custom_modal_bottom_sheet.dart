@@ -68,17 +68,21 @@ class ShowModalBottomSheet {
                             final result = await OrderAPI.addOrder(order);
                             if (result.statusCode == 200) {
                               if (result.body == 'true') {
-                                Timer(const Duration(seconds: 2), () {
-                                  Navigator.pop(context);
-                                  showOrder(context, null);
-                                  DisplayToast.displaySuccessToast(context, 'Mua thành công');
-                                  psInCart.deleteCart();
-                                });
+                                Navigator.pop(context);
+
+                                showOrder(context, null);
+                                psInCart.deleteCart();
+                                DisplayToast.displaySuccessToast(context, 'Mua thành công');
+                                await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
                               } else {
                                 DisplayToast.displaySuccessToast(context, result.body);
+                                await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
+                                Navigator.pop(context);
                               }
                             } else {
                               DisplayToast.displayErrorToast(context, 'Mua thất bại');
+                              await Future.delayed(const Duration(seconds: 2, milliseconds: 500));
+                              Navigator.pop(context);
                             }
                           }
                         } else {}
@@ -104,8 +108,10 @@ class ShowModalBottomSheet {
         builder: (BuildContext contextModal) {
           return Scaffold(
               backgroundColor: Colors.transparent,
-              body: CustomModalBottomSheetOrder(
-                selectedOrder: seletedOrder,
+              body: SafeArea(
+                child: CustomModalBottomSheetOrder(
+                  selectedOrder: seletedOrder,
+                ),
               ));
         });
   }

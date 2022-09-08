@@ -6,6 +6,7 @@ import 'package:ssumake/Model/Product/category_model.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 
 import '../Constants/color.dart';
+import '../Constants/global_var.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/Product/sub_category_model.dart';
 
@@ -24,20 +25,22 @@ class DetailProduct extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-        Consumer2<CategoryList, SubCategoryList>(builder: (context, categories, subCategories, child) {
-          SubCategoryModel sc = subCategories.subCategories.firstWhere((element) => element.subCategoryId == product.subCategoryId);
-          CategoryModel c = categories.categories.firstWhere((element) => element.categoryId == sc.categoryId);
-          return Text(
-              '${c.categoryName} / ${sc.subCategoryName}',
-              style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-            );
-          },),
+        SingleChildScrollView(
+          child: Consumer2<CategoryList, SubCategoryList>(builder: (context, categories, subCategories, child) {
+            SubCategoryModel sc = subCategories.subCategories.firstWhere((element) => element.subCategoryId == product.subCategoryId);
+            CategoryModel c = categories.categories.firstWhere((element) => element.categoryId == sc.categoryId);
+            return Text(
+                '${c.categoryName} / ${sc.subCategoryName}',
+                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              );
+            },),
+        ),
           Text(
-            product.productName!,
+            product.productName!, maxLines: 2,
             style: Theme.of(context)
                 .textTheme
-                .headline4
-                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                .headline5
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold,),
           ),
           Row(
             children: <Widget>[
@@ -56,19 +59,19 @@ class DetailProduct extends StatelessWidget {
                                   fontWeight: FontWeight.bold)),
                       product.discountId == null || d == null
                           ? TextSpan(
-                              text: product.price!.toStringAsFixed(1) + "VND",
+                              text: formatter.format(product.price!) + " VND",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline4
+                                  .headline5
                                   ?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                             )
                           : TextSpan(
-                              text: product.price!.toStringAsFixed(1) + "VND\n",
+                              text: formatter.format(product.price!) + " VND\n",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline4
+                                  .headline5
                                   ?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
@@ -77,27 +80,27 @@ class DetailProduct extends StatelessWidget {
                       d != null
                           ? d.discountPercent == 0
                               ? TextSpan(
-                                  text: (product.price! -
-                                              (d.discountMoney as num))
-                                          .toStringAsFixed(1) +
+                                  text: formatter.format((product.price! -
+                                      (d.discountMoney as num)))
+                                           +
                                       "VND",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline4
+                                      .headline5
                                       ?.copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                 )
                               : TextSpan(
-                                  text: (product.price! *
-                                              (100 -
-                                                  (d.discountPercent as num)) /
-                                              100)
-                                      .toStringAsFixed(1) +
+                                  text: formatter.format((product.price! *
+                                      (100 -
+                                          (d.discountPercent as num)) /
+                                      100))
+                                       +
                                       "VND",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline4
+                                      .headline5
                                       ?.copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),

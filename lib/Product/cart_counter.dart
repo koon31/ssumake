@@ -44,7 +44,7 @@ class _CartCounterState extends State<CartCounter> {
                   widget.onQuantityChange!(quantityOfProductsInCart);
                 });
               }
-            } else {
+            } else if(quantityOfProductsInCart > 0) {
               setState(() {
                 quantityOfProductsInCart--;
                 widget.onQuantityChange!(quantityOfProductsInCart);

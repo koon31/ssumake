@@ -82,7 +82,7 @@ class _ModalBottomSheetForgotPasswordState
                           padding:
                               const EdgeInsets.only(right: kDefaultPadding),
                           child: SizedBox(
-                            width: size.width / 2.12,
+                            width: size.width / 2.4,
                             child: VerifyRoundedInputField(
                               controller: _verifyController,
                               hintText: "Xác thực SĐT",
@@ -270,7 +270,7 @@ class _ModalBottomSheetForgotPasswordState
               context, 'Lấy mã xác thực thành công');
           return true;
         } else {
-          DisplayToast.displayErrorToast(context, result.body);
+          DisplayToast.displayErrorToast(context, result.body=="The phone number does not belong to any account"?'Số điện thoại không tồn tại':'Có lỗi xảy ra khi xác thực');
           return false;
         }
       } else {

@@ -54,6 +54,8 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
         height: 25,
         child: ScrollablePositionedList.builder(
           scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          initialScrollIndex: selectedIndex>2?selectedIndex-2:0,
           itemCount: widget.subCategoriesByCategoryId != null
               ? widget.subCategoriesByCategoryId!.length
               : scates
@@ -85,7 +87,7 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               scBuilder[index].subCategoryName!,
@@ -96,7 +98,6 @@ class HomePageSubCategoryTabsState extends State<HomePageSubCategoryTabs> {
             ),
             Container(
               margin: const EdgeInsets.only(top: kDefaultPadding / 4),
-              //top padding 5
               height: 2,
               width: 50,
               color:

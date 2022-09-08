@@ -66,7 +66,7 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
         builder: (context, orderHistory, products, child) {
       String nameProductList = '';
       List<OrderDetailModel> orderDetails =
-          orderHistory.orderHistory[index].orderDetails!.toList();
+          orderHistory.orderHistory.reversed.toList()[index].orderDetails!.toList();
       for (OrderDetailModel od in orderDetails) {
         ProductModel product = products.products
             .firstWhere((element) => element.productId == od.productId);
@@ -82,7 +82,7 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
       }
       print(nameProductList);
       return InkWell(
-        onTap: (){ShowModalBottomSheet.showOrder(context, orderHistory.orderHistory[index]);},
+        onTap: (){ShowModalBottomSheet.showOrder(context, orderHistory.orderHistory.reversed.toList()[index]);},
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: ListTile(
@@ -98,9 +98,9 @@ class _OrderHistoryBodyState extends State<OrderHistoryBody> {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis),
             subtitle: Text(DateFormat("hh:mm - dd/MM/yyyy")
-                .format(orderHistory.orderHistory[index].dateCreate!)),
+                .format(orderHistory.orderHistory.reversed.toList()[index].dateCreate!)),
             trailing: Text(
-                orderHistory.orderHistory[index].totalPrice!.toStringAsFixed(1) +
+                orderHistory.orderHistory.reversed.toList()[index].totalPrice!.toStringAsFixed(1) +
                     ' VND',
                 style: CustomTextStyle.custom1(context)),
           ),

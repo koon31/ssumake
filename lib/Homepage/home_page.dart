@@ -12,6 +12,7 @@ import 'package:ssumake/API/category_subCategory_unit_discount_API.dart';
 import 'package:ssumake/API/location_API.dart';
 import 'package:ssumake/API/login_API.dart';
 import 'package:ssumake/CommonFeatures/custom_cart_button.dart';
+import 'package:ssumake/Homepage/home_page_background.dart';
 import 'package:ssumake/Homepage/home_page_body.dart';
 import 'package:ssumake/Homepage/home_page_drawer.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
@@ -28,6 +29,9 @@ import '../Model/Product/product_model.dart';
 import '../Model/Product/sub_category_model.dart';
 import '../Model/User/user_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
+
+int categoryDefault = 4;
+int subCategoryDefault = 18;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, this.category, this.subCategoriesByCategoryId, this.subCategory}) : super(key: key);
@@ -64,40 +68,54 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
-      bottomNavigationBar: buildBottomAppBar(context),
-      drawer: Consumer2<CategoryList, SubCategoryList>(builder: (context, cates, scates, child) {
-        return HomePageDrawer(
-          categories: cates.categories,
-          subCategories: scates.subCategories,
-        );
-      }),
-      body: FutureBuilder(
-        future: _futureData,
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return (widget.category != null && widget.subCategoriesByCategoryId != null && widget.subCategory != null)
-                ? HomePageBody(
-                    category: widget.category,
-                    subCategoriesByCategoryId: widget.subCategoriesByCategoryId,
-                    selectedSubCategory: widget.subCategory,
-                  )
-                : const HomePageBody();
-          } else {
-            return SingleChildScrollView(
-              child: SizedBox.fromSize(
-                size: MediaQuery.of(context).size,
-                child: Center(
-                  child: LoadingAnimationWidget.halfTriangleDot(
-                    color: kPrimaryColor,
-                    size: 40,
+    return HomePageBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: buildAppBar(context),
+        bottomNavigationBar: buildBottomAppBar(context),
+        drawer: Consumer2<CategoryList, SubCategoryList>(builder: (context, cates, scates, child) {
+          return HomePageDrawer(
+            categories: cates.categories,
+            subCategories: scates.subCategories,
+          );
+        }),
+        body: FutureBuilder(
+          future: _futureData,
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              print(Provider.of<CategoryList>(context).categories.firstOrNull?.categoryName);
+              return (widget.category != null && widget.subCategoriesByCategoryId != null && widget.subCategory != null)
+                  ? HomePageBody(
+                      category: widget.category,
+                      subCategoriesByCategoryId: widget.subCategoriesByCategoryId,
+                      selectedSubCategory: widget.subCategory,
+                    )
+                  : Consumer2<CategoryList, SubCategoryList>(
+                      builder: (context, cates, scates, child) {
+                        return HomePageBody(
+                          // category: cates.categories.firstWhereOrNull((element) => categoryDefault == element.categoryId),
+                          // selectedSubCategory: scates.subCategories
+                          //     .firstWhereOrNull((element) => element.subCategoryId == subCategoryDefault),
+                          // subCategoriesByCategoryId:
+                          //     scates.subCategories.where((element) => element.categoryId == categoryDefault).toList(),
+                        );
+                      },
+                    );
+            } else {
+              return SingleChildScrollView(
+                child: SizedBox.fromSize(
+                  size: MediaQuery.of(context).size,
+                  child: Center(
+                    child: LoadingAnimationWidget.halfTriangleDot(
+                      color: kPrimaryColor,
+                      size: 40,
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -131,13 +149,14 @@ class HomePageState extends State<HomePage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0x6FFFFFFF),
       elevation: 0,
       leading: Builder(builder: (BuildContext context) {
         return IconButton(
           icon: const Icon(
             Icons.menu,
-            color: kTextColor, size: 30,
+            color: kTextColor,
+            size: 30,
           ),
           onPressed: () {
             Scaffold.of(context).openDrawer();
@@ -150,7 +169,8 @@ class HomePageState extends State<HomePage> {
           child: InkWell(
               child: const Icon(
                 CupertinoIcons.qrcode_viewfinder,
-                color: kTextColor, size: 30,
+                color: kTextColor,
+                size: 30,
               ),
               onTap: scanBarcode),
         ), // call scanBarcode  function
@@ -262,7 +282,6 @@ class HomePageState extends State<HomePage> {
           scanResult = "Scan canceled";
         });
       }
-
     } on PlatformException {
       Timer(const Duration(seconds: 2), () {
         int count = 0;

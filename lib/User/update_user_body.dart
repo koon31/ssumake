@@ -209,15 +209,17 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                                         color: kPrimaryColor,
                                       ),
                                     ),
-                                    FittedBox(
-                                      child: Text(
-                                        value.user!.email!,
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 17),
-                                      ),
+                                    Expanded(
+                                      child: value.user!.email!.isNotEmpty?FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          value.user!.email!,maxLines: 1,
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 17,),
+                                        ),
+                                      ):Container(),
                                     ),
-                                    const Spacer(),
                                     const VerticalDivider(
                                         thickness: 1, color: Colors.grey),
                                     const FittedBox(

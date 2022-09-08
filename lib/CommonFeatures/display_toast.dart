@@ -10,7 +10,7 @@ class DisplayToast {
     double height = MediaQuery.of(context).size.height * 0.1;
     MotionToast.error(
             title: const Text(
-              'Error',
+              'Lỗi',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             description: Text(message),
@@ -26,14 +26,14 @@ class DisplayToast {
     double height = MediaQuery.of(context).size.height * 0.1;
     MotionToast.success(
             title: const Text(
-              'Success',
+              'Thành công',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             description: Text(message),
             animationType: AnimationType.fromRight,
             width: width,
             height: height,
-            toastDuration: const Duration(seconds: 1, milliseconds: 500),)
+            toastDuration: const Duration(seconds: 2),)
         .show(context);
   }
 }

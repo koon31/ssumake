@@ -16,12 +16,10 @@ class CustomModalBottomSheetOrder extends StatefulWidget {
   final OrderModel? selectedOrder;
 
   @override
-  State<CustomModalBottomSheetOrder> createState() =>
-      _CustomModalBottomSheetOrderState();
+  State<CustomModalBottomSheetOrder> createState() => _CustomModalBottomSheetOrderState();
 }
 
-class _CustomModalBottomSheetOrderState
-    extends State<CustomModalBottomSheetOrder> {
+class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrder> {
   late final Future _futureData;
 
   @override
@@ -35,160 +33,152 @@ class _CustomModalBottomSheetOrderState
     return FutureBuilder(
         future: _futureData,
         builder: (ctx, snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
-      return Column(
-        children: [
-          titleModalBottomSheet(),
-          Consumer2<User, Location>(builder: (context, user, location, child) {
-            return Expanded(
-              child: Container(
-                color: Colors.white,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          height: 15,
-                          child: Container(
-                            color: Colors.grey[200],
-                          )),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20)),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding,
-                            vertical: kDefaultPadding / 5),
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              children: [
+                titleModalBottomSheet(),
+                Consumer3<User, Location, OrderHistory>(builder: (context, user, location, orderHistory, child) {
+                  OrderModel od;
+                  if (widget.selectedOrder != null) {
+                    od = widget.selectedOrder!;
+                  } else {
+                    od = orderHistory.orderHistory
+                        .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
+                  }
+                  String odStatus = od.status == -1
+                      ? 'Đơn bị huỷ'
+                      : od.status == 0
+                          ? "Đang chờ duyệt"
+                          : od.status == 1
+                              ? "Đã Duyệt"
+                              : od.status == 2
+                                  ? "Xác nhận"
+                                  : od.status == 3
+                                      ? "Đã thanh toán"
+                                      : "Không xác định";
+                  return Expanded(
+                    child: Container(
+                      color: Colors.white,
+                      child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            deliveryInformation(),
-                            userInformation(),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: kDefaultPadding / 4,
-                            horizontal: kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                            SizedBox(
+                                height: 15,
+                                child: Container(
+                                  color: Colors.grey[200],
+                                )),
+                            Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding, vertical: kDefaultPadding / 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  deliveryInformation(),
+                                  userInformation(),
+                                ],
+                              ),
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: kDefaultPadding / 4),
-                              child: Text('Giao đến',
-                                  style: Theme.of(context).textTheme.titleMedium),
-                            ),
-                            Text(
-                              user.user!.address!+', ' + location.location!.cwt! + ', ' + location.location!.district! + ', ' + location.location!.province!,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(fontSize: 13),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: kDefaultPadding),
-                        child: Divider(color: Colors.grey, thickness: 1),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: kDefaultPadding / 4,
-                            horizontal: kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: kDefaultPadding / 2),
-                              child: Text('Trạng thái thanh toán',
-                                  style: Theme.of(context).textTheme.titleLarge),
-                            ),
-                            Row(
-                              children: [
-                                const Padding(
-                                  padding:
-                                      EdgeInsets.only(right: kDefaultPadding),
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: kDefaultPadding / 4),
+                                    child: Text('Giao đến', style: Theme.of(context).textTheme.titleMedium),
                                   ),
-                                ),
-                                Text('Đã thanh toán',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium),
-                              ],
+                                  Text(
+                                    user.user!.address! +
+                                        ', ' +
+                                        location.location!.cwt! +
+                                        ', ' +
+                                        location.location!.district! +
+                                        ', ' +
+                                        location.location!.province!,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: kDefaultPadding),
-                        child: Divider(color: Colors.grey, thickness: 1),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: kDefaultPadding / 4,
-                            left: kDefaultPadding, right: kDefaultPadding, bottom: kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: kDefaultPadding),
+                              child: Divider(color: Colors.grey, thickness: 1),
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: kDefaultPadding / 2),
-                              child: Text('Mã Đơn Hàng',
-                                  style: Theme.of(context).textTheme.titleLarge),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: kDefaultPadding / 2),
+                                    child: Text('Trạng thái đơn hàng', style: Theme.of(context).textTheme.titleLarge),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: kDefaultPadding),
+                                        child: odStatus == 'Đã thanh toán'
+                                            ? const Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                              )
+                                            : const Icon(
+                                                Icons.error,
+                                                color: Colors.red,
+                                              ),
+                                      ),
+                                      Text(odStatus, style: Theme.of(context).textTheme.titleMedium),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text('MD564DLKHO2D54694',
-                                style:
-                                Theme.of(context).textTheme.titleMedium),
+                            SizedBox(
+                                height: 15,
+                                child: Container(
+                                  color: Colors.grey[200],
+                                )),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding, vertical: kDefaultPadding / 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  productListTitle(),
+                                  productListInOrder(),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                                height: 15,
+                                child: Container(
+                                  color: Colors.grey[200],
+                                )),
+                            priceCalculationBuilder(),
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: 15,
-                          child: Container(
-                            color: Colors.grey[200],
-                          )),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding,
-                            vertical: kDefaultPadding / 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            productListTitle(),
-                            productListInCart(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                          height: 15,
-                          child: Container(
-                            color: Colors.grey[200],
-                          )),
-                      priceCalculationBuilder(),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  );
+                }),
+              ],
             );
-          }),
-        ],
-      );}
-        else {
-         return Container();
-      }
-      }
-    );
+          } else {
+            return Container();
+          }
+        });
   }
 
   Container titleModalBottomSheet() {
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         color: Colors.grey,
       ),
       child: Container(
@@ -213,8 +203,7 @@ class _CustomModalBottomSheetOrderState
         ),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
       ),
     );
@@ -223,68 +212,53 @@ class _CustomModalBottomSheetOrderState
   deliveryInformation() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-      child:
-          Text('Thông tin đơn hàng', style: CustomTextStyle.custom1(context)),
+      child: Text('Thông tin đơn hàng', style: CustomTextStyle.custom1(context)),
     );
   }
 
   userInformation() {
     return Consumer<User>(builder: (context, value, child) {
       return Padding(
-        padding: const EdgeInsets.only(
-            bottom: kDefaultPadding / 4 * 3, top: kDefaultPadding / 4),
+        padding: const EdgeInsets.only(bottom: kDefaultPadding / 4 * 3, top: kDefaultPadding / 4),
         child: IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: Container(
-                  decoration: DottedDecoration(
-                      shape: Shape.line,
-                      linePosition: LinePosition.bottom,
-                      color: Colors.grey),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding:
-                          EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                          child: Text('Tên người nhận'),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                          child: Text(
-                            value.user!.fullname!,
-                          ),
-                        ),
-                      ]),
+                  decoration:
+                      DottedDecoration(shape: Shape.line, linePosition: LinePosition.bottom, color: Colors.grey),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                      child: Text('Tên người nhận'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                      child: Text(
+                        value.user!.fullname!,
+                      ),
+                    ),
+                  ]),
                 ),
               ),
               const VerticalDivider(color: Colors.grey, thickness: 1),
               Expanded(
                 child: Container(
-                  decoration: DottedDecoration(
-                      shape: Shape.line,
-                      linePosition: LinePosition.bottom,
-                      color: Colors.grey),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding:
-                          EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-                          child: Text('Số điện thoại'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: kDefaultPadding / 4,
-                              bottom: kDefaultPadding / 2),
-                          child: Text(
-                            value.user!.phoneNumber!,
-                          ),
-                        ),
-                      ]),
+                  decoration:
+                      DottedDecoration(shape: Shape.line, linePosition: LinePosition.bottom, color: Colors.grey),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
+                      child: Text('Số điện thoại'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: kDefaultPadding / 4, bottom: kDefaultPadding / 2),
+                      child: Text(
+                        value.user!.phoneNumber!,
+                      ),
+                    ),
+                  ]),
                 ),
               ),
             ],
@@ -296,19 +270,19 @@ class _CustomModalBottomSheetOrderState
 
   productListTitle() {
     return Padding(
-      padding: const EdgeInsets.only(top: kDefaultPadding/4*3),
-      child: Text('Các sản phẩm đã chọn',
-          style: CustomTextStyle.custom1(context)),
+      padding: const EdgeInsets.only(top: kDefaultPadding / 4 * 3),
+      child: Text('Các sản phẩm đã chọn', style: CustomTextStyle.custom1(context)),
     );
   }
 
-  productListInCart() {
+  productListInOrder() {
     return Consumer<OrderHistory>(builder: (context, value, child) {
       OrderModel od;
       if (widget.selectedOrder != null) {
         od = widget.selectedOrder!;
       } else {
-        od = value.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
+        od = value.orderHistory
+            .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
       }
       return ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
@@ -320,17 +294,17 @@ class _CustomModalBottomSheetOrderState
   }
 
   productBuilder(int index) {
-    return Consumer3<OrderHistory, UnitList,
-            ProductList>(
-        builder: (context, orderHistory, units, products, child) {
-          OrderModel od;
-          if (widget.selectedOrder != null) {
-            od = widget.selectedOrder!;
-          } else {
-            od = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
-          }
-          ProductModel? product = products.products.firstWhereOrNull((element) => element.productId == od.orderDetails![index].productId);
-          UnitModel? unit = units.units.firstWhereOrNull((element) => element.unitId == product!.unitId);
+    return Consumer3<OrderHistory, UnitList, ProductList>(builder: (context, orderHistory, units, products, child) {
+      OrderModel od;
+      if (widget.selectedOrder != null) {
+        od = widget.selectedOrder!;
+      } else {
+        od = orderHistory.orderHistory
+            .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
+      }
+      ProductModel? product =
+          products.products.firstWhereOrNull((element) => element.productId == od.orderDetails![index].productId);
+      UnitModel? unit = units.units.firstWhereOrNull((element) => element.unitId == product!.unitId);
       return ListTile(
         minVerticalPadding: 0,
         contentPadding: EdgeInsets.zero,
@@ -344,27 +318,24 @@ class _CustomModalBottomSheetOrderState
   }
 
   priceCalculationBuilder() {
-    return Consumer<OrderHistory>(
-        builder: (context, orderHistory, child) {
-          OrderModel order;
-          if (widget.selectedOrder != null) {
-            order = widget.selectedOrder!;
-          } else {
-            order = orderHistory.orderHistory.reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!)?element:last);
-          }
+    return Consumer<OrderHistory>(builder: (context, orderHistory, child) {
+      OrderModel order;
+      if (widget.selectedOrder != null) {
+        order = widget.selectedOrder!;
+      } else {
+        order = orderHistory.orderHistory
+            .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
+      }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-                left: kDefaultPadding,
-                top: kDefaultPadding / 4 * 3,
-                bottom: kDefaultPadding / 4),
+            padding:
+                const EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding / 4 * 3, bottom: kDefaultPadding / 4),
             child: Text('Tổng cộng', style: CustomTextStyle.custom1(context)),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+            padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [const Text('Thành tiền'), Text("${order.totalPrice?.toStringAsFixed(1)}VND")],
@@ -375,8 +346,7 @@ class _CustomModalBottomSheetOrderState
             child: Divider(color: Colors.grey, thickness: 1),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+            padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -402,7 +372,10 @@ class _CustomModalBottomSheetOrderState
                   'Số tiền phải thanh toán',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(order.totalPrice! >= 50000 ? "${order.totalPrice?.toStringAsFixed(1)}VND" : "${(order.totalPrice! + 10000).toStringAsFixed(1)}VND",
+                Text(
+                    order.totalPrice! >= 50000
+                        ? "${order.totalPrice?.toStringAsFixed(1)}VND"
+                        : "${(order.totalPrice! + 10000).toStringAsFixed(1)}VND",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
@@ -412,8 +385,7 @@ class _CustomModalBottomSheetOrderState
             child: Divider(color: Colors.grey, thickness: 1),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
+            padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
             child: Row(
               children: const [
                 Padding(
@@ -441,16 +413,11 @@ class _CustomModalBottomSheetOrderState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(
-              left: kDefaultPadding,
-              top: kDefaultPadding / 4 * 3,
-              bottom: kDefaultPadding / 4),
+          padding: EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding / 4 * 3, bottom: kDefaultPadding / 4),
           child: Text('Thanh Toán'),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(
-              vertical: kDefaultPadding / 4,
-              horizontal: kDefaultPadding),
+          padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -479,10 +446,10 @@ class _CustomModalBottomSheetOrderState
       ],
     );
   }
+
   getAllOrderHistory() async {
     UserModel? user = Provider.of<User>(context, listen: false).user;
-    final String? stringOfOrderHistory =
-    await OrderAPI.getOrderHistory(user!.id!);
+    final String? stringOfOrderHistory = await OrderAPI.getOrderHistory(user!.id!);
     var provider = Provider.of<OrderHistory>(context, listen: false);
     provider.removeAllOrderHistory();
     if (stringOfOrderHistory != null && stringOfOrderHistory.isNotEmpty) {
