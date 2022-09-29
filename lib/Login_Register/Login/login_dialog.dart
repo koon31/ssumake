@@ -32,9 +32,8 @@ class _LoginDialogState extends State<LoginDialog> {
     return Dialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0)), //this right here
-        child: SizedBox(
-          height: size.width * 0.8,
-          width: size.width * 0.8,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 400, minHeight: 300),
           child: Form(
             key: loginDialogFormKey,
             child: Column(

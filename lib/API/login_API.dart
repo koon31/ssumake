@@ -17,7 +17,7 @@ class LoginAPI {
           deviceId != null &&
           deviceId.isNotEmpty) {
         return await http.post(
-            Uri.parse(URI.BASE_URI + URI.USER_LOGIN + "?namePage=customerpage"),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.USER_LOGIN + "?namePage=customerpage"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             },
@@ -55,7 +55,7 @@ class LoginAPI {
         print(user[0]);
         print(user[1]);
         var response = await http.get(
-            Uri.parse(URI.BASE_URI + URI.GET_LOGGED_IN_USER + user[1]),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_LOGGED_IN_USER + user[1]),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Accept': 'application/json',

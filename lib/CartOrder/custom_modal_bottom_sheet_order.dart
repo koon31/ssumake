@@ -1,14 +1,13 @@
-import 'package:collection/collection.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ssumake/CartOrder/products_in_order_builder.dart';
 import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Model/CartOrder/order_model.dart';
 import '../API/order_API.dart';
 import '../CommonFeatures/custom_title_style.dart';
+import '../Constants/global_var.dart';
 import '../Model/Location/location_model.dart';
-import '../Model/Product/product_model.dart';
-import '../Model/Product/unit_model.dart';
 import '../Model/User/user_model.dart';
 
 class CustomModalBottomSheetOrder extends StatefulWidget {
@@ -151,7 +150,7 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   productListTitle(),
-                                  productListInOrder(),
+                                  ProductsInOrderBuilder(selectedOrder: widget.selectedOrder),
                                 ],
                               ),
                             ),
@@ -275,48 +274,6 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
     );
   }
 
-  productListInOrder() {
-    return Consumer<OrderHistory>(builder: (context, value, child) {
-      OrderModel od;
-      if (widget.selectedOrder != null) {
-        od = widget.selectedOrder!;
-      } else {
-        od = value.orderHistory
-            .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
-      }
-      return ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: od.orderDetails!.length,
-          itemBuilder: (context, index) => productBuilder(index));
-    });
-  }
-
-  productBuilder(int index) {
-    return Consumer3<OrderHistory, UnitList, ProductList>(builder: (context, orderHistory, units, products, child) {
-      OrderModel od;
-      if (widget.selectedOrder != null) {
-        od = widget.selectedOrder!;
-      } else {
-        od = orderHistory.orderHistory
-            .reduce((last, element) => element.dateCreate!.isAfter(last.dateCreate!) ? element : last);
-      }
-      ProductModel? product =
-          products.products.firstWhereOrNull((element) => element.productId == od.orderDetails![index].productId);
-      UnitModel? unit = units.units.firstWhereOrNull((element) => element.unitId == product!.unitId);
-      return ListTile(
-        minVerticalPadding: 0,
-        contentPadding: EdgeInsets.zero,
-        visualDensity: const VisualDensity(vertical: -4),
-        leading: Text("${od.orderDetails![index].quantity}", style: CustomTextStyle.custom1(context)),
-        title: Text("${product!.productName}"),
-        subtitle: Text("${unit!.name}"),
-        trailing: Text("${product.price?.toStringAsFixed(1)}VND"),
-      );
-    });
-  }
-
   priceCalculationBuilder() {
     return Consumer<OrderHistory>(builder: (context, orderHistory, child) {
       OrderModel order;
@@ -338,7 +295,7 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
             padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 4, horizontal: kDefaultPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text('Thành tiền'), Text("${order.totalPrice?.toStringAsFixed(1)}VND")],
+              children: [const Text('Thành tiền'), Text("${formatter.format(order.totalPrice!)} VND")],
             ),
           ),
           const Padding(
@@ -351,7 +308,7 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Phí vận chuyển'),
-                Text(order.totalPrice! < 50000 ? "10.000VND" : "0VND"),
+                Text(order.totalPrice! < 50000 ? "10.000 VND" : "0 VND"),
               ],
             ),
           ),
@@ -374,8 +331,8 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
                 ),
                 Text(
                     order.totalPrice! >= 50000
-                        ? "${order.totalPrice?.toStringAsFixed(1)}VND"
-                        : "${(order.totalPrice! + 10000).toStringAsFixed(1)}VND",
+                        ? "${formatter.format(order.totalPrice)} VND"
+                        : "${formatter.format((order.totalPrice! + 10000))} VND",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
@@ -455,6 +412,5 @@ class _CustomModalBottomSheetOrderState extends State<CustomModalBottomSheetOrde
     if (stringOfOrderHistory != null && stringOfOrderHistory.isNotEmpty) {
       provider.getAllOrderHistoryFromAPI(stringOfOrderHistory);
     }
-    print(provider.orderHistory.first.totalPrice);
   }
 }

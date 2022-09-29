@@ -40,16 +40,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   final _addressController = TextEditingController();
 
   //Dropdown menu Location
-  List<DropdownMenuItem<ProvinceModel>> _valueProvinceList =
-      List<DropdownMenuItem<ProvinceModel>>.empty();
+  List<DropdownMenuItem<ProvinceModel>> _valueProvinceList = List<DropdownMenuItem<ProvinceModel>>.empty();
   List<ProvinceModel> _provinceList = List<ProvinceModel>.empty();
 
-  List<DropdownMenuItem<DistrictModel>> _valueDistrictList =
-      List<DropdownMenuItem<DistrictModel>>.empty();
+  List<DropdownMenuItem<DistrictModel>> _valueDistrictList = List<DropdownMenuItem<DistrictModel>>.empty();
   List<DistrictModel> _districtList = List<DistrictModel>.empty();
 
-  List<DropdownMenuItem<CWTModel>> _valueCWTList =
-      List<DropdownMenuItem<CWTModel>>.empty();
+  List<DropdownMenuItem<CWTModel>> _valueCWTList = List<DropdownMenuItem<CWTModel>>.empty();
   List<CWTModel> _cwtList = List<CWTModel>.empty();
 
   //Location list
@@ -124,18 +121,16 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                                 size: 200,
                                 color: kPrimaryColor,
                               ),
-                            ),),
+                            ),
+                          ),
                         ],
                       ),
                       GestureDetector(
-                        onTap: () => ShowModalBottomSheet.showCheckPassword(
-                            context, true),
-                        child:
-                            Consumer<User>(builder: (context, value, child) {
+                        onTap: () => ShowModalBottomSheet.showCheckPassword(context, true),
+                        child: Consumer<User>(builder: (context, value, child) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding * 2.4,
-                                vertical: kDefaultPadding / 2),
+                                horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
                             child: Container(
                               height: size.height * 0.06,
                               decoration: BoxDecoration(
@@ -146,13 +141,11 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                                 borderRadius: BorderRadius.circular(28),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kDefaultPadding / 5 * 3),
+                                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 5 * 3),
                                 child: IntrinsicHeight(
                                   child: Row(children: [
                                     const Padding(
-                                      padding: EdgeInsets.only(
-                                          right: kDefaultPadding / 5 * 3),
+                                      padding: EdgeInsets.only(right: kDefaultPadding / 5 * 3),
                                       child: Icon(
                                         Icons.phone,
                                         color: kPrimaryColor,
@@ -160,16 +153,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                                     ),
                                     Text(
                                       value.user!.phoneNumber!,
-                                      style: const TextStyle(
-                                          color: Colors.grey, fontSize: 17),
+                                      style: const TextStyle(color: Colors.grey, fontSize: 17),
                                     ),
                                     const Spacer(),
-                                    const VerticalDivider(
-                                        thickness: 1, color: Colors.grey),
+                                    const VerticalDivider(thickness: 1, color: Colors.grey),
                                     const Text(
                                       'Đổi SĐT',
-                                      style: TextStyle(
-                                          color: kPrimaryColor, fontSize: 17),
+                                      style: TextStyle(color: kPrimaryColor, fontSize: 17),
                                     ),
                                   ]),
                                 ),
@@ -179,14 +169,11 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                         }),
                       ),
                       GestureDetector(
-                        onTap: () => ShowModalBottomSheet.showCheckPassword(
-                            context, false),
-                        child:
-                            Consumer<User>(builder: (context, value, child) {
+                        onTap: () => ShowModalBottomSheet.showCheckPassword(context, false),
+                        child: Consumer<User>(builder: (context, value, child) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding * 2.4,
-                                vertical: kDefaultPadding / 2),
+                                horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
                             child: Container(
                               height: size.height * 0.06,
                               decoration: BoxDecoration(
@@ -197,38 +184,38 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                                 borderRadius: BorderRadius.circular(28),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kDefaultPadding / 5 * 3),
+                                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding / 5 * 3),
                                 child: IntrinsicHeight(
                                   child: Row(children: [
                                     const Padding(
-                                      padding: EdgeInsets.only(
-                                          right: kDefaultPadding / 5 * 3),
+                                      padding: EdgeInsets.only(right: kDefaultPadding / 5 * 3),
                                       child: Icon(
                                         Icons.email,
                                         color: kPrimaryColor,
                                       ),
                                     ),
                                     Expanded(
-                                      child: value.user!.email!.isNotEmpty?FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          value.user!.email!,maxLines: 1,
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 17,),
-                                        ),
-                                      ):Container(),
+                                      child: value.user!.email!.isNotEmpty
+                                          ? FittedBox(
+                                              alignment: Alignment.centerLeft,
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                value.user!.email!,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 17,
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
                                     ),
-                                    const VerticalDivider(
-                                        thickness: 1, color: Colors.grey),
+                                    const VerticalDivider(thickness: 1, color: Colors.grey),
                                     const FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: Text(
                                         'Đổi Email',
-                                        style: TextStyle(
-                                            color: kPrimaryColor,
-                                            fontSize: 15),
+                                        style: TextStyle(color: kPrimaryColor, fontSize: 15),
                                       ),
                                     ),
                                   ]),
@@ -250,8 +237,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 2.4),
+                        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2.4),
                         child: Row(
                           children: <Widget>[
                             for (var gender in Gender.values)
@@ -274,18 +260,14 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 2.4,
-                            vertical: kDefaultPadding / 2),
+                            horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
                         child: DropdownButtonFormField<ProvinceModel>(
                           elevation: 10,
                           isDense: true,
                           menuMaxHeight: 300,
                           dropdownColor: kPrimaryLightColor,
-                          items: _valueProvinceList.isNotEmpty
-                              ? _valueProvinceList
-                              : null,
-                          value: _valueProvince != ProvinceModel.empty() ||
-                                  _valueProvinceList.isNotEmpty
+                          items: _valueProvinceList.isNotEmpty ? _valueProvinceList : null,
+                          value: _valueProvince != ProvinceModel.empty() || _valueProvinceList.isNotEmpty
                               ? _valueProvince
                               : null,
                           onChanged: (ProvinceModel? selectedProvince) {
@@ -296,17 +278,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                           },
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             filled: true,
                             fillColor: kPrimaryLightColor,
                             prefixIcon: const Icon(
@@ -320,17 +298,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 2.4,
-                            vertical: kDefaultPadding / 2),
+                            horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
                         child: DropdownButtonFormField<DistrictModel>(
                           elevation: 10,
                           menuMaxHeight: 300,
                           dropdownColor: kPrimaryLightColor,
-                          items: _districtList.isNotEmpty
-                              ? _valueDistrictList
-                              : null,
-                          value: _valueDistrict != DistrictModel.empty() ||
-                                  _valueDistrictList.isNotEmpty
+                          items: _districtList.isNotEmpty ? _valueDistrictList : null,
+                          value: _valueDistrict != DistrictModel.empty() || _valueDistrictList.isNotEmpty
                               ? _valueDistrict
                               : null,
                           onChanged: (DistrictModel? selectedDistrict) {
@@ -341,17 +315,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                           },
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             filled: true,
                             fillColor: kPrimaryLightColor,
                             prefixIcon: const Icon(
@@ -365,18 +335,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 2.4,
-                            vertical: kDefaultPadding / 2),
+                            horizontal: kDefaultPadding * 2.4, vertical: kDefaultPadding / 2),
                         child: DropdownButtonFormField<CWTModel>(
                           elevation: 10,
                           menuMaxHeight: 300,
                           dropdownColor: kPrimaryLightColor,
-                          items:
-                              _valueCWTList.isNotEmpty ? _valueCWTList : null,
-                          value: _valueCWT != CWTModel.empty() ||
-                                  _valueCWTList.isNotEmpty
-                              ? _valueCWT
-                              : null,
+                          items: _valueCWTList.isNotEmpty ? _valueCWTList : null,
+                          value: _valueCWT != CWTModel.empty() || _valueCWTList.isNotEmpty ? _valueCWT : null,
                           onChanged: (CWTModel? selectedCWT) {
                             setState(() {
                               if (selectedCWT != _valueCWT) {
@@ -386,17 +351,13 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                           },
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(28),
-                                borderSide: BorderSide.none),
+                                borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
                             filled: true,
                             fillColor: kPrimaryLightColor,
                             prefixIcon: const Icon(
@@ -436,23 +397,20 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 2),
+                        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding * 2),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomButtonMedium(
                               text: "Cập nhật SĐT",
                               press: () {
-                                ShowModalBottomSheet.showCheckPassword(
-                                    context, true);
+                                ShowModalBottomSheet.showCheckPassword(context, true);
                               },
                             ),
                             CustomButtonMedium(
                               text: "Cập nhật Email",
                               press: () {
-                                ShowModalBottomSheet.showCheckPassword(
-                                    context, false);
+                                ShowModalBottomSheet.showCheckPassword(context, false);
                               },
                             ),
                           ],
@@ -485,27 +443,23 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
         print(result);
         if (result.statusCode == 200) {
           if (result.body == "true") {
-            DisplayToast.displaySuccessToast(
-                context, 'Đổi thông tin cá nhân thành công');
+            DisplayToast.displaySuccessToast(context, 'Đổi thông tin cá nhân thành công');
             Timer(const Duration(seconds: 2), () {
               getLoggedInUser();
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             });
           } else {
-            DisplayToast.displayErrorToast(
-                context, 'Đổi thông tin cá nhân thất bại');
+            DisplayToast.displayErrorToast(context, 'Đổi thông tin cá nhân thất bại');
           }
         } else {
-          DisplayToast.displayErrorToast(
-              context, 'Đổi thông tin cá nhân thất bại');
+          DisplayToast.displayErrorToast(context, 'Đổi thông tin cá nhân thất bại');
         }
       } else {
         DisplayToast.displayErrorToast(context, 'Vui lòng đăng nhập');
       }
     } catch (e) {
-      DisplayToast.displayErrorToast(
-          context, 'Đổi thông tin cá nhân thất bại fail');
+      DisplayToast.displayErrorToast(context, 'Đổi thông tin cá nhân thất bại fail');
     }
   }
 
@@ -524,8 +478,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
     try {
       if (_valueDistrict != DistrictModel.empty()) {
         var provider = Provider.of<CWTList>(context, listen: false);
-        String? stringCWTs = await CWTAPI
-            .getCWTsByDistrictId(_valueDistrict.districtId.toString());
+        String? stringCWTs = await CWTAPI.getCWTsByDistrictId(_valueDistrict.districtId.toString());
         if (stringCWTs != null) {
           provider.removeAllCWTs();
           provider.getAllCWTsFromAPI(stringCWTs);
@@ -555,8 +508,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
     try {
       if (_valueProvince != ProvinceModel.empty()) {
         var provider = Provider.of<DistrictList>(context, listen: false);
-        String? stringDistricts = await DistrictAPI.getDistrictsByProvinceId(
-            _valueProvince.provinceId.toString());
+        String? stringDistricts = await DistrictAPI.getDistrictsByProvinceId(_valueProvince.provinceId.toString());
         if (stringDistricts != null) {
           provider.removeAllDistricts();
           provider.getAllProvincesByProvinceIdFromAPI(stringDistricts);
@@ -631,8 +583,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   getUserLocation() async {
     if (user != null) {
       String? address = user!.address;
-      LocationModel? location =
-          Provider.of<Location>(context, listen: false).location;
+      LocationModel? location = Provider.of<Location>(context, listen: false).location;
       if (location != null &&
           user!.address != null &&
           user!.address!.isNotEmpty &&
@@ -690,8 +641,7 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
     String? strLocation;
     if (userProvider.user != null) {
       if (userProvider.user!.cwtId != null && userProvider.user!.cwtId != 0) {
-        strLocation = await LocationAPI.getLocationByCWTId(
-            userProvider.user!.cwtId.toString());
+        strLocation = await LocationAPI.getLocationByCWTId(userProvider.user!.cwtId.toString());
       }
       if (strLocation != null && strLocation.isNotEmpty) {
         locationProvider.getLocationFromAPI(strLocation);

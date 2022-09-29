@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ssumake/Homepage/home_page_background.dart';
-
 import 'package:ssumake/Model/Product/category_model.dart';
 import '../CommonFeatures/show_custom_modal_bottom_sheet.dart';
 import '../Constants/color.dart';
@@ -95,6 +93,7 @@ class HomePageBodyState extends State<HomePageBody> {
               ),
               Expanded(
                 child: PageView.builder(
+                  physics: const BouncingScrollPhysics(),
                   controller: _productPageController,
                   itemCount: scatesByCateId != null ? scatesByCateId!.length : 0,
                   onPageChanged: (pageIndex) {
@@ -108,9 +107,9 @@ class HomePageBodyState extends State<HomePageBody> {
                   itemBuilder: (context, subCateIndex) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: GridView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: (scatesByCateId != null && productsInEachSubCategories != null)
-                          ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]!
-                              .length
+                          ? productsInEachSubCategories![scatesByCateId![subCateIndex % scatesByCateId!.length]]!.length
                           : 0,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

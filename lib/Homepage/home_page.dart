@@ -29,6 +29,7 @@ import '../Model/Product/product_model.dart';
 import '../Model/Product/sub_category_model.dart';
 import '../Model/User/user_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
+import 'set_uri_dialog.dart';
 
 int categoryDefault = 4;
 int subCategoryDefault = 18;
@@ -189,7 +190,18 @@ class HomePageState extends State<HomePage> {
             );
           },
         ),
-        const SizedBox(width: kDefaultPadding / 2)
+        InkWell(
+            child: const Icon(
+              Icons.settings,
+              color: kTextColor,
+              size: 30,
+            ),
+            onTap: (){
+              showDialog(
+                  context: context,
+                  builder: (context) => const SetURIDialog());
+            }),
+        const SizedBox(width: kDefaultPadding )
       ],
     );
   }

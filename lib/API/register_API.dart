@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import '../Constants/uri.dart';
 import '../Model/User/register_user_model.dart';
 
@@ -18,7 +17,7 @@ class RegisterAPI {
         //String dob = DateFormat('yyyy-MM-dd').format(userRegister.dateofbirth!);
         print(userRegister.dateofbirth!.toIso8601String());
         final response = await http.post(
-            Uri.parse(URI.BASE_URI + URI.USER_REGISTER + "?code=" + codeVerify),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.USER_REGISTER + "?code=" + codeVerify),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             },
@@ -43,7 +42,7 @@ class RegisterAPI {
       if (phoneNumber.isNotEmpty) {
         print('lay ma xac thuc');
         final response = await http.get(
-            Uri.parse(URI.BASE_URI + URI.GET_CODE_VERIFY_PHONE + phoneNumber),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_CODE_VERIFY_PHONE + phoneNumber),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             });
@@ -62,7 +61,7 @@ class RegisterAPI {
         //email = email.replaceAll(RegExp(r'@'), '%40');
         // print(email);
         final response = await http.get(
-            Uri.parse(URI.BASE_URI + URI.GET_CODE_VERIFY_EMAIL + email),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_CODE_VERIFY_EMAIL + email),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             });

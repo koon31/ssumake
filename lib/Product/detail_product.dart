@@ -42,91 +42,94 @@ class DetailProduct extends StatelessWidget {
                 .headline5
                 ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold,),
           ),
-          Row(
-            children: <Widget>[
-              Consumer<DiscountList>(builder: (context, value, child) {
-                DiscountModel? d =product.discountId != null ? value.findDiscountById(product.discountId!):null;
-                return RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                          text: "Giá\n",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                      product.discountId == null || d == null
-                          ? TextSpan(
-                              text: formatter.format(product.price!) + " VND",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                            )
-                          : TextSpan(
-                              text: formatter.format(product.price!) + " VND\n",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.lineThrough),
-                            ),
-                      d != null
-                          ? d.discountPercent == 0
-                              ? TextSpan(
-                                  text: formatter.format((product.price! -
-                                      (d.discountMoney as num)))
-                                           +
-                                      "VND",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                )
-                              : TextSpan(
-                                  text: formatter.format((product.price! *
-                                      (100 -
-                                          (d.discountPercent as num)) /
-                                      100))
-                                       +
-                                      "VND",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                )
-                          : const TextSpan(
-                              text: '',
-                            ),
-                    ],
-                  ),
-                );
-              }),
-              const SizedBox(width: kDefaultPadding),
-              Expanded(
-                child: Hero(
-                  tag: "${product.productId}",
-                  child: SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: Image.network(
-                      product.productImageURl!,
-                      fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.only(top: kDefaultPadding/2),
+            child: Row(
+              children: <Widget>[
+                Consumer<DiscountList>(builder: (context, value, child) {
+                  DiscountModel? d =product.discountId != null ? value.findDiscountById(product.discountId!):null;
+                  return RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: "Giá\n",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                        product.discountId == null || d == null
+                            ? TextSpan(
+                                text: formatter.format(product.price!) + " VND",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                              )
+                            : TextSpan(
+                                text: formatter.format(product.price!) + " VND\n",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        decoration: TextDecoration.lineThrough),
+                              ),
+                        d != null
+                            ? d.discountPercent == 0
+                                ? TextSpan(
+                                    text: formatter.format((product.price! -
+                                        (d.discountMoney as num)))
+                                             +
+                                        "VND",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        ?.copyWith(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                  )
+                                : TextSpan(
+                                    text: formatter.format((product.price! *
+                                        (100 -
+                                            (d.discountPercent as num)) /
+                                        100))
+                                         +
+                                        "VND",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        ?.copyWith(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                  )
+                            : const TextSpan(
+                                text: '',
+                              ),
+                      ],
+                    ),
+                  );
+                }),
+                const SizedBox(width: kDefaultPadding),
+                Expanded(
+                  child: Hero(
+                    tag: "${product.productId}",
+                    child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Image.network(
+                        product.productImageURl!,
+                        fit: BoxFit.scaleDown,
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           )
         ],
       ),

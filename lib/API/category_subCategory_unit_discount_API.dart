@@ -7,7 +7,7 @@ class CategoryAPI {
   static Future<String> getCategories() async {
     try {
       final response = await http.get(
-        Uri.parse(URI.BASE_URI + URI.GET_CATEGORY),
+        Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_CATEGORY),
       );
       return response.body;
     } catch (e) {
@@ -21,7 +21,7 @@ class SubCategoryAPI{
   static Future<String> getSubCategoriesByCategoryId(int categoryId) async {
     try {
       final response = await http.get(
-        Uri.parse(URI.BASE_URI + URI.GET_SUB_CATEGORY+'?id='+categoryId.toString()),
+        Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_SUB_CATEGORY+'?id='+categoryId.toString()),
       );
       return response.body;
     } catch (e) {
@@ -35,7 +35,7 @@ class UnitAPI {
   static Future<String> getUnits() async {
     try {
       final response = await http.get(
-        Uri.parse(URI.BASE_URI + URI.GET_UNIT),
+        Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_UNIT),
       );
       return response.body;
     } catch (e) {
@@ -49,7 +49,7 @@ class DiscountAPI {
   static Future<String> getDiscounts() async {
     try {
       final response = await http.get(
-        Uri.parse(URI.BASE_URI + URI.GET_DISCOUNT),
+        Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_DISCOUNT),
       );
       return response.body;
     } catch (e) {

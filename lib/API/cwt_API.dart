@@ -6,7 +6,7 @@ class CWTAPI {
   static Future<dynamic> getCWTsByDistrictId(String districtId) async {
     try {
       final response = await http.get(
-          Uri.parse(URI.BASE_URI + URI.GET_CWTS_BY_DISTRICT + districtId),
+          Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_CWTS_BY_DISTRICT + districtId),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });

@@ -16,7 +16,7 @@ class OrderAPI {
       var user = preferences.getStringList('user');
       String? token;
       if(user!=null) token = user[0];
-      print(token);
+      // print(token);
       if (order.custormerId != null &&
           order.custormerId!.isNotEmpty &&
           order.dateCreate != null &&
@@ -26,18 +26,18 @@ class OrderAPI {
           order.orderDetails != List<OrderDetailModel>.empty() &&
           token != null &&
           token.isNotEmpty) {
-        print(jsonEncode({
-          "custormerId": order.custormerId,
-          "dateCreate": order.dateCreate!.toIso8601String(),
-          "address": order.address,
-          "paymentMethodId": order.paymentMethodId,
-          "totalPrice": order.totalPrice,
-          "discountId": order.discountId,
-          "status": order.status,
-          "orderDetails": order.orderDetails,
-        }));
+        // print(jsonEncode({
+        //   "custormerId": order.custormerId,
+        //   "dateCreate": order.dateCreate!.toIso8601String(),
+        //   "address": order.address,
+        //   "paymentMethodId": order.paymentMethodId,
+        //   "totalPrice": order.totalPrice,
+        //   "discountId": order.discountId,
+        //   "status": order.status,
+        //   "orderDetails": order.orderDetails,
+        // }));
         final response =
-            await http.post(Uri.parse(URI.BASE_URI + URI.ADD_ORDER),
+            await http.post(Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.ADD_ORDER),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                   'Accept': 'application/json',
@@ -72,14 +72,13 @@ class OrderAPI {
       print(token);
       if (customerId!=null && customerId.isNotEmpty && token!=null && token.isNotEmpty) {
         final response = await http.get(
-        Uri.parse(URI.BASE_URI + URI.GET_ORDER+customerId),
+        Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_ORDER+customerId),
           headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
-        print(response.body);
         return response.body;
       }
     } catch (e) {

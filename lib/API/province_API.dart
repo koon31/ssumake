@@ -9,7 +9,7 @@ class ProvinceAPI {
   static Future<dynamic> getProvinces() async {
     try {
       final response = await http.get(
-          Uri.parse(URI.BASE_URI + URI.GET_PROVINCES),
+          Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_PROVINCES),
           );
       return response.body;
     } catch (e) {
