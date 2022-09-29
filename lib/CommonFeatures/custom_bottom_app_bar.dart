@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import '../Constants/color.dart';
+import '../Constants/global_var.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/CartOrder/product_in_cart_model.dart';
 
@@ -125,12 +126,12 @@ class _CustomBottomAppBarHomePageState
               ),
             ),
           ),
-          SizedBox(width: 1,),
+          const SizedBox(width: 1,),
           Flexible(
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                widget.buttonLabel1.toStringAsFixed(1),
+                formatter.format(widget.buttonLabel1),
                 style: const TextStyle(
                   color: kPrimaryLightColor,
                 ),
@@ -191,36 +192,34 @@ class _CustomBottomAppBarCartState extends State<CustomBottomAppBarCart> {
                           (p.price! - d.discountMoney!)
                   : psInCart.getQuantityOfProducts(p)! * p.price!;
             }
-            return Container(
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: kDefaultPadding / 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          "${price.toStringAsFixed(1)}VND",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
+            return Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: kDefaultPadding / 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Giao Đến • ${psInCart.getTotalQuantityOfProducts()} sản phẩm',
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "${formatter.format(price)}VND",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  customButtonOfBottomAppBarCart(size),
-                ],
-              ),
+                ),
+                const Spacer(),
+                customButtonOfBottomAppBarCart(size),
+              ],
             );
           },),
 

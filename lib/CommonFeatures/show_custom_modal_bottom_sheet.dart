@@ -215,8 +215,10 @@ class ShowModalBottomSheet {
           ),
         ),
         builder: (BuildContext contextModal) {
+          double statusBarHeight = MediaQuery.of(context).viewPadding.top;
           return SafeArea(
             child: Container(
+              height: MediaQuery.of(context).size.height- statusBarHeight,
                 padding: const EdgeInsets.only(top: kDefaultPadding),
                 decoration: const BoxDecoration(
                   color: kPrimaryColor,

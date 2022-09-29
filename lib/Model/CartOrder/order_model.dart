@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ssumake/Model/CartOrder/order_detail_model.dart';
 
 class OrderHistory with ChangeNotifier{
@@ -54,9 +53,7 @@ class OrderModel {
     DateTime dc = DateTime.parse(json['dateCreate'].toString());
     List<OrderDetailModel>? orderDetailHistory = List<OrderDetailModel>.from(json['orderdetails'].map((x) => OrderDetailModel.fromJson(x)));
     for(int i = 0; i < orderDetailHistory.length; ++i) {
-      print(orderDetailHistory[i].productId);
     }
-    print(dc.toString());
     return OrderModel(
     custormerId: json["custormerId"]??'',
     dateCreate: dc,

@@ -8,6 +8,7 @@ import 'package:ssumake/Constants/color.dart';
 import 'package:ssumake/Login_Register/Login/login_dialog.dart';
 import 'package:ssumake/Model/Product/discount_model.dart';
 import '../CommonFeatures/custom_title_style.dart';
+import '../Constants/global_var.dart';
 import '../Model/Location/location_model.dart';
 import '../Model/Product/product_model.dart';
 import '../Model/User/user_model.dart';
@@ -375,10 +376,10 @@ class _CustomModalBottomSheetCartState
             trailing: d != null && product.discountId != null
                 ? d.discountPercent != 0
                     ? Text(
-                        "${(product.price! * (100 - (d.discountPercent as num)) / 100).toStringAsFixed(1)}VND")
+                        "${formatter.format(product.price! * (100 - (d.discountPercent as num)) / 100)} VND")
                     : Text(
-                        "${(product.price! - (d.discountMoney as num)).toStringAsFixed(1)}VND")
-                : Text("${product.price?.toStringAsFixed(1)}VND"),
+                        "${formatter.format(product.price! - (d.discountMoney as num))} VND")
+                : Text("${formatter.format(product.price!)} VND"),
           ),
           endActionPane: ActionPane(
               openThreshold: 0.2,
@@ -482,7 +483,7 @@ class _CustomModalBottomSheetCartState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Thành tiền'),
-                Text("${price.toStringAsFixed(1)}VND")
+                Text("${formatter.format(price)} VND")
               ],
             ),
           ),
@@ -542,7 +543,7 @@ class _CustomModalBottomSheetCartState
                   'Số tiền phải thanh toán',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text("${price.toStringAsFixed(1)}VND",
+                Text("${formatter.format(price)} VND",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),

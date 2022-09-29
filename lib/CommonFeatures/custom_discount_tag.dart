@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ssumake/Constants/color.dart';
 
+import '../Constants/global_var.dart';
+
 class CustomDiscountTag extends StatelessWidget {
   const CustomDiscountTag({Key? key, this.title, required this.isPercent})
       : super(key: key);
@@ -22,7 +24,7 @@ class CustomDiscountTag extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
               )
             : Text(
-                '- ' + title.toString() + ' VND',
+                '- ' + formatter.format(title) + ' VND',
                 style: const TextStyle(color: Colors.white),
               ),
       ),

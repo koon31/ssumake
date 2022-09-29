@@ -56,7 +56,7 @@ class UpdateUserAPI {
           changeEmailUser.phoneNumber!.isNotEmpty &&
           changeEmailUser.codeVerify!.isNotEmpty) {
         final response = await http.post(
-            Uri.parse(URI.BASE_URI + URI.CHANGE_EMAIL),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.CHANGE_EMAIL),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Accept': 'application/json',
@@ -87,7 +87,7 @@ class UpdateUserAPI {
           changePassword.newPassword!.isNotEmpty &&
           changePassword.oldPassword!.isNotEmpty) {
         final response = await http.post(
-            Uri.parse(URI.BASE_URI + URI.CHANGE_PASSWORD),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.CHANGE_PASSWORD),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Accept': 'application/json',
@@ -118,7 +118,7 @@ class UpdateUserAPI {
           forgotPassword.code!.isNotEmpty &&
           forgotPassword.newPassword!.isNotEmpty) {
         final response = await http.post(
-            Uri.parse(URI.BASE_URI + URI.FORGOT_PASSWORD),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.FORGOT_PASSWORD),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Accept': 'application/json',
@@ -150,7 +150,7 @@ class UpdateUserAPI {
           token != null && token.isNotEmpty) {
         print(updateUserModel.address);
         final response =
-            await http.post(Uri.parse(URI.BASE_URI + URI.CHANGE_CUSTOMER_INFO),
+            await http.post(Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.CHANGE_CUSTOMER_INFO),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                   'Accept': 'application/json',
@@ -176,7 +176,7 @@ class UpdateUserAPI {
       if (phoneNumber.isNotEmpty) {
         print('lay ma xac thuc');
         final response = await http.get(
-            Uri.parse(URI.BASE_URI + URI.GET_CODE_VERIFY_PHONE_FORGOT_PASSWORD+phoneNumber),
+            Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_CODE_VERIFY_PHONE_FORGOT_PASSWORD+phoneNumber),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             });
@@ -204,7 +204,7 @@ class UpdateUserAPI {
           token != null &&
           token.isNotEmpty && deviceId!=null && deviceId.isNotEmpty) {
         final response =
-        await http.post(Uri.parse(URI.BASE_URI + URI.CHECK_CHANGE_INFO),
+        await http.post(Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.CHECK_CHANGE_INFO),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Accept': 'application/json',

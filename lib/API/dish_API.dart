@@ -8,7 +8,7 @@ class DishAPI {
     try {
       if (productId!=null && productId.isNotEmpty) {
         final response = await http.get(
-          Uri.parse(URI.BASE_URI + URI.GET_DISH_BY_PRODUCT+productId),
+          Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_DISH_BY_PRODUCT+productId),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': 'application/json',

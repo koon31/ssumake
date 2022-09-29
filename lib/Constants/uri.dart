@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 class URI {
   URI._();
@@ -7,6 +7,7 @@ class URI {
   //192.168.1.35
   //192.168.1.4
   static const String BASE_URI = 'http://192.168.1.4:5000/';
+  static String EDITABLE_BASE_URI = '';
   //Account
   static const String USER_LOGIN = 'api/v1/Account/Login';
   static const String USER_REGISTER = 'api/v1/Account/RegisterCustomer';
@@ -15,7 +16,7 @@ class URI {
   static const String GET_CODE_VERIFY_EMAIL = 'api/v1/Account/GetCodeVerifyEmail?email=';
   static const String CHANGE_PHONE_NUMBER = 'api/v1/Account/ChangePhoneNumber';
   static const String CHANGE_EMAIL = 'api/v1/Account/ChangeOrAddEmail';
-  static const String GET_LOGGED_IN_USER =  'api/v1/Customer/GetCustomer?id=';
+  static const String GET_LOGGED_IN_USER = 'api/v1/Customer/GetCustomer?id=';
   static const String CHANGE_CUSTOMER_INFO = 'api/v1/Customer/CustomerChangeInfo';
   static const String CHANGE_PASSWORD = 'api/v1/Account/ChangePassword';
   static const String FORGOT_PASSWORD = 'api/v1/Account/CheckCodeVerifyForPhone';
@@ -23,6 +24,7 @@ class URI {
 
   //Product
   static const String GET_PRODUCT = 'api/v1/Product/GetAllProduct';
+  static const String GET_PRODUCT_BY_ID = 'api/v1/Product/GetProductDisabledById?id=';
   static const String GET_CATEGORY = 'api/v1/Product/GetAllCategories';
   static const String GET_SUB_CATEGORY = 'api/v1/Product/GetAllSubCategoriesbyCategoryId';
   static const String GET_UNIT = 'api/v1/Product/GetAllUnit';

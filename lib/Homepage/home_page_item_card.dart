@@ -137,14 +137,17 @@ class ItemCard extends StatelessWidget {
                             );
                 }),
                 Consumer<UnitList>(builder: (context, value, child) {
-                  return Text(
-                    "${value.findUnitById(product!.unitId!).name}",
-                    style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                  return Padding(
+                    padding: const EdgeInsets.only(right: kDefaultPadding),
+                    child: Text(
+                      "${value.findUnitById(product!.unitId!).name}",
+                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                    ),
                   );
-                }),
+                },),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

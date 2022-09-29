@@ -9,6 +9,7 @@ import '../Model/Product/category_model.dart';
 import '../Model/Product/sub_category_model.dart';
 import '../Model/User/user_model.dart';
 import 'home_page.dart';
+import 'dart:math' as math;
 
 class HomePageDrawer extends StatefulWidget {
   const HomePageDrawer({
@@ -56,217 +57,233 @@ class _HomePageDrawerState extends State<HomePageDrawer> {
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            FutureBuilder(
-              future: _future,
-              builder: (ctx, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Column(
-                    children: [
-                      Visibility(
-                        child: Column(
-                          children: [
-                            Stack(
-                              alignment: Alignment.bottomCenter,
+        child: Stack(
+          children: [
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(math.pi),
+                child: Image.asset(
+                  "assets/images/main_bottom.png",
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(children: [
+                FutureBuilder(
+                  future: _future,
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Column(
+                        children: [
+                          Visibility(
+                            child: Column(
                               children: [
-                                Column(
+                                Stack(
+                                  alignment: Alignment.bottomCenter,
                                   children: [
-                                    Container(
-                                      height: (size.height - statusBarHeight) * 0.2,
-                                      color: kPrimaryColor,
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height: (size.height - statusBarHeight) * 0.2,
+                                          color: kPrimaryColor,
+                                        ),
+                                        Container(
+                                          height: (size.height - statusBarHeight) * 0.1,
+                                          color: Colors.white,
+                                        ),
+                                      ],
                                     ),
                                     Container(
-                                      height: (size.height - statusBarHeight) * 0.1,
-                                      color: Colors.white,
-                                    ),
+                                      margin: EdgeInsets.only(bottom: (size.height - statusBarHeight) * 0.025),
+                                      decoration: const BoxDecoration(
+                                        color: kPrimaryLightColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      height: size.width * 0.3,
+                                      width: size.width * 0.3,
+                                      child: const FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 200,
+                                          color: kPrimaryColor,
+                                        ),
+                                      ),),
                                   ],
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(bottom: (size.height - statusBarHeight) * 0.025),
-                                  decoration: const BoxDecoration(
-                                    color: kPrimaryLightColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  height: size.width * 0.3,
-                                  width: size.width * 0.3,
-                                  child: const FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 200,
-                                      color: kPrimaryColor,
-                                    ),
-                                  ),),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
-                                onPressed: () {
-                                  if (user != null) {
-                                    Navigator.pop(context);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return const UpdateUserPage();
-                                    }));
-                                  }
-                                },
-                                child: Container(
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
-                                        child: Row(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
-                                              child: Icon(
-                                                Icons.person,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Thông tin cá nhân',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
-                                onPressed: () {
-                                  if (user != null) {
-                                    Navigator.pop(context);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return const OrderHistoryPage();
-                                    }));
-                                  }
-                                },
-                                child: Container(
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
-                                        child: Row(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
-                                              child: Icon(
-                                                Icons.history_edu,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Text('Lịch sử đơn hàng',
-                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
-                                          ],
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      const Icon(Icons.arrow_forward_ios, color: Colors.black),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        visible: user != null,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
-                          onPressed: () {
-                            if (user != null) {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                return const WelcomePage();
-                              }));
-                              logout();
-                            } else {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                return const WelcomePage();
-                              }));
-                            }
-                          },
-                          child: Container(
-                            decoration:
-                                BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
-                            child: Row(
-                              children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
-                                  child: user == null
-                                      ? Row(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
-                                              child: Icon(
-                                                Icons.login,
-                                                color: Colors.black,
-                                              ),
+                                  padding: const EdgeInsets.only(
+                                      top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                                    onPressed: () {
+                                      if (user != null) {
+                                        Navigator.pop(context);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                          return const UpdateUserPage();
+                                        }));
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                            child: Row(
+                                              children: const [
+                                                Padding(
+                                                  padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Thông tin cá nhân',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Text('Đăng Nhập',
-                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
-                                          ],
-                                        )
-                                      : Row(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.only(right: kDefaultPadding / 2),
-                                              child: Icon(
-                                                Icons.logout,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Text('Đăng Xuất',
-                                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
-                                          ],
-                                        ),
+                                          ),
+                                          const Spacer(),
+                                          const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.black,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                const Spacer(),
-                                const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                                    onPressed: () {
+                                      if (user != null) {
+                                        Navigator.pop(context);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                          return const OrderHistoryPage();
+                                        }));
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                            child: Row(
+                                              children: const [
+                                                Padding(
+                                                  padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                                  child: Icon(
+                                                    Icons.history_edu,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text('Lịch sử đơn hàng',
+                                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                              ],
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
+                            ),
+                            visible: user != null,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: kDefaultPadding, left: kDefaultPadding, right: kDefaultPadding),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(primary: Colors.transparent, padding: EdgeInsets.zero),
+                              onPressed: () {
+                                if (user != null) {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                    return const WelcomePage();
+                                  }));
+                                  logout();
+                                } else {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                    return const WelcomePage();
+                                  }));
+                                }
+                              },
+                              child: Container(
+                                decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(5), color: kPrimaryLightColor),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(kDefaultPadding / 4 * 3),
+                                      child: user == null
+                                          ? Row(
+                                              children: const [
+                                                Padding(
+                                                  padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                                  child: Icon(
+                                                    Icons.login,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text('Đăng Nhập',
+                                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                              ],
+                                            )
+                                          : Row(
+                                              children: const [
+                                                Padding(
+                                                  padding: EdgeInsets.only(right: kDefaultPadding / 2),
+                                                  child: Icon(
+                                                    Icons.logout,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text('Đăng Xuất',
+                                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                              ],
+                                            ),
+                                    ),
+                                    const Spacer(),
+                                    const Icon(Icons.arrow_forward_ios, color: Colors.black),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Container();
-                }
-              },
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding / 2),
+                  child: Divider(thickness: 2),
+                ),
+                mapCategoriesToMenuList(),
+              ]),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding / 2),
-              child: Divider(thickness: 2),
-            ),
-            mapCategoriesToMenuList(),
-          ]),
+          ],
         ),
       ),
     );

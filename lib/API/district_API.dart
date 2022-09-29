@@ -7,7 +7,7 @@ class DistrictAPI {
   static Future<dynamic> getDistrictsByProvinceId(String provinceId) async {
     try {
       final response = await http.get(
-          Uri.parse(URI.BASE_URI + URI.GET_DISTRICTS_BY_PROVINCE + provinceId),
+          Uri.parse((URI.EDITABLE_BASE_URI.isEmpty?URI.BASE_URI:URI.EDITABLE_BASE_URI) + URI.GET_DISTRICTS_BY_PROVINCE + provinceId),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });
