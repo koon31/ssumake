@@ -65,9 +65,7 @@ class RegisterAPI {
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8'
             });
-        print(response.statusCode);
-        print(response.body);
-        return response.statusCode;
+        return response;
       }
     } catch (e) {
       throw Exception('Lấy mã xác thực thất bại');

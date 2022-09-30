@@ -85,23 +85,25 @@ class _AddToCartState extends State<AddToCart> {
             return Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: kDefaultPadding / 2,
-                  vertical: isAdd
-                      ? widget.quantityOfProducts > 0
-                          ? kDefaultPadding / 2
-                          : kDefaultPadding / 2
-                      : widget.quantityOfProducts > 0
-                          ? kDefaultPadding / 2
-                          : kDefaultPadding / 5 * 3.5),
+                  vertical: product.quantity! > 0
+                      ? isAdd
+                          ? widget.quantityOfProducts > 0
+                              ? kDefaultPadding / 2
+                              : kDefaultPadding / 2
+                          : widget.quantityOfProducts > 0
+                              ? kDefaultPadding / 2
+                              : kDefaultPadding / 5 * 3.5
+                      : kDefaultPadding / 2),
               child: Text(
-                isAdd
-                    ? product.quantity! > 0
+                product.quantity! > 0
+                    ? isAdd
                         ? widget.quantityOfProducts > 0
                             ? formatter.format(widget.quantityOfProducts * priceAfterDiscount) + ' VND'
                             : formatter.format((widget.quantityOfProducts + 1) * priceAfterDiscount) + ' VND'
                         : widget.quantityOfProducts > 0
                             ? formatter.format(widget.quantityOfProducts * priceAfterDiscount) + ' VND'
-                            : "Đã hết hàng"
-                    : "Bỏ chọn sản phẩm này".toUpperCase(),
+                            : "Bỏ chọn sản phẩm này".toUpperCase()
+                    : "Đã hết hàng",
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,

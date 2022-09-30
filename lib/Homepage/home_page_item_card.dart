@@ -20,7 +20,7 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: press,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class ItemCard extends StatelessWidget {
                                               ),
                                               (d.discountPercent! > 25)
                                                   ? const CustomShockPriceTag(title: 'Giá sốc')
-                                                  : const SizedBox.shrink()
+                                                  : Container()
                                             ],
                                           )
                                         : Row(
@@ -74,12 +74,12 @@ class ItemCard extends StatelessWidget {
                                               ),
                                               (d.discountMoney! > (product?.price! as num) / 4)
                                                   ? const CustomShockPriceTag(title: 'Giá sốc')
-                                                  : const SizedBox.shrink()
+                                                  : Container()
                                             ],
                                           )
-                                    : const SizedBox.shrink();
+                                    : Container();
                               })
-                            : const SizedBox.shrink(),
+                            : Container(),
                       ],
                     ),
                   ],
@@ -137,12 +137,9 @@ class ItemCard extends StatelessWidget {
                             );
                 }),
                 Consumer<UnitList>(builder: (context, value, child) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: kDefaultPadding),
-                    child: Text(
-                      "${value.findUnitById(product!.unitId!).name}",
-                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-                    ),
+                  return Text(
+                    "${value.findUnitById(product!.unitId!).name}",
+                    style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
                   );
                 },),
               ],

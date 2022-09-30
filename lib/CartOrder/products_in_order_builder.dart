@@ -70,7 +70,7 @@ class _ProductsInOrderBuilderState extends State<ProductsInOrderBuilder> {
               leading: Text("${order?.orderDetails![index].quantity}", style: CustomTextStyle.custom1(context)),
               title: Text("${product!.productName}"),
               subtitle: Text("${unit!.name}"),
-              trailing: Text("${formatter.format(product.price!)}VND"),
+              trailing: Text("${formatter.format(order?.orderDetails![index].price!)}VND"),
             );
           });
         } else {
