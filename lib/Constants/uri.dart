@@ -6,7 +6,7 @@ class URI {
   //192.168.0.104
   //192.168.1.35
   //192.168.1.4
-  static const String BASE_URI = 'http://192.168.1.4:5000/';
+  static const String BASE_URI = 'http://192.168.147.202:5000/';
   static String EDITABLE_BASE_URI = '';
   //Account
   static const String USER_LOGIN = 'api/v1/Account/Login';

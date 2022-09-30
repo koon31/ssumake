@@ -290,13 +290,13 @@ class _CustomModalBottomSheetCartState
                       color: Colors.grey),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: kDefaultPadding / 4),
-                          child: Text('Hôm nay'),
+                          child: Text((DateTime.now().hour*60)+DateTime.now().minute<1200?'Hôm nay':'Ngày mai'),
                         ),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(
                               top: kDefaultPadding / 4,
                               bottom: kDefaultPadding / 2),

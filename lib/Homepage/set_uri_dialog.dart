@@ -55,6 +55,7 @@ class _SetURIDialogState extends State<SetURIDialog> {
                   text: "Set URI",
                   press: () {
                     URI.EDITABLE_BASE_URI = _uriController.text.contains("http://")?_uriController.text:"http://"+_uriController.text+":5000/";
+                    Navigator.pop(context);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(),));
                   },
                 ),

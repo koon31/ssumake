@@ -242,10 +242,22 @@ class _ModalBottomSheetUpdateUserEmailState
         print(_newEmailController.text);
         final result =
         await RegisterAPI.getCodeVerifyEmail(_newEmailController.text);
-        if (result == 200) {
-          DisplayToast.displaySuccessToast(
-              context, 'Lấy mã xác thực thành công');
-          return true;
+        if (result.statusCode == 200) {
+          if (result.body == "true") {
+            DisplayToast.displaySuccessToast(
+                context, 'Lấy mã xác thực thành công');
+            return true;
+          }
+          else {
+            if(result.body == "Email is already exist") {
+              DisplayToast.displayErrorToast(context, 'Email đã tồn tại');
+              return false;
+            }
+            else {
+              DisplayToast.displayErrorToast(context, 'Đã có lỗi xảy ra khi lấy mã xác thực');
+              return false;
+            }
+          }
         } else {
           DisplayToast.displayErrorToast(context, 'Lấy mã xác thực thất bại');
           return false;
